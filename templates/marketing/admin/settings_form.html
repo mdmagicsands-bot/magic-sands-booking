@@ -1,0 +1,17 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Site settings{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <form method="post" class="mk-admin-form">
+    {% csrf_token %}
+    {% for field in form %}
+    <label class="admin-field">
+      {{ field.label }}
+      {{ field }}
+      {% if field.errors %}<span class="field-error">{{ field.errors|striptags }}</span>{% endif %}
+    </label>
+    {% endfor %}
+    <button type="submit" class="admin-login-btn">Save settings</button>
+  </form>
+</section>
+{% endblock %}

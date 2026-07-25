@@ -1,0 +1,30 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Destinations{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Destinations</h2>
+    <a class="pl-btn small" href="{% url 'marketing_admin_destination_new' %}">Add destination</a>
+  </div>
+  {% if items %}
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead><tr><th>Name</th><th>Slug</th><th>Order</th><th>Published</th><th></th></tr></thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td><strong>{{ item.name }}</strong><br><span class="muted">{{ item.short }}</span></td>
+          <td>{{ item.slug }}</td>
+          <td>{{ item.sort_order }}</td>
+          <td>{% if item.is_published %}Yes{% else %}No{% endif %}</td>
+          <td><a class="pa-link" href="{% url 'marketing_admin_destination_edit' item.pk %}">Edit</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No destinations yet. Run <code>python manage.py seed_marketing</code> or add one.</p>
+  {% endif %}
+</section>
+{% endblock %}

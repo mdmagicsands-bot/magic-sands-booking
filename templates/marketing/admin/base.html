@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Marketing Admin | Magic Sands{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/partner.css' %}">
+</head>
+<body class="partner-admin marketing-admin">
+  <aside class="pa-sidebar">
+    <a class="pa-brand" href="{% url 'marketing_admin' %}">
+      <span class="pl-mark">MS</span>
+      <span>
+        <strong>Magic Sands</strong>
+        <small>Marketing admin</small>
+      </span>
+    </a>
+    <nav class="pa-nav">
+      <a href="{% url 'admin_hub' %}">← Admin hub</a>
+      <a href="{% url 'marketing_admin' %}" class="{% if request.resolver_match.url_name == 'marketing_admin' %}active{% endif %}">Overview</a>
+      <a href="{% url 'marketing_admin_settings' %}" class="{% if request.resolver_match.url_name == 'marketing_admin_settings' %}active{% endif %}">Site settings</a>
+      <a href="{% url 'marketing_admin_destinations' %}" class="{% if 'destination' in request.resolver_match.url_name %}active{% endif %}">Destinations</a>
+      <a href="{% url 'marketing_admin_services' %}" class="{% if 'service' in request.resolver_match.url_name %}active{% endif %}">Services</a>
+      <a href="{% url 'marketing_admin_testimonials' %}" class="{% if 'testimonial' in request.resolver_match.url_name %}active{% endif %}">Testimonials</a>
+      <a href="{% url 'marketing_admin_why' %}" class="{% if 'why' in request.resolver_match.url_name %}active{% endif %}">Why choose us</a>
+      <a href="{% url 'marketing_admin_offices' %}" class="{% if 'office' in request.resolver_match.url_name %}active{% endif %}">Offices</a>
+      <a href="{% url 'marketing_admin_messages' %}" class="{% if 'message' in request.resolver_match.url_name %}active{% endif %}">Contact messages</a>
+      <a href="{% url 'home' %}" target="_blank" rel="noopener">View website ↗</a>
+    </nav>
+    <form method="post" action="{% url 'partner_logout' %}" class="pa-logout">
+      {% csrf_token %}
+      <button type="submit">Sign out</button>
+    </form>
+  </aside>
+
+  <div class="pa-main">
+    <header class="pa-top">
+      <div>
+        <p class="pa-eyebrow">{% block eyebrow %}Marketing website{% endblock %}</p>
+        <h1>{% block heading %}Overview{% endblock %}</h1>
+      </div>
+      <div class="pa-user">
+        <span>{{ request.user.get_username }}</span>
+      </div>
+    </header>
+
+    {% if messages %}
+    <div class="pa-messages">
+      {% for message in messages %}
+      <div class="pl-alert pl-alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

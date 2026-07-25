@@ -1,0 +1,30 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Offices{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Offices</h2>
+    <a class="pl-btn small" href="{% url 'marketing_admin_office_new' %}">Add office</a>
+  </div>
+  {% if items %}
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead><tr><th>Label</th><th>Phone</th><th>Email</th><th>Published</th><th></th></tr></thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td><strong>{{ item.label }}</strong><br><span class="muted">{{ item.address|truncatewords:12 }}</span></td>
+          <td>{{ item.phone }}</td>
+          <td>{{ item.email }}</td>
+          <td>{% if item.is_published %}Yes{% else %}No{% endif %}</td>
+          <td><a class="pa-link" href="{% url 'marketing_admin_office_edit' item.pk %}">Edit</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No offices yet. Run <code>python manage.py seed_marketing</code>.</p>
+  {% endif %}
+</section>
+{% endblock %}

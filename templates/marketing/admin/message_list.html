@@ -1,0 +1,30 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Contact messages{% endblock %}
+{% block content %}
+<section class="pa-card">
+  {% if items %}
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead><tr><th>From</th><th>Company</th><th>Preview</th><th>Received</th><th></th></tr></thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            <strong>{{ item.name }}</strong>
+            {% if not item.is_read %}<span class="status status-pending_payment">New</span>{% endif %}<br>
+            <span class="muted">{{ item.email }}</span>
+          </td>
+          <td>{{ item.company|default:"—" }}</td>
+          <td>{{ item.message|truncatewords:16 }}</td>
+          <td>{{ item.created_at|date:"Y-m-d H:i" }}</td>
+          <td><a class="pa-link" href="{% url 'marketing_admin_message_detail' item.pk %}">Open</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No messages yet. Submissions from /contact/ appear here.</p>
+  {% endif %}
+</section>
+{% endblock %}

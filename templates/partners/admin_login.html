@@ -7,7 +7,7 @@
   <title>Admin Login | Magic Sands</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@400;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/partner.css' %}">
 </head>
 <body class="admin-login-page">
@@ -18,12 +18,12 @@
         <span class="pl-mark">MS</span>
         <div>
           <strong>Magic Sands</strong>
-          <small>Admin</small>
+          <small>Website admin</small>
         </div>
       </div>
 
-      <h1>Sign in</h1>
-      <p class="admin-login-sub">Use your admin username and password.</p>
+      <h1>Admin sign in</h1>
+      <p class="admin-login-sub">Sign in to manage the marketing website or the booking system.</p>
 
       {% if messages %}
         {% for message in messages %}
@@ -32,15 +32,15 @@
       {% endif %}
 
       <label class="admin-field">
-        Username
+        Username or email
         <input type="text" name="username" required autocomplete="username" autofocus placeholder="admin">
       </label>
       <label class="admin-field">
         Password
         <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
       </label>
-      <button type="submit" class="admin-login-btn">Login</button>
-      <p class="admin-login-foot"><a href="{% url 'home' %}">← Back to site</a></p>
+      <button type="submit" class="admin-login-btn">Continue</button>
+      <p class="admin-login-foot"><a href="{% url 'home' %}">← Back to website</a></p>
     </form>
   </main>
 </body>

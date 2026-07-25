@@ -44,7 +44,7 @@ def _marketing_url(path: str = "/") -> str:
 def partner_login(request):
     """On-Railway fallback partner login (same branding as Hostinger page)."""
     if request.user.is_authenticated and request.user.is_staff:
-        return redirect("partner_dashboard")
+        return redirect("admin_hub")
 
     if request.method == "POST":
         email = (request.POST.get("email") or "").strip()
@@ -55,7 +55,7 @@ def partner_login(request):
             login(request, user)
             if not remember:
                 request.session.set_expiry(0)
-            return redirect(request.GET.get("next") or "partner_dashboard")
+            return redirect(request.GET.get("next") or "admin_hub")
         messages.error(request, "Invalid email or password, or account is not a partner.")
 
     return render(request, "partners/login.html")
@@ -76,7 +76,7 @@ def gateway_partner_login(request):
         login(request, user)
         if not remember:
             request.session.set_expiry(0)
-        return redirect("partner_dashboard")
+        return redirect("admin_hub")
 
     # Send user back to Hostinger login with an error flag
     return redirect(_marketing_url("/partner-login/?error=1"))
@@ -117,9 +117,9 @@ def gateway_partner_register(request):
 
 @require_http_methods(["GET", "POST"])
 def admin_login(request):
-    """Simple admin login for /admin/login/ (Railway only)."""
+    """Website admin login — opens the Marketing / Booking hub after sign-in."""
     if request.user.is_authenticated and request.user.is_staff:
-        return redirect("partner_dashboard")
+        return redirect("admin_hub")
 
     if request.method == "POST":
         username = (request.POST.get("username") or "").strip()
@@ -128,7 +128,7 @@ def admin_login(request):
         if user:
             login(request, user)
             request.session.set_expiry(0)
-            return redirect(request.GET.get("next") or "partner_dashboard")
+            return redirect(request.GET.get("next") or "admin_hub")
         messages.error(request, "Invalid username or password.")
 
     return render(request, "partners/admin_login.html")
@@ -138,8 +138,29 @@ def admin_login(request):
 def partner_logout(request):
     logout(request)
     messages.info(request, "You have been signed out.")
-    # Prefer returning staff to simple admin login on Railway
     return redirect("admin_login")
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(_is_staff, login_url="admin_login")
+def admin_hub(request):
+    """Post-login chooser: Marketing CMS or Booking system."""
+    from marketing.models import ContactMessage
+
+    unread = ContactMessage.objects.filter(is_read=False).count()
+    booking_pending = Booking.objects.filter(status=Booking.Status.PENDING_PAYMENT).count()
+    partner_pending = PartnerRegistration.objects.filter(
+        status=PartnerRegistration.Status.PENDING
+    ).count()
+    return render(
+        request,
+        "partners/admin_hub.html",
+        {
+            "unread_messages": unread,
+            "booking_pending": booking_pending,
+            "partner_pending": partner_pending,
+        },
+    )
 
 
 @login_required(login_url="admin_login")

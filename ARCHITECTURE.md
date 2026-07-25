@@ -14,7 +14,11 @@
 - `/about/` `/services/` `/destinations/` `/testimonials/` `/contact/`
 - `/hotels/` hotel search (LiteAPI)
 - `/partner-login/` `/partner-register/`
-- `/admin/login/` `/admin/`
+- `/admin/login/` → website admin login
+- `/admin/` → hub (Marketing website **or** Booking system)
+- `/admin/marketing/` → marketing CMS
+- `/admin/booking/` → booking dashboard
+- `/admin/bookings/` `/admin/partners/`
 
 ## Cutover later
 

@@ -15,7 +15,8 @@ urlpatterns = [
     path("partner-register/", views.gateway_partner_register, name="partner_register"),
     path("admin/login/", views.admin_login, name="admin_login"),
     path("admin/logout/", views.partner_logout, name="partner_logout"),
-    path("admin/", views.dashboard, name="partner_dashboard"),
+    path("admin/", views.admin_hub, name="admin_hub"),
+    path("admin/booking/", views.dashboard, name="partner_dashboard"),
     path("admin/bookings/", views.booking_list, name="partner_bookings"),
     path("admin/bookings/<int:booking_id>/", views.booking_detail, name="partner_booking_detail"),
     path(

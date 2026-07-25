@@ -1,0 +1,29 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Testimonials{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Testimonials</h2>
+    <a class="pl-btn small" href="{% url 'marketing_admin_testimonial_new' %}">Add testimonial</a>
+  </div>
+  {% if items %}
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead><tr><th>Guest</th><th>Quote</th><th>Published</th><th></th></tr></thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td><strong>{{ item.name }}</strong><br><span class="muted">{{ item.role }}</span></td>
+          <td>{{ item.quote|truncatewords:22 }}</td>
+          <td>{% if item.is_published %}Yes{% else %}No{% endif %}</td>
+          <td><a class="pa-link" href="{% url 'marketing_admin_testimonial_edit' item.pk %}">Edit</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No testimonials yet. Run <code>python manage.py seed_marketing</code>.</p>
+  {% endif %}
+</section>
+{% endblock %}

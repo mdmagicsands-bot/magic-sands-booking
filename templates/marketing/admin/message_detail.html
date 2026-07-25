@@ -1,0 +1,22 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Message from {{ item.name }}{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <dl class="pa-dl">
+    <div><dt>Name</dt><dd>{{ item.name }}</dd></div>
+    <div><dt>Email</dt><dd><a href="mailto:{{ item.email }}">{{ item.email }}</a></dd></div>
+    <div><dt>Company</dt><dd>{{ item.company|default:"—" }}</dd></div>
+    <div><dt>Received</dt><dd>{{ item.created_at|date:"Y-m-d H:i" }}</dd></div>
+  </dl>
+  <h2>Message</h2>
+  <p style="white-space:pre-wrap;line-height:1.6">{{ item.message }}</p>
+  <div class="mk-admin-actions">
+    <a class="pa-link" href="{% url 'marketing_admin_messages' %}">← Back to inbox</a>
+    <form method="post" onsubmit="return confirm('Delete this message?');">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="delete">
+      <button type="submit" class="pa-danger-btn">Delete</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

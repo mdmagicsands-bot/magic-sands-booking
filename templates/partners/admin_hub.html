@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin | Magic Sands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@400;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/partner.css' %}">
+</head>
+<body class="admin-hub-page">
+  <header class="admin-hub-top">
+    <div class="admin-hub-brand">
+      <span class="pl-mark">MS</span>
+      <div>
+        <strong>Magic Sands</strong>
+        <small>Website admin</small>
+      </div>
+    </div>
+    <div class="admin-hub-user">
+      <span>{{ request.user.get_username }}</span>
+      <form method="post" action="{% url 'partner_logout' %}">
+        {% csrf_token %}
+        <button type="submit">Sign out</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="admin-hub-main">
+    <p class="admin-hub-kicker">Choose a workspace</p>
+    <h1>What would you like to manage?</h1>
+    <p class="admin-hub-lede">One login for the full Magic Sands website — marketing content or the hotel booking system.</p>
+
+    {% if messages %}
+      {% for message in messages %}
+      <div class="pl-alert pl-alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="admin-hub-options">
+      <a class="admin-hub-card marketing" href="{% url 'marketing_admin' %}">
+        <span class="admin-hub-label">Option 1</span>
+        <h2>Marketing website</h2>
+        <p>Edit homepage copy, destinations, services, testimonials, offices, and contact messages.</p>
+        {% if unread_messages %}
+        <span class="admin-hub-badge">{{ unread_messages }} new message{{ unread_messages|pluralize }}</span>
+        {% else %}
+        <span class="admin-hub-cta">Open marketing admin →</span>
+        {% endif %}
+      </a>
+
+      <a class="admin-hub-card booking" href="{% url 'partner_dashboard' %}">
+        <span class="admin-hub-label">Option 2</span>
+        <h2>Booking system</h2>
+        <p>Manage hotel bookings, payments status, partner registrations, and guest confirmations.</p>
+        {% if booking_pending or partner_pending %}
+        <span class="admin-hub-badge">
+          {% if booking_pending %}{{ booking_pending }} pending booking{{ booking_pending|pluralize }}{% endif %}
+          {% if booking_pending and partner_pending %} · {% endif %}
+          {% if partner_pending %}{{ partner_pending }} partner request{{ partner_pending|pluralize }}{% endif %}
+        </span>
+        {% else %}
+        <span class="admin-hub-cta">Open booking admin →</span>
+        {% endif %}
+      </a>
+    </div>
+
+    <p class="admin-hub-foot">
+      <a href="{% url 'home' %}">← Back to website</a>
+      ·
+      <a href="{% url 'book_home' %}">Guest hotel search</a>
+    </p>
+  </main>
+</body>
+</html>

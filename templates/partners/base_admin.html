@@ -16,12 +16,13 @@
       <span class="pl-mark">MS</span>
       <span>
         <strong>Magic Sands</strong>
-        <small>Partner Admin</small>
+        <small>Booking admin</small>
       </span>
     </a>
     <nav class="pa-nav">
+      <a href="{% url 'admin_hub' %}">← Admin hub</a>
       <a href="{% url 'partner_dashboard' %}" class="{% if request.resolver_match.url_name == 'partner_dashboard' %}active{% endif %}">Dashboard</a>
-      <a href="{% url 'partner_bookings' %}" class="{% if 'booking' in request.resolver_match.url_name %}active{% endif %}">Bookings</a>
+      <a href="{% url 'partner_bookings' %}" class="{% if request.resolver_match.url_name == 'partner_bookings' or request.resolver_match.url_name == 'partner_booking_detail' %}active{% endif %}">Bookings</a>
       <a href="{% url 'partner_requests' %}" class="{% if request.resolver_match.url_name == 'partner_requests' %}active{% endif %}">Partner requests</a>
       <a href="{% url 'home' %}" target="_blank" rel="noopener">Guest site ↗</a>
       <a href="/django-admin/">System admin</a>
@@ -35,7 +36,7 @@
   <div class="pa-main">
     <header class="pa-top">
       <div>
-        <p class="pa-eyebrow">{% block eyebrow %}Partner portal{% endblock %}</p>
+        <p class="pa-eyebrow">{% block eyebrow %}Booking system{% endblock %}</p>
         <h1>{% block heading %}Dashboard{% endblock %}</h1>
       </div>
       <div class="pa-user">

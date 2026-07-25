@@ -1,0 +1,70 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Marketing overview{% endblock %}
+{% block content %}
+<section class="pa-stats">
+  <article class="pa-stat"><p>Destinations</p><strong>{{ counts.destinations }}</strong></article>
+  <article class="pa-stat"><p>Services</p><strong>{{ counts.services }}</strong></article>
+  <article class="pa-stat"><p>Testimonials</p><strong>{{ counts.testimonials }}</strong></article>
+  <article class="pa-stat warn"><p>Unread messages</p><strong>{{ counts.messages }}</strong></article>
+</section>
+
+<section class="pa-feature-row">
+  <article class="pa-card mini">
+    <h3>Site settings</h3>
+    <p>Hero text, about copy, motto, and mission for the public website.</p>
+    <a class="pl-btn small" href="{% url 'marketing_admin_settings' %}">Edit settings</a>
+  </article>
+  <article class="pa-card mini">
+    <h3>Destinations</h3>
+    <p>UAE, Oman, Saudi Arabia and the rest of Arabia programmes.</p>
+    <a class="pl-btn small" href="{% url 'marketing_admin_destinations' %}">Manage destinations</a>
+  </article>
+  <article class="pa-card mini">
+    <h3>Services</h3>
+    <p>Travel & leisure, MICE, wellness, concierge, and more.</p>
+    <a class="pl-btn small" href="{% url 'marketing_admin_services' %}">Manage services</a>
+  </article>
+  <article class="pa-card mini">
+    <h3>Contact inbox</h3>
+    <p>Messages submitted from the public contact form.</p>
+    <a class="pl-btn small" href="{% url 'marketing_admin_messages' %}">Open messages</a>
+  </article>
+</section>
+
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Recent contact messages</h2>
+    <a href="{% url 'marketing_admin_messages' %}" class="pa-link">View all</a>
+  </div>
+  {% if recent_messages %}
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead>
+        <tr><th>From</th><th>Company</th><th>Received</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for m in recent_messages %}
+        <tr>
+          <td>
+            <strong>{{ m.name }}</strong>{% if not m.is_read %} <span class="status status-pending_payment">New</span>{% endif %}<br>
+            <span class="muted">{{ m.email }}</span>
+          </td>
+          <td>{{ m.company|default:"—" }}</td>
+          <td>{{ m.created_at|date:"Y-m-d H:i" }}</td>
+          <td><a class="pa-link" href="{% url 'marketing_admin_message_detail' m.pk %}">Open</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No contact messages yet.</p>
+  {% endif %}
+</section>
+
+<section class="pa-card">
+  <h2>Seed default content</h2>
+  <p class="muted">If lists are empty, run this once on the server:</p>
+  <code>python manage.py seed_marketing</code>
+</section>
+{% endblock %}

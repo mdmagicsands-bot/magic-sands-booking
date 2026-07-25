@@ -1,0 +1,30 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Services{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Services</h2>
+    <a class="pl-btn small" href="{% url 'marketing_admin_service_new' %}">Add service</a>
+  </div>
+  {% if items %}
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead><tr><th>Title</th><th>Slug</th><th>Order</th><th>Published</th><th></th></tr></thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td><strong>{{ item.title }}</strong></td>
+          <td>{{ item.slug }}</td>
+          <td>{{ item.sort_order }}</td>
+          <td>{% if item.is_published %}Yes{% else %}No{% endif %}</td>
+          <td><a class="pa-link" href="{% url 'marketing_admin_service_edit' item.pk %}">Edit</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No services yet. Run <code>python manage.py seed_marketing</code>.</p>
+  {% endif %}
+</section>
+{% endblock %}

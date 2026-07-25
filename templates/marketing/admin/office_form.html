@@ -1,0 +1,30 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}{% if is_create %}Add office{% else %}Edit office{% endif %}{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <form method="post" class="mk-admin-form">
+    {% csrf_token %}
+    {% for field in form %}
+    <label class="admin-field">
+      {{ field.label }}
+      {% if field.name == 'is_published' %}
+        <span class="mk-check">{{ field }} Published / visible</span>
+      {% else %}
+        {{ field }}
+      {% endif %}
+      {% if field.errors %}<span class="field-error">{{ field.errors|striptags }}</span>{% endif %}
+    </label>
+    {% endfor %}
+    <div class="mk-admin-actions">
+      <button type="submit" class="admin-login-btn">Save</button>
+      <a class="pa-link" href="{% url 'marketing_admin_offices' %}">Cancel</a>
+    </div>
+  </form>
+  {% if not is_create %}
+  <form method="post" action="{% url 'marketing_admin_office_delete' object.pk %}" class="mk-admin-delete" onsubmit="return confirm('Delete this office?');">
+    {% csrf_token %}
+    <button type="submit" class="pa-danger-btn">Delete office</button>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}

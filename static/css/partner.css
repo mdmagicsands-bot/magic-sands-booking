@@ -434,6 +434,187 @@ a:hover { color: var(--navy); }
 }
 .admin-login-foot a { color: var(--muted); font-weight: 500; }
 
+/* —— Admin hub (Marketing vs Booking) —— */
+.admin-hub-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 420px at 10% -10%, rgba(27, 107, 116, 0.12), transparent 55%),
+    radial-gradient(700px 360px at 100% 0%, rgba(184, 146, 58, 0.1), transparent 50%),
+    #f4f7f6;
+  font-family: "Manrope", system-ui, sans-serif;
+}
+.admin-hub-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.35rem;
+  border-bottom: 1px solid rgba(18, 38, 43, 0.08);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(10px);
+}
+.admin-hub-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.admin-hub-brand strong { display: block; color: #0f4d54; }
+.admin-hub-brand small { color: var(--muted); font-size: 0.75rem; }
+.admin-hub-user {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.admin-hub-user button {
+  border: 1px solid var(--line);
+  background: #fff;
+  padding: 0.45rem 0.8rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--ink);
+}
+.admin-hub-main {
+  width: min(920px, 100%);
+  margin: 0 auto;
+  padding: 2.75rem 1.25rem 3.5rem;
+}
+.admin-hub-kicker {
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #1b6b74;
+}
+.admin-hub-main h1 {
+  margin: 0 0 0.65rem;
+  font-family: "Baskervville", Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  color: #12262b;
+}
+.admin-hub-lede {
+  margin: 0 0 1.75rem;
+  color: var(--muted);
+  max-width: 36rem;
+  line-height: 1.55;
+}
+.admin-hub-options {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 780px) {
+  .admin-hub-options { grid-template-columns: 1fr 1fr; }
+}
+.admin-hub-card {
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+  padding: 1.45rem 1.35rem;
+  background: #fff;
+  border: 1px solid rgba(18, 38, 43, 0.1);
+  color: inherit;
+  min-height: 230px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.admin-hub-card:hover {
+  transform: translateY(-2px);
+  border-color: #1b6b74;
+  color: inherit;
+}
+.admin-hub-card.marketing { border-top: 4px solid #1b6b74; }
+.admin-hub-card.booking { border-top: 4px solid #0d2b52; }
+.admin-hub-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.admin-hub-card h2 {
+  margin: 0;
+  font-family: "Baskervville", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.7rem;
+  color: #12262b;
+}
+.admin-hub-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 0.95rem;
+}
+.admin-hub-cta, .admin-hub-badge {
+  margin-top: auto;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #0f4d54;
+}
+.admin-hub-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 0.35rem 0.65rem;
+  background: rgba(27, 107, 116, 0.1);
+}
+.admin-hub-foot {
+  margin-top: 1.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.admin-hub-foot a { font-weight: 600; }
+
+.mk-admin-form .admin-field textarea,
+.mk-admin-form .admin-field input,
+.mk-admin-form .admin-field select {
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  padding: 0.7rem 0.75rem;
+  font: inherit;
+  font-weight: 500;
+  color: var(--ink);
+  background: #fff;
+  width: 100%;
+}
+.mk-admin-form .admin-field textarea { resize: vertical; }
+.mk-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+.mk-check input { width: auto; }
+.mk-admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.mk-admin-actions .admin-login-btn { width: auto; min-width: 140px; }
+.mk-admin-delete { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+.pa-danger-btn {
+  border: 1px solid #b91c1c;
+  background: #fff;
+  color: #b91c1c;
+  padding: 0.55rem 0.9rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pa-danger-btn:hover { background: #b91c1c; color: #fff; }
+.field-error { color: #b91c1c; font-size: 0.8rem; }
+.marketing-admin .pa-sidebar { background: #0f4d54; }
+.pa-feature-row { display: grid; gap: 1rem; margin-bottom: 1rem; }
+@media (min-width: 900px) {
+  .pa-feature-row { grid-template-columns: repeat(2, 1fr); }
+}
+.marketing-admin .pa-feature-row { margin-top: 0; }
+
 @media (max-width: 899px) {
   .pl-nav nav a:not(.pl-nav-cta) { display: none; }
 }
