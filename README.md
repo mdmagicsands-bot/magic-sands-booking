@@ -27,7 +27,7 @@ Phone on same Wi‑Fi: see [REMOTE.md](REMOTE.md) or run `.\scripts\run-lan.ps1`
 
 Later: deploy this Django app to Railway, then point `www.magicsandsdmc.com` DNS to Railway and retire Hostinger hosting.
 
-
+## Setup
 
 1. Create a free sandbox API key at [liteapi.travel](https://liteapi.travel/) (keys start with `sand_` / `sandbox_`).
 
@@ -72,7 +72,7 @@ python manage.py createsuperuser
 
 Use that email + password on the partner login page (`is_staff` required).
 
-
+## Payments (sandbox)
 
 On the payment page use Stripe test card:
 
