@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from datetime import date, datetime, timedelta
 
+from django.conf import settings
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET, require_http_methods
-
-from django.conf import settings
 
 from .liteapi import (
     NATIONALITY_CHOICES,
