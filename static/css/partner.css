@@ -1098,6 +1098,125 @@ a:hover { color: var(--navy); }
   white-space: nowrap;
 }
 
+/* —— Nuitee inventory / live search —— */
+.pa-stat-key { font-size: 0.95rem !important; word-break: break-all; }
+.pa-filters-inventory {
+  grid-template-columns: 1fr;
+  margin-top: 1rem;
+}
+@media (min-width: 800px) {
+  .pa-filters-inventory {
+    grid-template-columns: 1.2fr 90px 1.2fr auto;
+  }
+}
+.pa-hotel-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.pa-hotel-cell strong { display: block; color: var(--navy); }
+.pa-hotel-cell small { display: block; margin-top: 0.15rem; }
+.pa-hotel-thumb {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.55rem;
+  background: #e8eef6 center/cover no-repeat;
+  flex-shrink: 0;
+}
+.pa-pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.pa-live-search { margin-top: 0.75rem; }
+.pa-live-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .pa-live-grid {
+    grid-template-columns: 1.6fr 1fr 1fr 90px auto;
+    align-items: end;
+  }
+}
+.pa-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  position: relative;
+}
+.pa-field span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.pa-field input {
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+  width: 100%;
+}
+.pa-field.full { margin-top: 0.85rem; }
+.pa-suggestions {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 28px rgba(13, 43, 82, 0.12);
+  overflow: hidden;
+}
+.pa-suggestions button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  cursor: pointer;
+}
+.pa-suggestions button:last-child { border-bottom: 0; }
+.pa-suggestions button:hover { background: #f4f7fb; }
+.pa-suggestions small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-top: 0.15rem;
+}
+.pa-kv {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+.pa-kv div {
+  display: grid;
+  gap: 0.2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+.pa-kv dt {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.pa-kv dd { margin: 0; color: var(--ink); }
+
 @media (max-width: 899px) {
   .pl-nav nav a:not(.pl-nav-cta) { display: none; }
 }

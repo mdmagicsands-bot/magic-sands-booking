@@ -1,0 +1,181 @@
+{% extends "partners/base_admin.html" %}
+{% block eyebrow %}Overview{% endblock %}
+{% block heading %}Live hotel search{% endblock %}
+{% block title %}Live hotel search | Magic Sands{% endblock %}
+{% block content %}
+
+<section class="pa-stats">
+  <div class="pa-stat {% if api.ok %}ok{% else %}warn{% endif %}">
+    <p>Nuitee API</p>
+    <strong>{% if api.ok %}Live{% else %}Check key{% endif %}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Mode</p>
+    <strong>{{ api.mode|title }}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Results</p>
+    <strong>{% if searched %}{{ result_count }}{% else %}—{% endif %}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Currency</p>
+    <strong>{{ api.currency }}</strong>
+  </div>
+</section>
+
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Search live rates</h2>
+    <a class="pa-link" href="{% url 'admin_mod_nuitee_hotels' %}">Browse inventory</a>
+  </div>
+  <p class="muted">Queries Nuitee Connect <span class="mono">POST /hotels/rates</span> with your configured API key. Pick a destination suggestion for best results.</p>
+
+  <form class="pa-live-search" method="get" action="{% url 'admin_live_search' %}" id="admin-live-search" autocomplete="off">
+    <input type="hidden" name="run" value="1">
+    <input type="hidden" name="place_id" id="place_id" value="{{ place_id }}">
+    <input type="hidden" name="country_code" id="country_code" value="{{ country_code }}">
+
+    <div class="pa-live-grid">
+      <label class="pa-field grow">
+        <span>Destination</span>
+        <input id="destination" name="destination" type="text" value="{{ destination }}" placeholder="City (e.g. Muscat, Dubai)">
+        <div id="place-suggestions" class="pa-suggestions" hidden></div>
+      </label>
+      <label class="pa-field">
+        <span>Check-in</span>
+        <input name="checkin" id="checkin" type="date" value="{{ checkin }}" min="{{ min_date }}" required>
+      </label>
+      <label class="pa-field">
+        <span>Check-out</span>
+        <input name="checkout" id="checkout" type="date" value="{{ checkout }}" min="{{ min_date }}" required>
+      </label>
+      <label class="pa-field narrow">
+        <span>Guests</span>
+        <input name="adults" type="number" min="1" max="8" value="{{ adults }}">
+      </label>
+      <div class="pa-field submit">
+        <span>&nbsp;</span>
+        <button type="submit" class="pl-btn small">Search rates</button>
+      </div>
+    </div>
+
+    <label class="pa-field full">
+      <span>Or free-text vibe search</span>
+      <input name="q" type="text" value="{{ query }}" placeholder="e.g. beach resort in Salalah">
+    </label>
+  </form>
+</section>
+
+{% if searched %}
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>
+      {% if destination %}{{ destination }}{% elif query %}{{ query }}{% else %}Results{% endif %}
+      {% if nights %} · {{ nights }} night{{ nights|pluralize }}{% endif %}
+    </h2>
+    {% if sandbox %}<span class="pa-module-status">Sandbox rates</span>{% endif %}
+  </div>
+
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead>
+        <tr>
+          <th>Hotel</th>
+          <th>Stars</th>
+          <th>Board</th>
+          <th>From</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for card in cards %}
+        <tr>
+          <td>
+            <div class="pa-hotel-cell">
+              {% if card.photo %}
+              <span class="pa-hotel-thumb" style="background-image:url('{{ card.photo }}')"></span>
+              {% endif %}
+              <span>
+                <strong>{{ card.name }}</strong>
+                <small class="muted">{{ card.address }}</small>
+              </span>
+            </div>
+          </td>
+          <td>{% if card.stars %}{{ card.stars }}★{% else %}—{% endif %}</td>
+          <td>{{ card.board|default:"—" }}</td>
+          <td>
+            {% if card.price is not None %}
+            <strong>{{ card.currency }} {{ card.price|floatformat:0 }}</strong>
+            {% else %}—{% endif %}
+          </td>
+          <td>
+            <a class="pl-btn small" href="{% url 'hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}" target="_blank" rel="noopener">Open</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="muted">No live rates for this search. Try another city or dates.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<script>
+(function () {
+  const input = document.getElementById('destination');
+  const placeId = document.getElementById('place_id');
+  const countryCode = document.getElementById('country_code');
+  const box = document.getElementById('place-suggestions');
+  const checkin = document.getElementById('checkin');
+  const checkout = document.getElementById('checkout');
+  let timer = null;
+
+  function syncCheckoutMin() {
+    if (!checkin.value) return;
+    const d = new Date(checkin.value + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    const minOut = d.toISOString().slice(0, 10);
+    checkout.min = minOut;
+    if (checkout.value && checkout.value <= checkin.value) checkout.value = minOut;
+  }
+  checkin.addEventListener('change', syncCheckoutMin);
+  syncCheckoutMin();
+
+  input.addEventListener('input', () => {
+    placeId.value = '';
+    countryCode.value = '';
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 2) { box.hidden = true; return; }
+    timer = setTimeout(() => {
+      fetch(`{% url 'places_autocomplete' %}?q=${encodeURIComponent(q)}`)
+        .then(r => r.json())
+        .then(data => {
+          const results = data.results || [];
+          if (!results.length) { box.hidden = true; box.innerHTML = ''; return; }
+          box.innerHTML = results.map(p =>
+            `<button type="button" data-id="${p.placeId || ''}" data-cc="${p.countryCode || ''}" data-name="${(p.displayName || '').replace(/"/g, '&quot;')}">${p.displayName || ''}<small>${p.formattedAddress || ''}</small></button>`
+          ).join('');
+          box.hidden = false;
+          box.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+              input.value = btn.dataset.name || '';
+              placeId.value = btn.dataset.id || '';
+              countryCode.value = btn.dataset.cc || '';
+              box.hidden = true;
+            });
+          });
+        })
+        .catch(() => { box.hidden = true; });
+    }, 250);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!box.contains(e.target) && e.target !== input) box.hidden = true;
+  });
+})();
+</script>
+{% endblock %}

@@ -13,9 +13,8 @@ MENU_GROUPS = [
             },
             {
                 "label": "Live hotel search",
-                "url_name": "book_home",
-                "external": True,
-                "match": [],
+                "url_name": "admin_live_search",
+                "match": ["admin_live_search"],
             },
         ],
     },
@@ -220,8 +219,8 @@ MENU_GROUPS = [
         "items": [
             {
                 "label": "Nuitee / LiteAPI",
-                "url_name": "admin_mod_settings_liteapi",
-                "match": ["admin_mod_settings_liteapi"],
+                "url_name": "admin_liteapi_settings",
+                "match": ["admin_liteapi_settings"],
             },
             {
                 "label": "Currencies & taxes",
@@ -249,22 +248,6 @@ MENU_GROUPS = [
 ]
 
 MODULE_PAGES = {
-    "admin_mod_nuitee_hotels": {
-        "title": "Nuitee / LiteAPI hotels",
-        "eyebrow": "Inventory",
-        "summary": (
-            "Browse and manage hotel inventory coming from Nuitee Connect / LiteAPI. "
-            "Live search already uses the LiteAPI sandbox for rates and availability."
-        ),
-        "bullets": [
-            "Mapped hotel IDs and destination coverage",
-            "Sandbox vs live API key switch",
-            "Cache / sync status for popular destinations",
-        ],
-        "cta_label": "Open live hotel search",
-        "cta_url_name": "book_home",
-        "status": "Connected to LiteAPI search",
-    },
     "admin_mod_direct_hotels": {
         "title": "Direct contract hotels",
         "eyebrow": "Inventory",
@@ -447,17 +430,6 @@ MODULE_PAGES = {
         "cta_label": "Open cancellations",
         "cta_url_name": "partner_bookings_cancelled",
         "status": "Linked to booking statuses",
-    },
-    "admin_mod_settings_liteapi": {
-        "title": "Nuitee / LiteAPI settings",
-        "eyebrow": "Settings",
-        "summary": "API keys, sandbox/live mode, default nationality, and currency for channel booking.",
-        "bullets": [
-            "LITEAPI_API_KEY / PUBLIC_KEY",
-            "Sandbox vs production",
-            "Default guest nationality",
-        ],
-        "status": "Configured via environment (.env)",
     },
     "admin_mod_settings_currency": {
         "title": "Currencies & taxes",

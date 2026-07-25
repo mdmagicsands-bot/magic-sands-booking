@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import nuitee_admin, views
 from .menu import MODULE_PAGES
 
 module_urls = [
@@ -28,6 +28,17 @@ urlpatterns = [
     path("admin/logout/", views.partner_logout, name="partner_logout"),
     path("admin/", views.admin_hub, name="admin_hub"),
     path("admin/booking/", views.dashboard, name="partner_dashboard"),
+    path("admin/search/", nuitee_admin.live_hotel_search, name="admin_live_search"),
+    path(
+        "admin/inventory/nuitee/",
+        nuitee_admin.nuitee_inventory,
+        name="admin_mod_nuitee_hotels",
+    ),
+    path(
+        "admin/settings/liteapi/",
+        nuitee_admin.liteapi_settings,
+        name="admin_liteapi_settings",
+    ),
     path("admin/bookings/", views.booking_list, name="partner_bookings"),
     path(
         "admin/bookings/pending/",

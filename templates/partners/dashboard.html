@@ -92,9 +92,14 @@
 
 <section class="pa-feature-row">
   <article class="pa-card mini">
-    <h3>Guest booking site</h3>
-    <p>Search hotels and complete LiteAPI bookings under Magic Sands branding.</p>
-    <a class="pl-btn small" href="{% url 'home' %}">Open site</a>
+    <h3>Live hotel search</h3>
+    <p>Search Nuitee live rates with your LiteAPI key from the booking admin.</p>
+    <a class="pl-btn small" href="{% url 'admin_live_search' %}">Search hotels</a>
+  </article>
+  <article class="pa-card mini">
+    <h3>Nuitee inventory</h3>
+    <p>Browse mapped hotel IDs and destination coverage from Nuitee Connect.</p>
+    <a class="pl-btn small" href="{% url 'admin_mod_nuitee_hotels' %}">Open inventory</a>
   </article>
   <article class="pa-card mini">
     <h3>Booking management</h3>

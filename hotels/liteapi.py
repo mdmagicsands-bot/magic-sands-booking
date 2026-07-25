@@ -90,6 +90,57 @@ class LiteAPIClient:
         )
         return payload.get("data") or {}
 
+    def list_hotels(
+        self,
+        *,
+        country_code: str | None = None,
+        city_name: str | None = None,
+        hotel_name: str | None = None,
+        place_id: str | None = None,
+        ai_search: str | None = None,
+        hotel_ids: list[str] | None = None,
+        limit: int = 50,
+        offset: int = 0,
+    ) -> dict[str, Any]:
+        """Browse static hotel inventory (Nuitee /data/hotels)."""
+        params: dict[str, Any] = {
+            "limit": max(1, min(int(limit), 200)),
+            "offset": max(0, int(offset)),
+        }
+        if country_code:
+            params["countryCode"] = country_code.upper()
+        if city_name:
+            params["cityName"] = city_name
+        if hotel_name:
+            params["hotelName"] = hotel_name
+        if place_id:
+            params["placeId"] = place_id
+        if ai_search:
+            params["aiSearch"] = ai_search
+        if hotel_ids:
+            params["hotelIds"] = ",".join(hotel_ids)
+
+        if not any(
+            [
+                country_code,
+                city_name,
+                hotel_name,
+                place_id,
+                ai_search,
+                hotel_ids,
+            ]
+        ):
+            raise LiteAPIError(
+                "Provide country_code, city_name, hotel_name, place_id, ai_search, or hotel_ids."
+            )
+
+        return self._request(
+            "GET",
+            f"{self.api_base}/data/hotels",
+            params=params,
+            timeout=60,
+        )
+
     def search_rates(
         self,
         *,
@@ -150,6 +201,47 @@ class LiteAPIClient:
             timeout=90,
         )
 
+    def prebook(self, offer_id: str) -> dict[str, Any]:
+        payload = self._request(
+            "POST",
+            f"{self.book_base}/rates/prebook",
+            json={"usePaymentSdk": True, "offerId": offer_id},
+            timeout=90,
+        )
+        return payload.get("data") or payload
+
+    def book(
+        self,
+        *,
+        prebook_id: str,
+        transaction_id: str,
+        holder: dict[str, str],
+        guests: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        payload = self._request(
+            "POST",
+            f"{self.book_base}/rates/book",
+            json={
+                "prebookId": prebook_id,
+                "holder": holder,
+                "payment": {
+                    "method": "TRANSACTION_ID",
+                    "transactionId": transaction_id,
+                },
+                "guests": guests,
+            },
+            timeout=90,
+        )
+        return payload.get("data") or payload
+
+    def get_booking(self, booking_id: str) -> dict[str, Any]:
+        payload = self._request(
+            "GET",
+            f"{self.book_base}/bookings/{booking_id}",
+            timeout=30,
+        )
+        return payload.get("data") or payload
+
 
 COUNTRY_NAME_TO_CODE = {
     "united arab emirates": "AE",
@@ -195,50 +287,70 @@ def country_code_from_address(address: str | None) -> str | None:
         return COUNTRY_NAME_TO_CODE[parts[-1]]
     return None
 
-    def prebook(self, offer_id: str) -> dict[str, Any]:
-        payload = self._request(
-            "POST",
-            f"{self.book_base}/rates/prebook",
-            json={"usePaymentSdk": True, "offerId": offer_id},
-            timeout=90,
-        )
-        return payload.get("data") or payload
-
-    def book(
-        self,
-        *,
-        prebook_id: str,
-        transaction_id: str,
-        holder: dict[str, str],
-        guests: list[dict[str, Any]],
-    ) -> dict[str, Any]:
-        payload = self._request(
-            "POST",
-            f"{self.book_base}/rates/book",
-            json={
-                "prebookId": prebook_id,
-                "holder": holder,
-                "payment": {
-                    "method": "TRANSACTION_ID",
-                    "transactionId": transaction_id,
-                },
-                "guests": guests,
-            },
-            timeout=90,
-        )
-        return payload.get("data") or payload
-
-    def get_booking(self, booking_id: str) -> dict[str, Any]:
-        payload = self._request(
-            "GET",
-            f"{self.book_base}/bookings/{booking_id}",
-            timeout=30,
-        )
-        return payload.get("data") or payload
-
 
 def get_client() -> LiteAPIClient:
     return LiteAPIClient()
+
+
+def mask_api_key(api_key: str) -> str:
+    if not api_key:
+        return "(not set)"
+    if len(api_key) <= 12:
+        return api_key[:4] + "…"
+    return f"{api_key[:8]}…{api_key[-4:]}"
+
+
+def liteapi_connection_status() -> dict[str, Any]:
+    """Return connection details for admin settings / inventory headers."""
+    api_key = settings.LITEAPI_API_KEY or ""
+    public_key = settings.LITEAPI_PUBLIC_KEY or ""
+    mode = "sandbox"
+    if api_key.startswith("prod_"):
+        mode = "live"
+    elif api_key.startswith(("sand_", "sandbox_")):
+        mode = "sandbox"
+    elif api_key:
+        mode = "custom"
+
+    status: dict[str, Any] = {
+        "configured": bool(api_key),
+        "ok": False,
+        "mode": mode,
+        "public_key": public_key or "—",
+        "api_key_masked": mask_api_key(api_key),
+        "api_base": settings.LITEAPI_API_BASE,
+        "book_base": settings.LITEAPI_BOOK_BASE,
+        "currency": settings.DEFAULT_CURRENCY,
+        "guest_nationality": settings.DEFAULT_GUEST_NATIONALITY,
+        "message": "",
+        "sample_hotel": None,
+        "total_hint": None,
+    }
+
+    if not api_key:
+        status["message"] = "LITEAPI_API_KEY is missing from .env"
+        return status
+
+    try:
+        client = LiteAPIClient(api_key=api_key)
+        payload = client.list_hotels(country_code="OM", city_name="Muscat", limit=1)
+        hotels = payload.get("data") or []
+        status["ok"] = True
+        status["total_hint"] = payload.get("total")
+        status["message"] = "Connected to Nuitee Connect / LiteAPI"
+        if hotels:
+            h = hotels[0]
+            status["sample_hotel"] = {
+                "id": h.get("id"),
+                "name": h.get("name"),
+                "city": h.get("city"),
+                "country": h.get("country"),
+            }
+    except LiteAPIError as exc:
+        status["message"] = str(exc)
+        status["ok"] = False
+
+    return status
 
 
 def lowest_total(rate_block: dict) -> tuple[float | None, str | None]:

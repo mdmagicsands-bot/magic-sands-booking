@@ -1,0 +1,99 @@
+{% extends "partners/base_admin.html" %}
+{% block eyebrow %}Inventory{% endblock %}
+{% block heading %}Nuitee / LiteAPI hotels{% endblock %}
+{% block title %}Nuitee hotels | Magic Sands{% endblock %}
+{% block content %}
+
+<section class="pa-stats">
+  <div class="pa-stat {% if api.ok %}ok{% else %}warn{% endif %}">
+    <p>API status</p>
+    <strong>{% if api.ok %}Connected{% else %}Offline{% endif %}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Mode</p>
+    <strong>{{ api.mode|title }}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Hotels found</p>
+    <strong>{% if total is not None %}{{ total }}{% else %}{{ hotels|length }}{% endif %}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Key</p>
+    <strong class="pa-stat-key">{{ api.api_key_masked }}</strong>
+  </div>
+</section>
+
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Browse inventory</h2>
+    <a class="pl-btn small" href="{% url 'admin_live_search' %}">Live hotel search</a>
+  </div>
+  <p class="muted">Live catalogue from Nuitee Connect <span class="mono">/data/hotels</span>. Filter by city and country to inspect mapped hotel IDs.</p>
+
+  <form class="pa-filters pa-filters-inventory" method="get" action="{% url 'admin_mod_nuitee_hotels' %}">
+    <input type="text" name="city" value="{{ city }}" placeholder="City (e.g. Muscat)" aria-label="City">
+    <input type="text" name="country" value="{{ country }}" placeholder="Country code" maxlength="2" aria-label="Country code">
+    <input type="text" name="hotel_name" value="{{ hotel_name }}" placeholder="Hotel name contains…" aria-label="Hotel name">
+    <button type="submit" class="pl-btn small">Search inventory</button>
+  </form>
+
+  {% if error %}
+  <p class="pl-alert pl-alert-error">{{ error }}</p>
+  {% endif %}
+
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead>
+        <tr>
+          <th>Hotel</th>
+          <th>ID</th>
+          <th>Stars</th>
+          <th>Rating</th>
+          <th>City</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for h in hotels %}
+        <tr>
+          <td>
+            <div class="pa-hotel-cell">
+              {% if h.main_photo or h.thumbnail %}
+              <span class="pa-hotel-thumb" style="background-image:url('{{ h.main_photo|default:h.thumbnail }}')"></span>
+              {% endif %}
+              <span>
+                <strong>{{ h.name }}</strong>
+                <small class="muted">{{ h.address|default:"" }}</small>
+              </span>
+            </div>
+          </td>
+          <td class="mono">{{ h.id }}</td>
+          <td>{{ h.stars|default:"—" }}</td>
+          <td>{% if h.rating %}{{ h.rating }}{% else %}—{% endif %}</td>
+          <td>{{ h.city }}{% if h.country %}, {{ h.country }}{% endif %}</td>
+          <td>
+            <a class="pa-link" href="{% url 'admin_live_search' %}?destination={{ h.city|urlencode }}&amp;country_code={{ h.country|default:country }}&amp;run=1">Rates</a>
+            ·
+            <a class="pa-link" href="{% url 'hotel_detail' h.id %}" target="_blank" rel="noopener">Guest view ↗</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="muted">No hotels returned. Check the API key or try another city.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pa-pager">
+    {% if prev_offset is not None %}
+    <a class="pa-link" href="?city={{ city|urlencode }}&amp;country={{ country }}&amp;hotel_name={{ hotel_name|urlencode }}&amp;offset={{ prev_offset }}&amp;limit={{ limit }}">← Previous</a>
+    {% endif %}
+    <span class="muted">Offset {{ offset }} · {{ hotels|length }} shown{% if total %} · {{ total }} total{% endif %}</span>
+    {% if next_offset is not None %}
+    <a class="pa-link" href="?city={{ city|urlencode }}&amp;country={{ country }}&amp;hotel_name={{ hotel_name|urlencode }}&amp;offset={{ next_offset }}&amp;limit={{ limit }}">Next →</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "partners/base_admin.html" %}
+{% block eyebrow %}Settings{% endblock %}
+{% block heading %}Nuitee / LiteAPI{% endblock %}
+{% block title %}LiteAPI settings | Magic Sands{% endblock %}
+{% block content %}
+
+<section class="pa-stats">
+  <div class="pa-stat {% if api.ok %}ok{% else %}warn{% endif %}">
+    <p>Connection</p>
+    <strong>{% if api.ok %}OK{% else %}Failed{% endif %}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Mode</p>
+    <strong>{{ api.mode|title }}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Public key</p>
+    <strong>{{ api.public_key }}</strong>
+  </div>
+  <div class="pa-stat">
+    <p>Default currency</p>
+    <strong>{{ api.currency }}</strong>
+  </div>
+</section>
+
+<section class="pa-card">
+  <h2>API configuration</h2>
+  <p class="pa-module-summary">{{ api.message }}</p>
+  <dl class="pa-kv">
+    <div><dt>API key</dt><dd class="mono">{{ api.api_key_masked }}</dd></div>
+    <div><dt>Public key</dt><dd class="mono">{{ api.public_key }}</dd></div>
+    <div><dt>API base</dt><dd class="mono">{{ api.api_base }}</dd></div>
+    <div><dt>Book base</dt><dd class="mono">{{ api.book_base }}</dd></div>
+    <div><dt>Guest nationality</dt><dd>{{ api.guest_nationality }}</dd></div>
+    {% if api.sample_hotel %}
+    <div>
+      <dt>Sample hotel (Muscat)</dt>
+      <dd>{{ api.sample_hotel.name }} <span class="mono">({{ api.sample_hotel.id }})</span></dd>
+    </div>
+    {% endif %}
+  </dl>
+  <p class="muted">Keys are loaded from <span class="mono">.env</span> (<span class="mono">LITEAPI_API_KEY</span>, <span class="mono">LITEAPI_PUBLIC_KEY</span>). Restart the server after changing them. Get your own key at <a href="https://liteapi.travel/" target="_blank" rel="noopener">liteapi.travel</a>.</p>
+  <div class="mk-admin-actions">
+    <a class="pl-btn small" href="{{ inventory_url }}">Open inventory</a>
+    <a class="pl-btn small" href="{{ search_url }}">Live hotel search</a>
+  </div>
+</section>
+{% endblock %}
