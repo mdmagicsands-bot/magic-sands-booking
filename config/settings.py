@@ -128,3 +128,11 @@ CSRF_TRUSTED_ORIGINS = [
     ).split(",")
     if o.strip()
 ]
+# Cloudflare quick tunnels (mobile / remote preview in DEBUG)
+if DEBUG:
+    for origin in (
+        "https://*.trycloudflare.com",
+        "http://*.trycloudflare.com",
+    ):
+        if origin not in CSRF_TRUSTED_ORIGINS:
+            CSRF_TRUSTED_ORIGINS.append(origin)
