@@ -23,6 +23,11 @@
         <span class="pill-label">Guests</span>
         <strong>{{ adults }} guest{{ adults|pluralize }} · {{ nights }} night{{ nights|pluralize }}</strong>
       </div>
+      <div class="pill-divider"></div>
+      <div class="pill-field">
+        <span class="pill-label">Nationality</span>
+        <strong>{{ nationality|default:"OM" }}</strong>
+      </div>
       <a class="pill-search-btn" href="{% url 'book_home' %}" title="Modify search" aria-label="Modify search">⌕</a>
     </div>
   </div>

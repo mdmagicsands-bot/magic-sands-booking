@@ -10,7 +10,15 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.http import require_GET, require_http_methods
 
-from hotels.liteapi import LiteAPIError, get_client, liteapi_connection_status
+from django.conf import settings
+
+from hotels.liteapi import (
+    NATIONALITY_CHOICES,
+    LiteAPIError,
+    get_client,
+    liteapi_connection_status,
+    normalize_nationality,
+)
 from hotels.views import _build_cards, _default_dates, _parse_date
 
 
@@ -31,6 +39,9 @@ def live_hotel_search(request):
     country_code = (request.GET.get("country_code") or "").strip().upper()
     query = (request.GET.get("q") or "").strip()
     place_id = (request.GET.get("place_id") or "").strip()
+    nationality = normalize_nationality(
+        request.GET.get("nationality") or settings.DEFAULT_GUEST_NATIONALITY
+    )
 
     api = liteapi_connection_status()
     cards: list[dict] = []
@@ -60,6 +71,7 @@ def live_hotel_search(request):
                         checkout=checkout,
                         adults=adults,
                         ai_search=query,
+                        guest_nationality=nationality,
                         max_rates_per_hotel=1,
                         include_hotel_data=True,
                     )
@@ -71,6 +83,7 @@ def live_hotel_search(request):
                             adults=adults,
                             city_name=destination,
                             country_code=country_code,
+                            guest_nationality=nationality,
                             max_rates_per_hotel=1,
                             include_hotel_data=True,
                         )
@@ -80,6 +93,7 @@ def live_hotel_search(request):
                             checkout=checkout,
                             adults=adults,
                             ai_search=destination or query or "hotel",
+                            guest_nationality=nationality,
                             max_rates_per_hotel=1,
                             include_hotel_data=True,
                         )
@@ -101,6 +115,8 @@ def live_hotel_search(request):
             "country_code": country_code,
             "query": query,
             "place_id": place_id,
+            "nationality": nationality,
+            "nationality_choices": NATIONALITY_CHOICES,
             "min_date": date.today().isoformat(),
             "cards": cards,
             "searched": searched,

@@ -7,12 +7,16 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET, require_http_methods
 
+from django.conf import settings
+
 from .liteapi import (
+    NATIONALITY_CHOICES,
     LiteAPIError,
     country_code_from_address,
     first_offer_id,
     get_client,
     lowest_total,
+    normalize_nationality,
 )
 
 
@@ -159,6 +163,10 @@ def home(request):
             "place_id": request.GET.get("place_id", ""),
             "country_code": request.GET.get("country_code", ""),
             "query": request.GET.get("q", ""),
+            "nationality": normalize_nationality(
+                request.GET.get("nationality") or settings.DEFAULT_GUEST_NATIONALITY
+            ),
+            "nationality_choices": NATIONALITY_CHOICES,
             "min_date": date.today().isoformat(),
         },
     )
@@ -200,6 +208,9 @@ def search(request):
     destination = (data.get("destination") or "").strip()
     country_code = (data.get("country_code") or "").strip().upper()
     query = (data.get("q") or "").strip()
+    nationality = normalize_nationality(
+        data.get("nationality") or settings.DEFAULT_GUEST_NATIONALITY
+    )
 
     if not checkin or not checkout:
         messages.error(request, "Please choose check-in and check-out dates.")
@@ -226,6 +237,7 @@ def search(request):
         "destination": destination,
         "country_code": country_code,
         "q": query,
+        "nationality": nationality,
     }
 
     try:
@@ -238,6 +250,7 @@ def search(request):
                 checkout=checkout,
                 adults=adults,
                 ai_search=query,
+                guest_nationality=nationality,
                 max_rates_per_hotel=1,
                 include_hotel_data=True,
             )
@@ -250,6 +263,7 @@ def search(request):
                     adults=adults,
                     city_name=destination,
                     country_code=country_code,
+                    guest_nationality=nationality,
                     max_rates_per_hotel=1,
                     include_hotel_data=True,
                 )
@@ -261,6 +275,7 @@ def search(request):
                     checkout=checkout,
                     adults=adults,
                     ai_search=destination or query or "hotel",
+                    guest_nationality=nationality,
                     max_rates_per_hotel=1,
                     include_hotel_data=True,
                 )
@@ -288,6 +303,7 @@ def search(request):
             "place_id": place_id,
             "country_code": country_code,
             "query": query,
+            "nationality": nationality,
             "sandbox": payload.get("sandbox"),
             "result_count": len(cards),
             "price_min": price_min,
@@ -302,6 +318,11 @@ def hotel_detail(request, hotel_id: str):
     checkin = request.GET.get("checkin") or search_data.get("checkin")
     checkout = request.GET.get("checkout") or search_data.get("checkout")
     adults = int(request.GET.get("adults") or search_data.get("adults") or 2)
+    nationality = normalize_nationality(
+        request.GET.get("nationality")
+        or search_data.get("nationality")
+        or settings.DEFAULT_GUEST_NATIONALITY
+    )
 
     if not checkin or not checkout:
         d1, d2 = _default_dates()
@@ -315,6 +336,7 @@ def hotel_detail(request, hotel_id: str):
             checkout=checkout,
             adults=adults,
             hotel_ids=[hotel_id],
+            guest_nationality=nationality,
             max_rates_per_hotel=None,
             include_hotel_data=True,
         )
@@ -377,5 +399,6 @@ def hotel_detail(request, hotel_id: str):
             "checkin": checkin,
             "checkout": checkout,
             "adults": adults,
+            "nationality": nationality,
         },
     )

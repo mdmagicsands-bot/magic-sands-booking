@@ -53,6 +53,14 @@
         <span>Guests</span>
         <input name="adults" type="number" min="1" max="8" value="{{ adults }}">
       </label>
+      <label class="pa-field">
+        <span>Nationality</span>
+        <select name="nationality" id="nationality">
+          {% for code, label in nationality_choices %}
+          <option value="{{ code }}" {% if nationality == code %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
       <div class="pa-field submit">
         <span>&nbsp;</span>
         <button type="submit" class="pl-btn small">Search rates</button>

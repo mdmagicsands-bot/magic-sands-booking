@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import date
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
@@ -11,7 +12,12 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods, require_POST
 
 from bookings.models import Booking
-from hotels.liteapi import LiteAPIError, get_client
+from hotels.liteapi import (
+    NATIONALITY_CHOICES,
+    LiteAPIError,
+    get_client,
+    normalize_nationality,
+)
 from hotels.views import _build_cards, _default_dates, _parse_date
 
 from .forms import GuestLoginForm, GuestProfileForm, GuestRegisterForm
@@ -148,6 +154,9 @@ def dashboard(request):
         .distinct()
         .count(),
     }
+    default_nat = normalize_nationality(
+        request.GET.get("nationality") or profile.nationality or settings.DEFAULT_GUEST_NATIONALITY
+    )
     return render(
         request,
         "guests/dashboard.html",
@@ -160,6 +169,8 @@ def dashboard(request):
             "place_id": request.GET.get("place_id", ""),
             "country_code": request.GET.get("country_code", ""),
             "query": request.GET.get("q", ""),
+            "nationality": default_nat,
+            "nationality_choices": NATIONALITY_CHOICES,
             "min_date": date.today().isoformat(),
             "recent_bookings": bookings,
             "stats": stats,
@@ -171,6 +182,10 @@ def dashboard(request):
 @require_http_methods(["GET"])
 def search_home(request):
     checkin, checkout = _default_dates()
+    profile = _get_or_create_profile(request.user)
+    default_nat = normalize_nationality(
+        request.GET.get("nationality") or profile.nationality or settings.DEFAULT_GUEST_NATIONALITY
+    )
     return render(
         request,
         "guests/search.html",
@@ -182,6 +197,8 @@ def search_home(request):
             "place_id": request.GET.get("place_id", ""),
             "country_code": request.GET.get("country_code", ""),
             "query": request.GET.get("q", ""),
+            "nationality": default_nat,
+            "nationality_choices": NATIONALITY_CHOICES,
             "min_date": date.today().isoformat(),
             "cards": None,
             "searched": False,
@@ -200,6 +217,10 @@ def search_results(request):
     destination = (data.get("destination") or "").strip()
     country_code = (data.get("country_code") or "").strip().upper()
     query = (data.get("q") or "").strip()
+    profile = _get_or_create_profile(request.user)
+    nationality = normalize_nationality(
+        data.get("nationality") or profile.nationality or settings.DEFAULT_GUEST_NATIONALITY
+    )
 
     if not checkin or not checkout:
         messages.error(request, "Please choose check-in and check-out dates.")
@@ -225,6 +246,7 @@ def search_results(request):
         "destination": destination,
         "country_code": country_code,
         "q": query,
+        "nationality": nationality,
     }
 
     cards: list[dict] = []
@@ -238,6 +260,7 @@ def search_results(request):
                 checkout=checkout,
                 adults=adults,
                 ai_search=query,
+                guest_nationality=nationality,
                 max_rates_per_hotel=1,
                 include_hotel_data=True,
             )
@@ -249,6 +272,7 @@ def search_results(request):
                     adults=adults,
                     city_name=destination,
                     country_code=country_code,
+                    guest_nationality=nationality,
                     max_rates_per_hotel=1,
                     include_hotel_data=True,
                 )
@@ -258,6 +282,7 @@ def search_results(request):
                     checkout=checkout,
                     adults=adults,
                     ai_search=destination or query or "hotel",
+                    guest_nationality=nationality,
                     max_rates_per_hotel=1,
                     include_hotel_data=True,
                 )
@@ -283,6 +308,8 @@ def search_results(request):
             "place_id": place_id,
             "country_code": country_code,
             "query": query,
+            "nationality": nationality,
+            "nationality_choices": NATIONALITY_CHOICES,
             "min_date": date.today().isoformat(),
             "cards": cards,
             "searched": True,

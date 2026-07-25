@@ -271,6 +271,55 @@ COUNTRY_NAME_TO_CODE = {
     "azerbaijan": "AZ",
 }
 
+# Guest nationality options for hotel search (ISO-2 → label).
+NATIONALITY_CHOICES = [
+    ("OM", "Oman"),
+    ("AE", "United Arab Emirates"),
+    ("SA", "Saudi Arabia"),
+    ("QA", "Qatar"),
+    ("BH", "Bahrain"),
+    ("KW", "Kuwait"),
+    ("IN", "India"),
+    ("PK", "Pakistan"),
+    ("BD", "Bangladesh"),
+    ("PH", "Philippines"),
+    ("EG", "Egypt"),
+    ("JO", "Jordan"),
+    ("LB", "Lebanon"),
+    ("TR", "Turkey"),
+    ("GB", "United Kingdom"),
+    ("US", "United States"),
+    ("CA", "Canada"),
+    ("AU", "Australia"),
+    ("DE", "Germany"),
+    ("FR", "France"),
+    ("IT", "Italy"),
+    ("ES", "Spain"),
+    ("NL", "Netherlands"),
+    ("RU", "Russia"),
+    ("CN", "China"),
+    ("JP", "Japan"),
+    ("KR", "South Korea"),
+    ("SG", "Singapore"),
+    ("MY", "Malaysia"),
+    ("ID", "Indonesia"),
+    ("TH", "Thailand"),
+    ("MV", "Maldives"),
+    ("ZA", "South Africa"),
+    ("NG", "Nigeria"),
+    ("KE", "Kenya"),
+    ("BR", "Brazil"),
+]
+
+
+def normalize_nationality(value: str | None, default: str | None = None) -> str:
+    code = (value or "").strip().upper()[:2]
+    valid = {c for c, _ in NATIONALITY_CHOICES}
+    if code in valid:
+        return code
+    fallback = (default or settings.DEFAULT_GUEST_NATIONALITY or "OM").strip().upper()[:2]
+    return fallback if fallback in valid else "OM"
+
 
 def country_code_from_address(address: str | None) -> str | None:
     if not address:

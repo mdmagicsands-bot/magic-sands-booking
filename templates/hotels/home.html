@@ -29,6 +29,14 @@
       <label for="adults">Guests</label>
       <input id="adults" name="adults" type="number" min="1" max="8" value="{{ adults }}">
     </div>
+    <div class="field">
+      <label for="nationality">Nationality</label>
+      <select id="nationality" name="nationality">
+        {% for code, label in nationality_choices %}
+        <option value="{{ code }}" {% if nationality == code %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
     <button type="submit" class="btn btn-primary">Search hotels</button>
 
     <div class="or-row">

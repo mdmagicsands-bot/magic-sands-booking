@@ -19,6 +19,12 @@
     <span style="font-size:0.72rem;font-weight:700;color:var(--gp-muted);text-transform:uppercase;letter-spacing:.04em">Guests</span>
     <input name="adults" type="number" min="1" max="8" value="{{ adults }}">
   </label>
+  <label class="gp-field">
+    <span style="font-size:0.72rem;font-weight:700;color:var(--gp-muted);text-transform:uppercase;letter-spacing:.04em">Nationality</span>
+    <select name="nationality" id="nationality" aria-label="Guest nationality">
+      {% include "guests/_nationality_options.html" %}
+    </select>
+  </label>
   <div class="gp-field">
     <span>&nbsp;</span>
     <button class="gp-btn" type="submit">Search</button>

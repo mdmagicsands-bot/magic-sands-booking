@@ -90,7 +90,7 @@
           {% else %}
           <p class="price">Rates on request</p>
           {% endif %}
-          <a class="gp-btn small" href="{% url 'hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}">View rooms</a>
+          <a class="gp-btn small" href="{% url 'hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}&amp;nationality={{ nationality }}">View rooms</a>
         </div>
       </article>
       {% endfor %}

@@ -1160,7 +1160,7 @@ a:hover { color: var(--navy); }
 }
 @media (min-width: 900px) {
   .pa-live-grid {
-    grid-template-columns: 1.6fr 1fr 1fr 90px auto;
+    grid-template-columns: 1.4fr 0.95fr 0.95fr 80px 1.1fr auto;
     align-items: end;
   }
 }
@@ -1177,7 +1177,8 @@ a:hover { color: var(--navy); }
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.pa-field input {
+.pa-field input,
+.pa-field select {
   border: 1px solid var(--line);
   border-radius: 0.7rem;
   padding: 0.7rem 0.8rem;

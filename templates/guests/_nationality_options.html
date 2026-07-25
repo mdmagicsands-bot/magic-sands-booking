@@ -1,0 +1,3 @@
+{% for code, label in nationality_choices %}
+<option value="{{ code }}" {% if nationality == code %}selected{% endif %}>{{ label }}</option>
+{% endfor %}
