@@ -5,72 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Register as a Partner | Magic Sands</title>
   <meta name="description" content="Register as a Magic Sands travel partner.">
+  <link rel="icon" href="https://www.magicsandsdmc.com/assets/images/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="partner-login.css">
   <script src="config.js"></script>
 </head>
 <body>
-  <header class="site-header">
-    <a class="logo" href="https://www.magicsandsdmc.com/">
-      <span class="logo-mark">MS</span>
-      <span class="logo-text">
-        <strong>Magic Sands</strong>
-        <small>YOUR GUIDE TO ARABIA</small>
-      </span>
+  <header class="pl-top">
+    <a class="pl-brand" href="https://www.magicsandsdmc.com/">
+      <img src="https://www.magicsandsdmc.com/assets/images/logo.png" alt="Magic Sands" width="140" height="44">
     </a>
-    <div class="header-actions">
-      <a class="btn-outline" href="/partner-login/">Partner Login</a>
-    </div>
+    <nav class="pl-top-nav" aria-label="Primary">
+      <a href="https://www.magicsandsdmc.com/">Home</a>
+      <a href="https://www.magicsandsdmc.com/about">About</a>
+      <a class="pl-top-cta" href="/partner-login/">Partner Login</a>
+    </nav>
   </header>
 
-  <main class="portal">
-    <header class="portal-intro">
-      <h1>Register as a Partner</h1>
-      <p>Submit your agency details. Our team will review and activate your B2B partner access.</p>
-    </header>
+  <section class="pl-hero" style="--pl-hero-image:url('https://www.magicsandsdmc.com/uploads/banner/banner2.jpg')">
+    <div class="pl-hero-inner pl-hero-inner-single">
+      <div class="pl-panel pl-panel-wide">
+        <p class="pl-panel-brand">Magic Sands</p>
+        <h2>Register as a partner</h2>
+        <p class="pl-panel-sub">Submit your agency details. Our team will review and activate your B2B access.</p>
+        <div id="flash" class="flash" hidden></div>
+        <form id="register-form" class="pl-form pl-form-grid" method="post">
+          <label class="pl-label">Company / agency name
+            <input type="text" name="company_name" required placeholder="Your travel agency">
+          </label>
+          <label class="pl-label">Contact name
+            <input type="text" name="contact_name" required placeholder="Full name">
+          </label>
+          <label class="pl-label">Email
+            <input type="email" name="email" required placeholder="you@agency.com">
+          </label>
+          <label class="pl-label">Phone
+            <input type="tel" name="phone" placeholder="+968 …">
+          </label>
+          <label class="pl-label">Country
+            <input type="text" name="country" placeholder="Country">
+          </label>
+          <label class="pl-label">Website
+            <input type="url" name="website" placeholder="https://">
+          </label>
+          <label class="pl-label pl-span-2">Message
+            <textarea name="message" rows="4" placeholder="Tell us about your agency and markets"></textarea>
+          </label>
+          <div class="pl-span-2">
+            <button type="submit" class="pl-btn">Submit registration</button>
+          </div>
+        </form>
+        <p class="pl-register">
+          Already a partner?
+          <a href="/partner-login/">Partner login</a>
+        </p>
+      </div>
+    </div>
+  </section>
 
-    <div id="flash" class="flash" hidden></div>
-
-    <section class="card register-card">
-      <form id="register-form" class="login-form" method="post">
-        <label>
-          Company / Agency name
-          <input type="text" name="company_name" required placeholder="Your travel agency">
-        </label>
-        <label>
-          Contact person
-          <input type="text" name="contact_name" required placeholder="Full name">
-        </label>
-        <label>
-          Work email
-          <input type="email" name="email" required placeholder="you@agency.com">
-        </label>
-        <label>
-          Phone
-          <input type="tel" name="phone" placeholder="+968 …">
-        </label>
-        <label>
-          Country
-          <input type="text" name="country" placeholder="Oman / UAE / …">
-        </label>
-        <label>
-          Website
-          <input type="url" name="website" placeholder="https://">
-        </label>
-        <label>
-          Message
-          <textarea name="message" rows="4" placeholder="Tell us about your agency and markets"></textarea>
-        </label>
-        <button type="submit" class="btn-primary">Submit registration</button>
-      </form>
-      <p class="register-note">Already registered? <a href="/partner-login/">Partner Login</a></p>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <p>Registrations are stored in the Magic Sands Booking admin on Railway.</p>
+  <footer class="pl-footer">
+    <div class="pl-footer-inner">
+      <div>
+        <div class="pl-footer-brand">
+          <span class="pl-mark">MS</span>
+          <span>
+            <strong>Magic Sands</strong>
+            <small>Partner registration</small>
+          </span>
+        </div>
+        <p>Registrations are stored in the Magic Sands Booking admin.</p>
+      </div>
+      <div class="pl-footer-links">
+        <a href="/partner-login/">Partner login</a>
+        <a href="https://www.magicsandsdmc.com/contact">Contact us</a>
+        <a href="https://www.magicsandsdmc.com/">Website</a>
+      </div>
+    </div>
+    <p class="pl-legal">© Magic Sands DMC.</p>
   </footer>
 
   <script>

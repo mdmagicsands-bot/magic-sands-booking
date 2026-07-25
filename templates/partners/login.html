@@ -5,93 +5,131 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Partner Login | Magic Sands</title>
+  <meta name="description" content="Magic Sands Partner Portal — B2B login for travel partners.">
+  <link rel="icon" href="https://www.magicsandsdmc.com/assets/images/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/partner-portal.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/partner.css' %}">
 </head>
-<body>
-  <header class="site-header">
-    <a class="logo" href="{% url 'home' %}">
-      <span class="logo-mark">MS</span>
-      <span class="logo-text">
-        <strong>Magic Sands</strong>
-        <small>YOUR GUIDE TO ARABIA</small>
-      </span>
+<body class="partner-login-page">
+  <header class="pl-top">
+    <a class="pl-brand" href="{% url 'home' %}">
+      <img src="https://www.magicsandsdmc.com/assets/images/logo.png" alt="Magic Sands" width="140" height="44">
     </a>
-    <nav class="nav-desktop" aria-label="Primary">
+    <nav class="pl-top-nav" aria-label="Primary">
       <a href="{% url 'home' %}">Home</a>
-      <a href="https://www.magicsandsdmc.com/about-us/">About Us</a>
-      <a href="https://www.magicsandsdmc.com/services/">Services</a>
-      <a href="https://www.magicsandsdmc.com/destinations/">Destinations</a>
-      <a href="https://www.magicsandsdmc.com/contact-us/">Contact Us</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'destinations' %}">Destinations</a>
+      <a href="{% url 'contact' %}">Contact</a>
+      <a class="pl-top-cta" href="{% url 'partner_register' %}">Register</a>
     </nav>
-    <div class="header-actions">
-      <a class="btn-outline" href="{% url 'partner_login' %}">Partner Login</a>
-      <a class="btn-outline" href="{% url 'admin_login' %}">Admin</a>
-    </div>
   </header>
 
-  <main class="portal">
-    <header class="portal-intro">
-      <h1>Magic Sands Partner Portal</h1>
-      <p>Become an official travel partner and enjoy dedicated B2B rates, priority quotations and personalized support.</p>
-    </header>
-
-    <div class="portal-grid">
-      <section class="card info-card">
-        <h2>Why Partner With Us?</h2>
-        <ul class="checks">
-          <li>Dedicated B2B Rates</li>
-          <li>Instant Quotations</li>
-          <li>FIT &amp; Group Handling</li>
-          <li>Luxury &amp; Tailor-made Holidays</li>
-          <li>24/7 Support</li>
-          <li>Oman, UAE, Saudi Arabia &amp; Egypt</li>
+  <section class="pl-hero" style="--pl-hero-image:url('https://www.magicsandsdmc.com/uploads/banner/banner3.jpg')">
+    <div class="pl-hero-veil" aria-hidden="true"></div>
+    <div class="pl-hero-inner">
+      <div class="pl-copy">
+        <p class="pl-brand-signal">Magic Sands</p>
+        <h1>Partner Portal</h1>
+        <p>Become an official travel partner and enjoy dedicated B2B rates, priority quotations, and personalized support across Arabia.</p>
+        <ul class="pl-benefits">
+          <li>Dedicated B2B rates</li>
+          <li>Instant quotations</li>
+          <li>FIT &amp; group handling</li>
+          <li>24/7 partner support</li>
         </ul>
-        <h3>Partner Benefits</h3>
-        <ul class="checks soft">
-          <li>Dedicated Account Manager</li>
-          <li>Priority Quotations</li>
-          <li>Exclusive Contracted Rates</li>
-          <li>Tailor-made Itineraries</li>
-          <li>Marketing Collaboration</li>
-          <li>Access to B2B Partner Portal</li>
-        </ul>
-      </section>
+      </div>
 
-      <section class="card login-card">
-        <h2>Partner Login</h2>
+      <div class="pl-panel" id="login">
+        <h2>Partner login</h2>
+        <p class="pl-panel-sub">Sign in with your agency email</p>
+
         {% if messages %}
           {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          <div class="pl-alert pl-alert-{{ message.tags }}">{{ message }}</div>
           {% endfor %}
         {% endif %}
-        <form class="login-form" method="post" action="{% url 'partner_login' %}">
-          {% csrf_token %}
-          <label>
-            Email Address
-            <input type="email" name="email" required autocomplete="username" placeholder="you@agency.com">
-          </label>
-          <label>
-            Password
-            <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
-          </label>
-          <label class="remember">
-            <input type="checkbox" name="remember"> Remember Me
-          </label>
-          <button type="submit" class="btn-primary">Login</button>
-        </form>
-        <div class="register-block">
-          <p>Not a registered partner?</p>
-          <a class="btn-register" href="mailto:oman@magicsandsdmc.com?subject=Register%20as%20a%20Partner">Register as a Partner</a>
-        </div>
-      </section>
-    </div>
-  </main>
 
-  <footer class="site-footer">
-    <p>© Magic Sands DMC — Partner Portal</p>
+        <form class="pl-form" method="post" action="{% url 'partner_login' %}">
+          {% csrf_token %}
+          <label class="pl-label">
+            Email address
+            <span class="pl-field">
+              <span class="pl-icon" aria-hidden="true">@</span>
+              <input type="email" name="email" required autocomplete="username" placeholder="you@agency.com">
+            </span>
+          </label>
+          <label class="pl-label">
+            Password
+            <span class="pl-field">
+              <span class="pl-icon" aria-hidden="true">✱</span>
+              <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+            </span>
+          </label>
+          <div class="pl-row">
+            <label class="pl-remember">
+              <input type="checkbox" name="remember"> Remember me
+            </label>
+            <a class="pl-forgot" href="mailto:oman@magicsandsdmc.com?subject=Partner%20password%20help">Need help?</a>
+          </div>
+          <button type="submit" class="pl-btn">Login</button>
+        </form>
+
+        <p class="pl-register">
+          Not a registered partner?
+          <a href="{% url 'partner_register' %}">Register as a partner</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pl-features">
+    <h2>Partner benefits</h2>
+    <div class="pl-feature-grid">
+      <article>
+        <span class="pl-f-icon">01</span>
+        <h3>Dedicated account manager</h3>
+        <p>A single point of contact for quotations, amendments, and on-ground support.</p>
+      </article>
+      <article>
+        <span class="pl-f-icon">02</span>
+        <h3>Exclusive contracted rates</h3>
+        <p>Access preferred hotel and tour rates negotiated for Magic Sands partners.</p>
+      </article>
+      <article>
+        <span class="pl-f-icon">03</span>
+        <h3>Tailor-made itineraries</h3>
+        <p>Luxury, FIT, and group programmes shaped around your clients’ needs.</p>
+      </article>
+      <article>
+        <span class="pl-f-icon">04</span>
+        <h3>Arabia coverage</h3>
+        <p>Oman, UAE, Saudi Arabia, Qatar, Bahrain, Kuwait, Jordan, and Egypt.</p>
+      </article>
+    </div>
+  </section>
+
+  <footer class="pl-footer">
+    <div class="pl-footer-inner">
+      <div>
+        <div class="pl-footer-brand">
+          <span class="pl-mark">MS</span>
+          <span>
+            <strong>Magic Sands</strong>
+            <small>YOUR GUIDE TO ARABIA</small>
+          </span>
+        </div>
+        <p>Destination management for travel partners — elegance, comfort, and discovery across Arabia.</p>
+      </div>
+      <div class="pl-footer-links">
+        <a href="{% url 'home' %}">Website</a>
+        <a href="{% url 'partner_register' %}">Register as partner</a>
+        <a href="{% url 'contact' %}">Contact us</a>
+        <a href="{% url 'admin_login' %}">Website admin</a>
+      </div>
+    </div>
+    <p class="pl-legal">© {% now "Y" %} Magic Sands DMC. Partner Portal.</p>
   </footer>
 </body>
 </html>

@@ -5,30 +5,93 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Register as a Partner | Magic Sands</title>
+  <meta name="description" content="Register as a Magic Sands travel partner for B2B rates and support.">
+  <link rel="icon" href="https://www.magicsandsdmc.com/assets/images/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/partner-portal.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/partner.css' %}">
 </head>
-<body>
-  <main class="portal">
-    <header class="portal-intro">
-      <h1>Register as a Partner</h1>
-      <p>Railway fallback form — production registration is on Hostinger.</p>
-    </header>
-    <section class="card" style="max-width:640px;margin:0 auto">
-      <form class="login-form" method="post" action="{% url 'gateway_partner_register' %}">
-        {% csrf_token %}
-        <label>Company <input type="text" name="company_name" required></label>
-        <label>Contact <input type="text" name="contact_name" required></label>
-        <label>Email <input type="email" name="email" required></label>
-        <label>Phone <input type="tel" name="phone"></label>
-        <label>Country <input type="text" name="country"></label>
-        <label>Website <input type="url" name="website"></label>
-        <label>Message <textarea name="message" rows="4"></textarea></label>
-        <button class="btn-primary" type="submit">Submit</button>
-      </form>
-    </section>
-  </main>
+<body class="partner-login-page">
+  <header class="pl-top">
+    <a class="pl-brand" href="{% url 'home' %}">
+      <img src="https://www.magicsandsdmc.com/assets/images/logo.png" alt="Magic Sands" width="140" height="44">
+    </a>
+    <nav class="pl-top-nav" aria-label="Primary">
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a class="pl-top-cta" href="{% url 'partner_login' %}">Partner Login</a>
+    </nav>
+  </header>
+
+  <section class="pl-hero pl-hero-register" style="--pl-hero-image:url('https://www.magicsandsdmc.com/uploads/banner/banner2.jpg')">
+    <div class="pl-hero-veil" aria-hidden="true"></div>
+    <div class="pl-hero-inner pl-hero-inner-single">
+      <div class="pl-panel pl-panel-wide">
+        <p class="pl-panel-brand">Magic Sands</p>
+        <h2>Register as a partner</h2>
+        <p class="pl-panel-sub">Submit your agency details. Our team will review and activate your B2B access.</p>
+
+        {% if messages %}
+          {% for message in messages %}
+          <div class="pl-alert pl-alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+
+        <form class="pl-form pl-form-grid" method="post" action="{% url 'gateway_partner_register' %}">
+          {% csrf_token %}
+          <label class="pl-label">Company / agency name
+            <input type="text" name="company_name" required placeholder="Your travel agency">
+          </label>
+          <label class="pl-label">Contact name
+            <input type="text" name="contact_name" required placeholder="Full name">
+          </label>
+          <label class="pl-label">Email
+            <input type="email" name="email" required placeholder="you@agency.com">
+          </label>
+          <label class="pl-label">Phone
+            <input type="tel" name="phone" placeholder="+968 …">
+          </label>
+          <label class="pl-label">Country
+            <input type="text" name="country" placeholder="Country">
+          </label>
+          <label class="pl-label">Website
+            <input type="url" name="website" placeholder="https://">
+          </label>
+          <label class="pl-label pl-span-2">Message
+            <textarea name="message" rows="4" placeholder="Tell us about your agency and markets"></textarea>
+          </label>
+          <div class="pl-span-2">
+            <button type="submit" class="pl-btn">Submit registration</button>
+          </div>
+        </form>
+        <p class="pl-register">
+          Already a partner?
+          <a href="{% url 'partner_login' %}">Partner login</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="pl-footer">
+    <div class="pl-footer-inner">
+      <div>
+        <div class="pl-footer-brand">
+          <span class="pl-mark">MS</span>
+          <span>
+            <strong>Magic Sands</strong>
+            <small>Partner registration</small>
+          </span>
+        </div>
+        <p>We review partner applications and activate portal access for approved agencies.</p>
+      </div>
+      <div class="pl-footer-links">
+        <a href="{% url 'partner_login' %}">Partner login</a>
+        <a href="{% url 'contact' %}">Contact us</a>
+        <a href="{% url 'home' %}">Website</a>
+      </div>
+    </div>
+    <p class="pl-legal">© {% now "Y" %} Magic Sands DMC.</p>
+  </footer>
 </body>
 </html>
