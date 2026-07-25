@@ -1,31 +1,37 @@
 {% extends "marketing/base.html" %}
 {% block title %}Services | {{ brand_full }}{% endblock %}
+{% block meta_description %}Travel & leisure, lifestyle, MICE, wellness, concierge, and CSR services from {{ brand_full }}.{% endblock %}
+{% block body_class %}page-services{% endblock %}
 {% block content %}
-<section class="mk-page-hero">
-  <p class="mk-eyebrow">Services</p>
-  <h1>Destination management, end to end</h1>
-  <p class="mk-lede">Bespoke travel and event services crafted for agencies, corporates, and discerning travellers.</p>
+<section class="mk-page-hero mk-page-hero-photo" style="--hero-image:url('{{ services.0.image }}')">
+  <div class="mk-page-hero-inner">
+    <p class="mk-brand-signal">{{ brand }}</p>
+    <h1>Our services</h1>
+    <p class="mk-lede">The art of what we do — refined journeys, events, and hospitality across Arabia.</p>
+  </div>
 </section>
 
-<section class="mk-section">
-  <div class="mk-service-grid">
-    {% for s in services %}
-    <article class="mk-service-card">
-      <h3>{{ s.title }}</h3>
+<section class="mk-service-stack">
+  {% for s in services %}
+  <article class="mk-service-feature" id="{{ s.slug }}" data-reveal>
+    <div class="mk-service-feature-media">
+      <img src="{{ s.image }}" alt="{{ s.title }}" loading="lazy">
+    </div>
+    <div class="mk-service-feature-copy">
+      <p class="mk-kicker">Service</p>
+      <h2>{{ s.title }}</h2>
       <p>{{ s.text }}</p>
-    </article>
-    {% endfor %}
-  </div>
+    </div>
+  </article>
+  {% endfor %}
 </section>
 
-<section class="mk-section mk-cta-band">
-  <div>
-    <h2>Need a quotation?</h2>
-    <p>Partners can log in for B2B rates, or contact our Oman and UAE desks directly.</p>
-  </div>
-  <div class="mk-hero-actions">
-    <a class="mk-btn mk-btn-primary" href="{% url 'partner_login' %}">Partner login</a>
-    <a class="mk-btn mk-btn-ghost" href="{% url 'contact' %}">Contact us</a>
+<section class="mk-closing" data-reveal>
+  <h2>Need a quotation?</h2>
+  <p>Partners can log in for B2B rates, or contact our desks directly.</p>
+  <div class="mk-cta-row">
+    <a class="mk-btn mk-btn-dark" href="{% url 'partner_login' %}">Partner login</a>
+    <a class="mk-btn mk-btn-outline" href="{% url 'contact' %}">Contact us</a>
   </div>
 </section>
 {% endblock %}

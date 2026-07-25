@@ -1,24 +1,41 @@
 {% extends "marketing/base.html" %}
 {% block title %}{{ destination.name }} | {{ brand_full }}{% endblock %}
+{% block meta_description %}{{ destination.summary }}{% endblock %}
+{% block body_class %}page-destination{% endblock %}
 {% block content %}
-<section class="mk-page-hero" style="--accent: {{ destination.accent }}">
-  <p class="mk-eyebrow">Destination</p>
-  <h1>{{ destination.name }}</h1>
-  <p class="mk-lede">{{ destination.summary }}</p>
-  <div class="mk-hero-actions">
-    <a class="mk-btn mk-btn-primary" href="{% url 'book_home' %}?destination={{ destination.short }}">Search hotels</a>
-    <a class="mk-btn mk-btn-ghost" href="{% url 'contact' %}">Plan with us</a>
+<section class="mk-page-hero mk-page-hero-photo" style="--hero-image:url('{{ destination.banner }}'); --accent: {{ destination.accent }}">
+  <div class="mk-page-hero-inner">
+    <p class="mk-brand-signal">{{ brand }}</p>
+    <h1>{{ destination.name }}</h1>
+    <p class="mk-lede">{{ destination.summary }}</p>
+    <div class="mk-cta-row">
+      <a class="mk-btn mk-btn-light" href="{% url 'book_home' %}?destination={{ destination.short }}">Search hotels</a>
+      <a class="mk-btn mk-btn-line" href="{% url 'contact' %}">Plan with us</a>
+    </div>
   </div>
 </section>
 
-<section class="mk-section">
-  <div class="mk-card mk-prose-card">
-    <h2>Travel with Magic Sands</h2>
-    <p>
-      Our DMC teams arrange hotels, transfers, guided experiences, and bespoke itineraries in {{ destination.name }}.
-      Agencies and partners receive dedicated support, priority quotations, and reliable confirmations.
-    </p>
-    <p><a class="mk-text-link" href="{% url 'destinations' %}">← All destinations</a></p>
+<section class="mk-prose" data-reveal>
+  <p class="mk-lead">{{ destination.teaser }}</p>
+  <p>
+    Our DMC teams arrange hotels, transfers, guided experiences, and bespoke itineraries in {{ destination.name }}.
+    Agencies and partners receive dedicated support, priority quotations, and reliable confirmations.
+  </p>
+  <p><a class="mk-link" href="{% url 'destinations' %}">← All destinations</a></p>
+</section>
+
+<section class="mk-services" data-reveal>
+  <div class="mk-section-intro">
+    <p class="mk-kicker">Related services</p>
+    <h2>How we support your programme</h2>
+  </div>
+  <div class="mk-service-rail">
+    {% for s in services %}
+    <a class="mk-service-panel" href="{% url 'services' %}#{{ s.slug }}">
+      <img src="{{ s.image }}" alt="{{ s.title }}" loading="lazy">
+      <span>{{ s.title }}</span>
+    </a>
+    {% endfor %}
   </div>
 </section>
 {% endblock %}

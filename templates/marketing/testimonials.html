@@ -1,16 +1,20 @@
 {% extends "marketing/base.html" %}
 {% block title %}Testimonials | {{ brand_full }}{% endblock %}
+{% block meta_description %}What our happy customers say about journeys with {{ brand_full }}.{% endblock %}
+{% block body_class %}page-testimonials{% endblock %}
 {% block content %}
 <section class="mk-page-hero">
-  <p class="mk-eyebrow">Testimonials</p>
-  <h1>Trusted by travel partners</h1>
-  <p class="mk-lede">Words from agencies and planners who build Arabia programmes with us.</p>
+  <div class="mk-page-hero-inner">
+    <p class="mk-brand-signal">{{ brand }}</p>
+    <h1>Testimonials</h1>
+    <p class="mk-lede">Words from travellers who explored Arabia with Magic Sands.</p>
+  </div>
 </section>
 
-<section class="mk-section">
+<section class="mk-quotes mk-quotes-page" data-reveal>
   <div class="mk-quote-grid">
     {% for t in testimonials %}
-    <blockquote class="mk-quote">
+    <blockquote>
       <p>“{{ t.quote }}”</p>
       <footer>
         <strong>{{ t.name }}</strong>
@@ -18,6 +22,14 @@
       </footer>
     </blockquote>
     {% endfor %}
+  </div>
+</section>
+
+<section class="mk-closing" data-reveal>
+  <h2>Ready for your own story?</h2>
+  <div class="mk-cta-row">
+    <a class="mk-btn mk-btn-dark" href="{% url 'contact' %}">Contact us</a>
+    <a class="mk-btn mk-btn-outline" href="{% url 'destinations' %}">Explore destinations</a>
   </div>
 </section>
 {% endblock %}

@@ -1,50 +1,87 @@
 {% extends "marketing/base.html" %}
 {% block title %}About Us | {{ brand_full }}{% endblock %}
+{% block meta_description %}{{ about_page.intro }}{% endblock %}
+{% block body_class %}page-about{% endblock %}
 {% block content %}
-<section class="mk-page-hero">
-  <p class="mk-eyebrow">About us</p>
-  <h1>Artisans of extraordinary experiences</h1>
-  <p class="mk-lede">{{ about_blurb }}</p>
-</section>
-
-<section class="mk-section">
-  <div class="mk-two-col">
-    <div>
-      <h2>Who we are</h2>
-      <p>
-        {{ brand_full }} is a destination management company designing journeys that transcend the expected.
-        From Oman and the UAE to the wider Arabia region, we weave elegance, comfort, and discovery into every programme.
-      </p>
-      <p>
-        Whether you need FIT confirmations, group movements, or incentive events, our teams operate with calm precision —
-        hotels, transfers, guides, and last-mile details handled as one craft.
-      </p>
-    </div>
-    <div class="mk-stats mk-stats-stack">
-      {% for s in stats %}
-      <article>
-        <strong>{{ s.value }}</strong>
-        <span>{{ s.label }}</span>
-      </article>
-      {% endfor %}
-    </div>
+<section class="mk-page-hero mk-page-hero-photo" style="--hero-image:url('{{ media.about_primary }}')">
+  <div class="mk-page-hero-inner">
+    <p class="mk-brand-signal">{{ brand }}</p>
+    <h1>About us</h1>
+    <p class="mk-lede">{{ about_page.intro_title }}</p>
   </div>
 </section>
 
-<section class="mk-section mk-section-alt">
-  <div class="mk-section-head">
-    <h2>Where we operate</h2>
+<section class="mk-prose" data-reveal>
+  <p class="mk-lead">{{ about_page.intro }}</p>
+  <p>{{ about_page.expertise }}</p>
+  <p>{{ about_page.story }}</p>
+</section>
+
+<section class="mk-split" data-reveal>
+  <div>
+    <p class="mk-kicker">Boutique travel</p>
+    <h2>{{ about_page.boutique_title }}</h2>
+    <p>{{ about_page.boutique }}</p>
   </div>
-  <div class="mk-office-grid">
-    {% for office in offices %}
-    <article class="mk-card">
-      <h3>{{ office.label }}</h3>
-      <p>{{ office.address }}</p>
-      {% if office.shop %}<p>{{ office.shop }}</p>{% endif %}
-      <p><a href="tel:{{ office.phone }}">{{ office.phone }}</a><br>
-      <a href="mailto:{{ office.email }}">{{ office.email }}</a></p>
-    </article>
+  <figure>
+    <img src="{{ media.about_secondary }}" alt="Boutique Magic Sands experience" loading="lazy">
+  </figure>
+</section>
+
+<section class="mk-prose mk-prose-alt" data-reveal>
+  <p class="mk-kicker">Why choose Magic Sands</p>
+  <h2>Stories as unique as the traveler</h2>
+  <p>{{ about_page.why }}</p>
+  <p>{{ about_page.why_detail }}</p>
+</section>
+
+<section class="mk-diff" data-reveal>
+  <div class="mk-section-intro">
+    <p class="mk-kicker">What makes us different</p>
+    <h2>How we work with you</h2>
+  </div>
+  <ul class="mk-diff-list">
+    {% for item in differentiators %}
+    <li>
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.text }}</p>
+    </li>
     {% endfor %}
+  </ul>
+</section>
+
+<section class="mk-mission" data-reveal>
+  <div>
+    <p class="mk-kicker">Our motto</p>
+    <h2>{{ about_page.motto }}</h2>
+  </div>
+  <div>
+    <p class="mk-kicker">Our mission</p>
+    <p>{{ about_page.mission }}</p>
+  </div>
+</section>
+
+<section class="mk-values" data-reveal>
+  <div class="mk-section-intro">
+    <p class="mk-kicker">Our values</p>
+    <h2>What guides every journey</h2>
+    <p>{{ about_page.values_intro }}</p>
+  </div>
+  <ul class="mk-values-list">
+    {% for item in values %}
+    <li>
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.text }}</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section class="mk-closing" data-reveal>
+  <h2>Plan your next journey with us</h2>
+  <div class="mk-cta-row">
+    <a class="mk-btn mk-btn-dark" href="{% url 'contact' %}">Contact us</a>
+    <a class="mk-btn mk-btn-outline" href="{% url 'destinations' %}">View destinations</a>
   </div>
 </section>
 {% endblock %}

@@ -1,20 +1,26 @@
 {% extends "marketing/base.html" %}
 {% block title %}Destinations | {{ brand_full }}{% endblock %}
+{% block meta_description %}Explore UAE, Oman, Saudi Arabia, Qatar, Bahrain, Kuwait, Jordan, and Egypt with {{ brand_full }}.{% endblock %}
+{% block body_class %}page-destinations{% endblock %}
 {% block content %}
-<section class="mk-page-hero">
-  <p class="mk-eyebrow">Destinations</p>
-  <h1>From deserts to skylines</h1>
-  <p class="mk-lede">Eight destinations across Arabia — each programme shaped around culture, landscape, and luxury.</p>
+<section class="mk-page-hero mk-page-hero-photo" style="--hero-image:url('{{ destinations.1.banner }}')">
+  <div class="mk-page-hero-inner">
+    <p class="mk-brand-signal">{{ brand }}</p>
+    <h1>Destinations</h1>
+    <p class="mk-lede">Eight destinations across Arabia — each programme shaped around culture, landscape, and luxury.</p>
+  </div>
 </section>
 
-<section class="mk-section">
-  <div class="mk-dest-grid">
+<section class="mk-destinations mk-destinations-page" data-reveal>
+  <div class="mk-dest-mosaic mk-dest-mosaic-large">
     {% for d in destinations %}
-    <a class="mk-dest-card" href="{% url 'destination_detail' d.slug %}" style="--accent: {{ d.accent }}">
-      <span class="mk-dest-label">{{ d.short }}</span>
-      <h3>{{ d.name }}</h3>
-      <p>{{ d.summary }}</p>
-      <span class="mk-text-link">Explore →</span>
+    <a class="mk-dest-panel" href="{% url 'destination_detail' d.slug %}" style="--accent: {{ d.accent }}">
+      <img src="{{ d.image }}" alt="{{ d.name }}" loading="lazy">
+      <span class="mk-dest-copy">
+        <strong>{{ d.name }}</strong>
+        <em>{{ d.teaser }}</em>
+        <span class="mk-link-inline">Explore</span>
+      </span>
     </a>
     {% endfor %}
   </div>

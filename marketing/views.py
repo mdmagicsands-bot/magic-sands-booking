@@ -11,6 +11,9 @@ def _ctx(**extra):
         "tagline": content.TAGLINE,
         "destinations": content.DESTINATIONS,
         "offices": content.OFFICES,
+        "media": content.MEDIA,
+        "social": content.SOCIAL,
+        "site_url": content.SITE_URL,
     }
     data.update(extra)
     return data
@@ -23,10 +26,13 @@ def home(request):
         "marketing/home.html",
         _ctx(
             hero=content.HERO,
+            hero_banners=content.HERO_BANNERS,
             about_blurb=content.ABOUT_BLURB,
-            services=content.SERVICES[:4],
-            stats=content.STATS,
-            testimonials=content.TESTIMONIALS,
+            elevating=content.ELEVATING,
+            services=content.SERVICES,
+            why_choose=content.WHY_CHOOSE,
+            partners=content.PARTNERS,
+            testimonials=content.TESTIMONIALS[:6],
         ),
     )
 
@@ -36,7 +42,11 @@ def about(request):
     return render(
         request,
         "marketing/about.html",
-        _ctx(about_blurb=content.ABOUT_BLURB, stats=content.STATS),
+        _ctx(
+            about_page=content.ABOUT_PAGE,
+            differentiators=content.DIFFERENTIATORS,
+            values=content.VALUES,
+        ),
     )
 
 
@@ -62,7 +72,7 @@ def destination_detail(request, slug: str):
     return render(
         request,
         "marketing/destination_detail.html",
-        _ctx(destination=match),
+        _ctx(destination=match, services=content.SERVICES[:3]),
     )
 
 
@@ -79,7 +89,6 @@ def testimonials(request):
 def contact(request):
     sent = False
     if request.method == "POST":
-        # v1: capture locally via messages UX; wire email/CRM later on Railway
         sent = True
     return render(
         request,
