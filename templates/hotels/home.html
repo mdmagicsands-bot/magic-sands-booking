@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}{{ SITE_NAME }} — Find your stay{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Magic Sands</p>
+    <h1>Book any hotel,<br>through Magic Sands.</h1>
+    <p class="lede">Search destinations worldwide, compare live rates, and confirm your stay in one place.</p>
+  </div>
+
+  <form class="search-panel" method="get" action="{% url 'search' %}" id="search-form" autocomplete="off">
+    <div class="field grow">
+      <label for="destination">Destination</label>
+      <input id="destination" name="destination" type="text" placeholder="City or area (e.g. Muscat, Dubai)"
+             value="{{ destination }}" required>
+      <input type="hidden" name="place_id" id="place_id" value="{{ place_id }}">
+      <input type="hidden" name="country_code" id="country_code" value="{{ country_code }}">
+      <div id="place-suggestions" class="suggestions" hidden></div>
+    </div>
+    <div class="field">
+      <label for="checkin">Check-in</label>
+      <input id="checkin" name="checkin" type="date" value="{{ checkin }}" min="{{ min_date }}" required>
+    </div>
+    <div class="field">
+      <label for="checkout">Check-out</label>
+      <input id="checkout" name="checkout" type="date" value="{{ checkout }}" min="{{ min_date }}" required>
+    </div>
+    <div class="field narrow">
+      <label for="adults">Guests</label>
+      <input id="adults" name="adults" type="number" min="1" max="8" value="{{ adults }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Search hotels</button>
+
+    <div class="or-row">
+      <span>or search by vibe</span>
+    </div>
+    <div class="field grow full">
+      <label for="q">Free text</label>
+      <input id="q" name="q" type="text" placeholder="e.g. beach resort in Salalah"
+             value="{{ query }}">
+    </div>
+    <p class="hint">Pick a destination from the suggestions (important), and make sure check-out is after check-in.</p>
+  </form>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const input = document.getElementById('destination');
+  const placeId = document.getElementById('place_id');
+  const countryCode = document.getElementById('country_code');
+  const box = document.getElementById('place-suggestions');
+  const vibe = document.getElementById('q');
+  const checkin = document.getElementById('checkin');
+  const checkout = document.getElementById('checkout');
+  let timer = null;
+
+  function syncCheckoutMin() {
+    if (!checkin.value) return;
+    const d = new Date(checkin.value + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    const minOut = d.toISOString().slice(0, 10);
+    checkout.min = minOut;
+    if (checkout.value && checkout.value <= checkin.value) {
+      checkout.value = minOut;
+    }
+  }
+  checkin.addEventListener('change', syncCheckoutMin);
+  syncCheckoutMin();
+
+  input.addEventListener('input', () => {
+    placeId.value = '';
+    countryCode.value = '';
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 2) { box.hidden = true; return; }
+    timer = setTimeout(() => {
+      fetch(`{% url 'places_autocomplete' %}?q=${encodeURIComponent(q)}`)
+        .then(r => r.json())
+        .then(data => {
+          box.innerHTML = '';
+          (data.results || []).forEach(p => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'suggestion';
+            btn.textContent = `${p.displayName}${p.formattedAddress ? ' — ' + p.formattedAddress : ''}`;
+            btn.addEventListener('click', () => {
+              input.value = p.displayName;
+              placeId.value = p.placeId || '';
+              countryCode.value = p.countryCode || '';
+              vibe.value = '';
+              box.hidden = true;
+            });
+            box.appendChild(btn);
+          });
+          box.hidden = !(data.results || []).length;
+        });
+    }, 250);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!box.contains(e.target) && e.target !== input) box.hidden = true;
+  });
+
+  document.getElementById('search-form').addEventListener('submit', (e) => {
+    const hasDest = input.value.trim();
+    const hasVibe = vibe.value.trim();
+    if (!hasDest && !hasVibe) {
+      e.preventDefault();
+      alert('Choose a destination suggestion or enter a vibe search.');
+      return;
+    }
+    if (checkin.value && checkout.value && checkout.value <= checkin.value) {
+      e.preventDefault();
+      alert('Check-out must be after check-in.');
+      return;
+    }
+    if (hasDest && !hasVibe) {
+      // destination search — clear vibe
+      vibe.value = '';
+    } else if (!hasDest) {
+      input.removeAttribute('required');
+    }
+  });
+})();
+</script>
+{% endblock %}

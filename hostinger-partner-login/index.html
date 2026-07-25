@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Partner Login | Magic Sands</title>
+  <meta name="description" content="Magic Sands Partner Portal login.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="partner-login.css">
+  <script src="config.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="https://www.magicsandsdmc.com/">
+      <span class="logo-mark">MS</span>
+      <span class="logo-text">
+        <strong>Magic Sands</strong>
+        <small>YOUR GUIDE TO ARABIA</small>
+      </span>
+    </a>
+    <nav class="nav-desktop" aria-label="Primary">
+      <a href="https://www.magicsandsdmc.com/">Home</a>
+      <a href="https://www.magicsandsdmc.com/about-us/">About Us</a>
+      <a href="https://www.magicsandsdmc.com/services/">Services</a>
+      <a href="https://www.magicsandsdmc.com/destinations/">Destinations</a>
+      <a href="https://www.magicsandsdmc.com/contact-us/">Contact Us</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn-outline" href="/partner-login/">Partner Login</a>
+    </div>
+  </header>
+
+  <main class="portal">
+    <header class="portal-intro">
+      <h1>Magic Sands Partner Portal</h1>
+      <p>Become an official travel partner and enjoy dedicated B2B rates, priority quotations and personalized support.</p>
+    </header>
+
+    <div id="flash" class="flash" hidden></div>
+
+    <div class="portal-grid">
+      <section class="card info-card">
+        <h2>Why Partner With Us?</h2>
+        <ul class="checks">
+          <li>Dedicated B2B Rates</li>
+          <li>Instant Quotations</li>
+          <li>FIT &amp; Group Handling</li>
+          <li>Luxury &amp; Tailor-made Holidays</li>
+          <li>24/7 Support</li>
+          <li>Oman, UAE, Saudi Arabia &amp; Egypt</li>
+        </ul>
+        <h3>Partner Benefits</h3>
+        <ul class="checks soft">
+          <li>Dedicated Account Manager</li>
+          <li>Priority Quotations</li>
+          <li>Exclusive Contracted Rates</li>
+          <li>Tailor-made Itineraries</li>
+          <li>Marketing Collaboration</li>
+          <li>Access to B2B Partner Portal</li>
+        </ul>
+      </section>
+
+      <section class="card login-card">
+        <h2>Partner Login</h2>
+        <form id="login-form" class="login-form" method="post">
+          <label>
+            Email Address
+            <input type="email" name="email" required autocomplete="username" placeholder="you@agency.com">
+          </label>
+          <label>
+            Password
+            <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+          </label>
+          <label class="remember">
+            <input type="checkbox" name="remember"> Remember Me
+          </label>
+          <button type="submit" class="btn-primary">Login</button>
+        </form>
+        <div class="register-block">
+          <p>Not a registered partner?</p>
+          <a class="btn-register" href="/partner-register/">Register as a Partner</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>Login connects to the Magic Sands Booking system (Railway). Only this page is hosted on Hostinger.</p>
+  </footer>
+
+  <script>
+    (function () {
+      var cfg = window.MAGIC_SANDS_CONFIG || {};
+      var base = (cfg.BOOKING_APP_URL || "").replace(/\/$/, "");
+      document.getElementById("login-form").action = base + "/gateway/partner-login/";
+
+      var params = new URLSearchParams(window.location.search);
+      var flash = document.getElementById("flash");
+      if (params.get("error") === "1") {
+        flash.hidden = false;
+        flash.className = "flash flash-error";
+        flash.textContent = "Invalid email or password. Please try again.";
+      }
+    })();
+  </script>
+</body>
+</html>

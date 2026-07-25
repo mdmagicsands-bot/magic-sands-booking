@@ -1,0 +1,22 @@
+{% extends "marketing/base.html" %}
+{% block title %}Destinations | {{ brand_full }}{% endblock %}
+{% block content %}
+<section class="mk-page-hero">
+  <p class="mk-eyebrow">Destinations</p>
+  <h1>From deserts to skylines</h1>
+  <p class="mk-lede">Eight destinations across Arabia — each programme shaped around culture, landscape, and luxury.</p>
+</section>
+
+<section class="mk-section">
+  <div class="mk-dest-grid">
+    {% for d in destinations %}
+    <a class="mk-dest-card" href="{% url 'destination_detail' d.slug %}" style="--accent: {{ d.accent }}">
+      <span class="mk-dest-label">{{ d.short }}</span>
+      <h3>{{ d.name }}</h3>
+      <p>{{ d.summary }}</p>
+      <span class="mk-text-link">Explore →</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

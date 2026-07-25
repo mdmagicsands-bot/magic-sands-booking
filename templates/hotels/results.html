@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+{% block title %}Hotels in {{ destination }} | {{ SITE_NAME }}{% endblock %}
+{% block body_class %}nuitee-results-body{% endblock %}
+{% block content %}
+<section class="nuitee-page">
+  {% if sandbox %}
+  <div class="sandbox-banner">Sandbox mode: test data only, no real transactions.</div>
+  {% endif %}
+
+  <div class="nuitee-search-strip">
+    <div class="nuitee-pill-search">
+      <div class="pill-field">
+        <span class="pill-label">Where</span>
+        <strong>{{ destination|default:"Destination" }}</strong>
+      </div>
+      <div class="pill-divider"></div>
+      <div class="pill-field">
+        <span class="pill-label">Dates</span>
+        <strong>{{ checkin }} — {{ checkout }}</strong>
+      </div>
+      <div class="pill-divider"></div>
+      <div class="pill-field">
+        <span class="pill-label">Guests</span>
+        <strong>{{ adults }} guest{{ adults|pluralize }} · {{ nights }} night{{ nights|pluralize }}</strong>
+      </div>
+      <a class="pill-search-btn" href="{% url 'book_home' %}" title="Modify search" aria-label="Modify search">⌕</a>
+    </div>
+  </div>
+
+  <div class="nuitee-results-head">
+    <h1><span id="visible-count">{{ result_count }}</span> hotels in {{ destination|default:"your destination" }}</h1>
+    <label class="sort-label">
+      Sort by
+      <select id="sort-select" class="sort-select">
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+        <option value="stars-desc">Stars: high to low</option>
+        <option value="name-asc">Name: A–Z</option>
+      </select>
+    </label>
+  </div>
+
+  {% if not cards %}
+  <div class="empty">
+    <p>No hotels found for these dates. Try another destination or dates.</p>
+    <a class="btn btn-primary" href="{% url 'book_home' %}">New search</a>
+  </div>
+  {% else %}
+  <div class="nuitee-layout">
+    <aside class="nuitee-filters" id="filters">
+      <h2>Filters</h2>
+      <div class="filter-block">
+        <h3>Hotel name</h3>
+        <input type="search" id="filter-name" placeholder="Search hotel" class="filter-input">
+      </div>
+      <div class="filter-block">
+        <h3>Price ({{ cards.0.currency|default:"USD" }})</h3>
+        <div class="price-row">
+          <input type="number" id="filter-price-min" class="filter-input" value="{{ price_min }}" min="0">
+          <span>—</span>
+          <input type="number" id="filter-price-max" class="filter-input" value="{{ price_max }}" min="0">
+        </div>
+      </div>
+      <div class="filter-block">
+        <h3>Star rating</h3>
+        <label class="check"><input type="checkbox" name="stars" value="5"> 5 stars</label>
+        <label class="check"><input type="checkbox" name="stars" value="4"> 4 stars</label>
+        <label class="check"><input type="checkbox" name="stars" value="3"> 3 stars</label>
+        <label class="check"><input type="checkbox" name="stars" value="2"> 2 stars</label>
+        <label class="check"><input type="checkbox" name="stars" value="1"> 1 star</label>
+        <label class="check"><input type="checkbox" name="stars" value="0"> Unrated</label>
+      </div>
+      <div class="filter-block">
+        <h3>Cancellation</h3>
+        <label class="check"><input type="checkbox" id="filter-refundable"> Refundable only</label>
+      </div>
+      <button type="button" class="btn btn-ghost btn-block" id="reset-filters">Reset</button>
+    </aside>
+
+    <div class="nuitee-list" id="results-list">
+      {% for card in cards %}
+      <article
+        class="nuitee-hotel-card"
+        data-name="{{ card.name|lower }}"
+        data-price="{{ card.price|default_if_none:'' }}"
+        data-stars="{{ card.stars }}"
+        data-refundable="{{ card.refundable }}"
+      >
+        <div class="nuitee-photo" {% if card.photo %}style="background-image:url('{{ card.photo }}')"{% endif %}></div>
+
+        <div class="nuitee-info">
+          <div class="nuitee-title-row">
+            <h2>
+              <a href="{% url 'hotel_detail' card.hotel_id %}?checkin={{ checkin }}&checkout={{ checkout }}&adults={{ adults }}">
+                {{ card.name }}
+              </a>
+            </h2>
+            <div class="stars" aria-label="{{ card.stars }} stars">
+              {% for i in "12345" %}
+                <span class="{% if forloop.counter <= card.stars %}on{% endif %}">★</span>
+              {% endfor %}
+            </div>
+          </div>
+          {% if card.address %}<p class="addr">{{ card.address }}</p>{% endif %}
+          <div class="hotel-badges">
+            {% if card.review_score %}
+              <span class="badge badge-score">{{ card.review_score|floatformat:1 }}</span>
+            {% endif %}
+            {% if card.board %}<span class="badge">{{ card.board }}</span>{% endif %}
+            {% if card.refundable == "RFN" %}
+              <span class="badge badge-ok">Free cancellation</span>
+            {% elif card.refundable == "NRFN" %}
+              <span class="badge badge-warn">Non-refundable</span>
+            {% endif %}
+            {% if card.room_name %}<span class="badge badge-muted">{{ card.room_name }}</span>{% endif %}
+          </div>
+        </div>
+
+        <div class="nuitee-deal">
+          <p class="price-label">From</p>
+          {% if card.price %}
+            <p class="price-value">
+              <span class="currency">{{ card.currency }}</span>
+              <strong>{{ card.price|floatformat:0 }}</strong>
+            </p>
+            <p class="price-note">{{ nights }} night{{ nights|pluralize }} total</p>
+          {% else %}
+            <p class="price-value"><strong>On request</strong></p>
+          {% endif %}
+          <a class="btn btn-primary btn-pill"
+             href="{% url 'hotel_detail' card.hotel_id %}?checkin={{ checkin }}&checkout={{ checkout }}&adults={{ adults }}">
+            See availability
+          </a>
+        </div>
+      </article>
+      {% endfor %}
+      <div class="empty" id="no-filter-match" hidden>
+        <p>No hotels match these filters.</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% if cards %}
+<script>
+(function () {
+  const rows = Array.from(document.querySelectorAll('.nuitee-hotel-card'));
+  const countEl = document.getElementById('visible-count');
+  const emptyEl = document.getElementById('no-filter-match');
+  const nameInput = document.getElementById('filter-name');
+  const minInput = document.getElementById('filter-price-min');
+  const maxInput = document.getElementById('filter-price-max');
+  const refundable = document.getElementById('filter-refundable');
+  const sortSelect = document.getElementById('sort-select');
+  const list = document.getElementById('results-list');
+
+  function selectedStars() {
+    return Array.from(document.querySelectorAll('input[name="stars"]:checked')).map(el => el.value);
+  }
+
+  function applyFilters() {
+    const q = (nameInput.value || '').trim().toLowerCase();
+    const minP = parseFloat(minInput.value);
+    const maxP = parseFloat(maxInput.value);
+    const stars = selectedStars();
+    const onlyRfn = refundable.checked;
+    let visible = 0;
+    rows.forEach(row => {
+      const name = row.dataset.name || '';
+      const price = row.dataset.price === '' ? null : parseFloat(row.dataset.price);
+      const star = row.dataset.stars || '0';
+      const rfn = row.dataset.refundable || '';
+      let ok = true;
+      if (q && !name.includes(q)) ok = false;
+      if (ok && !Number.isNaN(minP) && price !== null && price < minP) ok = false;
+      if (ok && !Number.isNaN(maxP) && price !== null && price > maxP) ok = false;
+      if (ok && stars.length && !stars.includes(star)) ok = false;
+      if (ok && onlyRfn && rfn !== 'RFN') ok = false;
+      row.hidden = !ok;
+      if (ok) visible += 1;
+    });
+    countEl.textContent = visible;
+    emptyEl.hidden = visible !== 0;
+  }
+
+  function applySort() {
+    const mode = sortSelect.value;
+    const sorted = rows.slice().sort((a, b) => {
+      const pa = a.dataset.price === '' ? Infinity : parseFloat(a.dataset.price);
+      const pb = b.dataset.price === '' ? Infinity : parseFloat(b.dataset.price);
+      const sa = parseInt(a.dataset.stars || '0', 10);
+      const sb = parseInt(b.dataset.stars || '0', 10);
+      const na = a.dataset.name || '';
+      const nb = b.dataset.name || '';
+      if (mode === 'price-desc') return (pb - pa) || na.localeCompare(nb);
+      if (mode === 'stars-desc') return (sb - sa) || (pa - pb);
+      if (mode === 'name-asc') return na.localeCompare(nb);
+      return (pa - pb) || na.localeCompare(nb);
+    });
+    sorted.forEach(row => list.insertBefore(row, emptyEl));
+  }
+
+  [nameInput, minInput, maxInput, refundable].forEach(el => {
+    el.addEventListener('input', applyFilters);
+    el.addEventListener('change', applyFilters);
+  });
+  document.querySelectorAll('input[name="stars"]').forEach(el => el.addEventListener('change', applyFilters));
+  sortSelect.addEventListener('change', () => { applySort(); applyFilters(); });
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    nameInput.value = '';
+    minInput.value = '{{ price_min }}';
+    maxInput.value = '{{ price_max }}';
+    refundable.checked = false;
+    document.querySelectorAll('input[name="stars"]').forEach(el => { el.checked = false; });
+    sortSelect.value = 'price-asc';
+    applySort();
+    applyFilters();
+  });
+})();
+</script>
+{% endif %}
+{% endblock %}

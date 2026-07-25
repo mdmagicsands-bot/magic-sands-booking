@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ SITE_NAME }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <header class="site-header">
+    <a class="brand" href="{% url 'book_home' %}">
+      <span class="brand-mark">MS</span>
+      <span class="brand-text">Magic Sands</span>
+    </a>
+    <nav>
+      <a href="{% url 'home' %}" class="nav-link">Website</a>
+      <a href="{% url 'book_home' %}" class="nav-link">Search</a>
+      <a href="{% url 'admin_login' %}" class="btn btn-login">Admin login</a>
+    </nav>
+  </header>
+
+  {% if messages %}
+  <div class="flash-wrap">
+    {% for message in messages %}
+    <div class="flash flash-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>Magic Sands Booking — powered by Nuitee Connect</p>
+  </footer>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

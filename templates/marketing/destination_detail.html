@@ -1,0 +1,24 @@
+{% extends "marketing/base.html" %}
+{% block title %}{{ destination.name }} | {{ brand_full }}{% endblock %}
+{% block content %}
+<section class="mk-page-hero" style="--accent: {{ destination.accent }}">
+  <p class="mk-eyebrow">Destination</p>
+  <h1>{{ destination.name }}</h1>
+  <p class="mk-lede">{{ destination.summary }}</p>
+  <div class="mk-hero-actions">
+    <a class="mk-btn mk-btn-primary" href="{% url 'book_home' %}?destination={{ destination.short }}">Search hotels</a>
+    <a class="mk-btn mk-btn-ghost" href="{% url 'contact' %}">Plan with us</a>
+  </div>
+</section>
+
+<section class="mk-section">
+  <div class="mk-card mk-prose-card">
+    <h2>Travel with Magic Sands</h2>
+    <p>
+      Our DMC teams arrange hotels, transfers, guided experiences, and bespoke itineraries in {{ destination.name }}.
+      Agencies and partners receive dedicated support, priority quotations, and reliable confirmations.
+    </p>
+    <p><a class="mk-text-link" href="{% url 'destinations' %}">← All destinations</a></p>
+  </div>
+</section>
+{% endblock %}

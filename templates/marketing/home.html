@@ -1,0 +1,84 @@
+{% extends "marketing/base.html" %}
+{% block title %}{{ brand_full }} — {{ tagline }}{% endblock %}
+{% block body_class %}page-home{% endblock %}
+{% block content %}
+<section class="mk-hero">
+  <div class="mk-hero-bg" aria-hidden="true"></div>
+  <div class="mk-hero-inner">
+    <p class="mk-eyebrow">{{ hero.eyebrow }}</p>
+    <h1>{{ hero.title }}</h1>
+    <p class="mk-lede">{{ hero.lede }}</p>
+    <div class="mk-hero-actions">
+      <a class="mk-btn mk-btn-primary" href="{% url 'destinations' %}">Explore destinations</a>
+      <a class="mk-btn mk-btn-ghost" href="{% url 'book_home' %}">Book hotels</a>
+      <a class="mk-btn mk-btn-ghost" href="{% url 'partner_login' %}">Partner login</a>
+    </div>
+  </div>
+  <div class="mk-dest-marquee" aria-hidden="true">
+    {% for d in destinations %}
+    <span>{{ d.short }}</span>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mk-section">
+  <div class="mk-section-head">
+    <p class="mk-eyebrow">About us</p>
+    <h2>Premier destination &amp; event management</h2>
+    <p>{{ about_blurb }}</p>
+    <a class="mk-text-link" href="{% url 'about' %}">Learn more →</a>
+  </div>
+  <div class="mk-stats">
+    {% for s in stats %}
+    <article>
+      <strong>{{ s.value }}</strong>
+      <span>{{ s.label }}</span>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mk-section mk-section-alt">
+  <div class="mk-section-head">
+    <p class="mk-eyebrow">Our destinations</p>
+    <h2>Arabia, crafted for discovery</h2>
+  </div>
+  <div class="mk-dest-grid">
+    {% for d in destinations %}
+    <a class="mk-dest-card" href="{% url 'destination_detail' d.slug %}" style="--accent: {{ d.accent }}">
+      <span class="mk-dest-label">{{ d.short }}</span>
+      <h3>{{ d.name }}</h3>
+      <p>{{ d.summary|truncatewords:22 }}</p>
+      <span class="mk-text-link">Read more →</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mk-section">
+  <div class="mk-section-head">
+    <p class="mk-eyebrow">Services</p>
+    <h2>Everything your journey needs</h2>
+  </div>
+  <div class="mk-service-grid">
+    {% for s in services %}
+    <article class="mk-service-card">
+      <h3>{{ s.title }}</h3>
+      <p>{{ s.text }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="mk-center"><a class="mk-btn mk-btn-outline" href="{% url 'services' %}">All services</a></p>
+</section>
+
+<section class="mk-section mk-cta-band">
+  <div>
+    <h2>Ready to craft the next itinerary?</h2>
+    <p>Search live hotels, or join as a travel partner for dedicated B2B rates.</p>
+  </div>
+  <div class="mk-hero-actions">
+    <a class="mk-btn mk-btn-primary" href="{% url 'book_home' %}">Search hotels</a>
+    <a class="mk-btn mk-btn-ghost" href="{% url 'partner_register' %}">Register as partner</a>
+  </div>
+</section>
+{% endblock %}

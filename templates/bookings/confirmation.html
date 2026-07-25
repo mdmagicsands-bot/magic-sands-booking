@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Confirmed | {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<section class="page narrow-page">
+  <p class="eyebrow success">Booking confirmed</p>
+  <h1>You're all set</h1>
+  <div class="form-panel confirm-card">
+    <dl class="dl">
+      <dt>Booking ID</dt>
+      <dd>{{ booking.liteapi_booking_id|default:"—" }}</dd>
+      <dt>Hotel confirmation</dt>
+      <dd>{{ booking.hotel_confirmation_code|default:"—" }}</dd>
+      <dt>Hotel</dt>
+      <dd>{{ booking.hotel_name|default:booking.hotel_id }}</dd>
+      <dt>Dates</dt>
+      <dd>{{ booking.check_in }} → {{ booking.check_out }}</dd>
+      <dt>Guest</dt>
+      <dd>{{ booking.guest_full_name }} · {{ booking.guest_email }}</dd>
+      <dt>Total</dt>
+      <dd>{% if booking.amount %}{{ booking.currency }} {{ booking.amount }}{% else %}—{% endif %}</dd>
+    </dl>
+  </div>
+  <a class="btn btn-primary" href="{% url 'book_home' %}">Book another stay</a>
+</section>
+{% endblock %}

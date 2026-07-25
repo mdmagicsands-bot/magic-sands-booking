@@ -1,0 +1,23 @@
+{% extends "marketing/base.html" %}
+{% block title %}Testimonials | {{ brand_full }}{% endblock %}
+{% block content %}
+<section class="mk-page-hero">
+  <p class="mk-eyebrow">Testimonials</p>
+  <h1>Trusted by travel partners</h1>
+  <p class="mk-lede">Words from agencies and planners who build Arabia programmes with us.</p>
+</section>
+
+<section class="mk-section">
+  <div class="mk-quote-grid">
+    {% for t in testimonials %}
+    <blockquote class="mk-quote">
+      <p>“{{ t.quote }}”</p>
+      <footer>
+        <strong>{{ t.name }}</strong>
+        <span>{{ t.role }}</span>
+      </footer>
+    </blockquote>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

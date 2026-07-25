@@ -1,0 +1,31 @@
+{% extends "marketing/base.html" %}
+{% block title %}Services | {{ brand_full }}{% endblock %}
+{% block content %}
+<section class="mk-page-hero">
+  <p class="mk-eyebrow">Services</p>
+  <h1>Destination management, end to end</h1>
+  <p class="mk-lede">Bespoke travel and event services crafted for agencies, corporates, and discerning travellers.</p>
+</section>
+
+<section class="mk-section">
+  <div class="mk-service-grid">
+    {% for s in services %}
+    <article class="mk-service-card">
+      <h3>{{ s.title }}</h3>
+      <p>{{ s.text }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mk-section mk-cta-band">
+  <div>
+    <h2>Need a quotation?</h2>
+    <p>Partners can log in for B2B rates, or contact our Oman and UAE desks directly.</p>
+  </div>
+  <div class="mk-hero-actions">
+    <a class="mk-btn mk-btn-primary" href="{% url 'partner_login' %}">Partner login</a>
+    <a class="mk-btn mk-btn-ghost" href="{% url 'contact' %}">Contact us</a>
+  </div>
+</section>
+{% endblock %}

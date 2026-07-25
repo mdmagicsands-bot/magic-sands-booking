@@ -1,0 +1,95 @@
+{% extends "partners/base_admin.html" %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<section class="pa-stats">
+  <article class="pa-stat">
+    <p>Total bookings</p>
+    <strong>{{ stats.total }}</strong>
+  </article>
+  <article class="pa-stat ok">
+    <p>Confirmed</p>
+    <strong>{{ stats.confirmed }}</strong>
+  </article>
+  <article class="pa-stat warn">
+    <p>Pending payment</p>
+    <strong>{{ stats.pending }}</strong>
+  </article>
+  <article class="pa-stat">
+    <p>Partner requests</p>
+    <strong>{{ stats.partner_requests }}</strong>
+  </article>
+  <article class="pa-stat">
+    <p>Confirmed revenue</p>
+    <strong>{% if revenue %}{{ revenue }}{% else %}0{% endif %}</strong>
+  </article>
+</section>
+
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Pending partner registrations</h2>
+    <a href="{% url 'partner_requests' %}" class="pa-link">View all</a>
+  </div>
+  {% if pending_partners %}
+  <ul class="muted" style="margin:0;padding-left:1.1rem">
+    {% for r in pending_partners %}
+    <li><strong>{{ r.company_name }}</strong> — {{ r.email }} ({{ r.created_at|date:"Y-m-d" }})</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted">No pending requests. Hostinger registrations appear here.</p>
+  {% endif %}
+</section>
+
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Recent bookings</h2>
+    <a href="{% url 'partner_bookings' %}" class="pa-link">View all</a>
+  </div>
+  {% if recent %}
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead>
+        <tr>
+          <th>Guest</th>
+          <th>Hotel</th>
+          <th>Dates</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in recent %}
+        <tr>
+          <td>
+            <strong>{{ b.guest_full_name }}</strong><br>
+            <span class="muted">{{ b.guest_email }}</span>
+          </td>
+          <td>{{ b.hotel_name|default:b.hotel_id|default:"—" }}</td>
+          <td>{{ b.check_in|default:"—" }} → {{ b.check_out|default:"—" }}</td>
+          <td>{% if b.amount %}{{ b.currency }} {{ b.amount }}{% else %}—{% endif %}</td>
+          <td><span class="status status-{{ b.status }}">{{ b.get_status_display }}</span></td>
+          <td><a class="pa-link" href="{% url 'partner_booking_detail' b.pk %}">Open</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No bookings yet. Guest searches and checkouts will appear here.</p>
+  {% endif %}
+</section>
+
+<section class="pa-feature-row">
+  <article class="pa-card mini">
+    <h3>Guest booking site</h3>
+    <p>Search hotels and complete LiteAPI bookings under Magic Sands branding.</p>
+    <a class="pl-btn small" href="{% url 'home' %}">Open site</a>
+  </article>
+  <article class="pa-card mini">
+    <h3>Booking management</h3>
+    <p>Filter by status, search guests, and update booking states.</p>
+    <a class="pl-btn small" href="{% url 'partner_bookings' %}">Manage bookings</a>
+  </article>
+</section>
+{% endblock %}

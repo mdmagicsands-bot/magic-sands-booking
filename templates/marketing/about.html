@@ -1,0 +1,50 @@
+{% extends "marketing/base.html" %}
+{% block title %}About Us | {{ brand_full }}{% endblock %}
+{% block content %}
+<section class="mk-page-hero">
+  <p class="mk-eyebrow">About us</p>
+  <h1>Artisans of extraordinary experiences</h1>
+  <p class="mk-lede">{{ about_blurb }}</p>
+</section>
+
+<section class="mk-section">
+  <div class="mk-two-col">
+    <div>
+      <h2>Who we are</h2>
+      <p>
+        {{ brand_full }} is a destination management company designing journeys that transcend the expected.
+        From Oman and the UAE to the wider Arabia region, we weave elegance, comfort, and discovery into every programme.
+      </p>
+      <p>
+        Whether you need FIT confirmations, group movements, or incentive events, our teams operate with calm precision —
+        hotels, transfers, guides, and last-mile details handled as one craft.
+      </p>
+    </div>
+    <div class="mk-stats mk-stats-stack">
+      {% for s in stats %}
+      <article>
+        <strong>{{ s.value }}</strong>
+        <span>{{ s.label }}</span>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="mk-section mk-section-alt">
+  <div class="mk-section-head">
+    <h2>Where we operate</h2>
+  </div>
+  <div class="mk-office-grid">
+    {% for office in offices %}
+    <article class="mk-card">
+      <h3>{{ office.label }}</h3>
+      <p>{{ office.address }}</p>
+      {% if office.shop %}<p>{{ office.shop }}</p>{% endif %}
+      <p><a href="tel:{{ office.phone }}">{{ office.phone }}</a><br>
+      <a href="mailto:{{ office.email }}">{{ office.email }}</a></p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Payment | {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<section class="page narrow-page">
+  <p class="eyebrow">Secure payment</p>
+  <h1>Pay for your stay</h1>
+  <p class="meta">
+    {{ booking.hotel_name|default:booking.hotel_id }}
+    {% if booking.amount %} · {{ booking.currency }} {{ booking.amount }}{% endif %}
+  </p>
+  <p class="hint">Sandbox test card: <code>4242 4242 4242 4242</code>, any future expiry, any CVC.</p>
+
+  <div class="form-panel">
+    <div id="liteapi-payment"></div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://payment-wrapper.liteapi.travel/dist/liteAPIPayment.js?v=a1"></script>
+<script>
+  var liteAPIConfig = {
+    publicKey: "{{ public_key }}",
+    secretKey: "{{ secret_key }}",
+    returnUrl: "{{ return_url|escapejs }}",
+    targetElement: "#liteapi-payment",
+    appearance: { theme: "flat" },
+    options: { business: { name: "Magic Sands Booking" } }
+  };
+  var liteAPIPayment = new LiteAPIPayment(liteAPIConfig);
+  liteAPIPayment.handlePayment();
+</script>
+{% endblock %}

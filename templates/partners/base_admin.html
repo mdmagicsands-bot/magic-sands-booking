@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Partner Admin | Magic Sands{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/partner.css' %}">
+</head>
+<body class="partner-admin">
+  <aside class="pa-sidebar">
+    <a class="pa-brand" href="{% url 'partner_dashboard' %}">
+      <span class="pl-mark">MS</span>
+      <span>
+        <strong>Magic Sands</strong>
+        <small>Partner Admin</small>
+      </span>
+    </a>
+    <nav class="pa-nav">
+      <a href="{% url 'partner_dashboard' %}" class="{% if request.resolver_match.url_name == 'partner_dashboard' %}active{% endif %}">Dashboard</a>
+      <a href="{% url 'partner_bookings' %}" class="{% if 'booking' in request.resolver_match.url_name %}active{% endif %}">Bookings</a>
+      <a href="{% url 'partner_requests' %}" class="{% if request.resolver_match.url_name == 'partner_requests' %}active{% endif %}">Partner requests</a>
+      <a href="{% url 'home' %}" target="_blank" rel="noopener">Guest site ↗</a>
+      <a href="/django-admin/">System admin</a>
+    </nav>
+    <form method="post" action="{% url 'partner_logout' %}" class="pa-logout">
+      {% csrf_token %}
+      <button type="submit">Sign out</button>
+    </form>
+  </aside>
+
+  <div class="pa-main">
+    <header class="pa-top">
+      <div>
+        <p class="pa-eyebrow">{% block eyebrow %}Partner portal{% endblock %}</p>
+        <h1>{% block heading %}Dashboard{% endblock %}</h1>
+      </div>
+      <div class="pa-user">
+        <span>{{ request.user.get_username }}</span>
+      </div>
+    </header>
+
+    {% if messages %}
+    <div class="pa-messages">
+      {% for message in messages %}
+      <div class="pl-alert pl-alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

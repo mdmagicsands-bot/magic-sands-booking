@@ -1,0 +1,52 @@
+{% extends "partners/base_admin.html" %}
+{% block eyebrow %}Booking #{{ booking.pk }}{% endblock %}
+{% block heading %}{{ booking.guest_full_name }}{% endblock %}
+{% block content %}
+<section class="pa-detail-grid">
+  <article class="pa-card">
+    <h2>Guest &amp; stay</h2>
+    <dl class="pa-dl">
+      <dt>Guest</dt><dd>{{ booking.guest_full_name }}</dd>
+      <dt>Email</dt><dd>{{ booking.guest_email }}</dd>
+      <dt>Phone</dt><dd>{{ booking.guest_phone|default:"—" }}</dd>
+      <dt>Hotel</dt><dd>{{ booking.hotel_name|default:booking.hotel_id|default:"—" }}</dd>
+      <dt>Hotel ID</dt><dd class="mono">{{ booking.hotel_id|default:"—" }}</dd>
+      <dt>Dates</dt><dd>{{ booking.check_in|default:"—" }} → {{ booking.check_out|default:"—" }}</dd>
+      <dt>Adults</dt><dd>{{ booking.adults }}</dd>
+      <dt>Amount</dt><dd>{% if booking.amount %}{{ booking.currency }} {{ booking.amount }}{% else %}—{% endif %}</dd>
+      <dt>Created</dt><dd>{{ booking.created_at }}</dd>
+    </dl>
+  </article>
+
+  <article class="pa-card">
+    <h2>Supplier &amp; status</h2>
+    <dl class="pa-dl">
+      <dt>Status</dt>
+      <dd><span class="status status-{{ booking.status }}">{{ booking.get_status_display }}</span></dd>
+      <dt>LiteAPI booking</dt><dd class="mono">{{ booking.liteapi_booking_id|default:"—" }}</dd>
+      <dt>Hotel confirmation</dt><dd class="mono">{{ booking.hotel_confirmation_code|default:"—" }}</dd>
+      <dt>Prebook ID</dt><dd class="mono">{{ booking.prebook_id|default:"—" }}</dd>
+      <dt>Transaction ID</dt><dd class="mono">{{ booking.transaction_id|default:"—" }}</dd>
+      <dt>Offer ID</dt><dd class="mono">{{ booking.offer_id|default:"—" }}</dd>
+      {% if booking.error_message %}
+      <dt>Error</dt><dd>{{ booking.error_message }}</dd>
+      {% endif %}
+    </dl>
+
+    <form method="post" action="{% url 'partner_booking_status' booking.pk %}" class="pa-status-form">
+      {% csrf_token %}
+      <label>
+        Update status
+        <select name="status">
+          {% for value, label in booking.Status.choices %}
+          <option value="{{ value }}" {% if booking.status == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <button type="submit" class="pl-btn small">Save</button>
+    </form>
+  </article>
+</section>
+
+<p><a class="pa-link" href="{% url 'partner_bookings' %}">← Back to bookings</a></p>
+{% endblock %}

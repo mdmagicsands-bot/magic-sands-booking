@@ -1,0 +1,44 @@
+{% extends "marketing/base.html" %}
+{% block title %}Contact Us | {{ brand_full }}{% endblock %}
+{% block content %}
+<section class="mk-page-hero">
+  <p class="mk-eyebrow">Contact</p>
+  <h1>Let’s plan your next journey</h1>
+  <p class="mk-lede">Reach our Oman or UAE desks — or send a message and we’ll respond shortly.</p>
+</section>
+
+<section class="mk-section">
+  <div class="mk-two-col">
+    <div class="mk-office-grid">
+      {% for office in offices %}
+      <article class="mk-card">
+        <h3>{{ office.label }}</h3>
+        <p>{{ office.address }}</p>
+        {% if office.shop %}<p>{{ office.shop }}</p>{% endif %}
+        <p>
+          <a href="tel:{{ office.phone }}">{{ office.phone }}</a><br>
+          <a href="mailto:{{ office.email }}">{{ office.email }}</a>
+        </p>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="mk-card">
+      {% if sent %}
+      <h2>Thank you</h2>
+      <p>Your message was received. Our team will get back to you soon.</p>
+      {% else %}
+      <h2>Send a message</h2>
+      <form method="post" class="mk-form">
+        {% csrf_token %}
+        <label>Name <input type="text" name="name" required></label>
+        <label>Email <input type="email" name="email" required></label>
+        <label>Company <input type="text" name="company"></label>
+        <label>Message <textarea name="message" rows="5" required></textarea></label>
+        <button type="submit" class="mk-btn mk-btn-primary">Send message</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

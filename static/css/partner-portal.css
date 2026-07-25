@@ -1,0 +1,286 @@
+:root {
+  --blue: #1f4f9c;
+  --blue-dark: #163a74;
+  --green: #2f9e5d;
+  --green-dark: #24824b;
+  --ink: #1c2430;
+  --muted: #667085;
+  --line: #e6ebf2;
+  --bg: #f7f9fc;
+  --card: #ffffff;
+  --font: "Montserrat", system-ui, sans-serif;
+  --display: "Cormorant Garamond", Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--blue); text-decoration: none; }
+
+.site-header {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: inherit;
+}
+.logo-mark {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #5b8fd6, var(--blue-dark));
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.75rem;
+}
+.logo-text strong {
+  display: block;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+.logo-text small {
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  font-weight: 600;
+}
+.nav-desktop {
+  display: none;
+  gap: 1.1rem;
+}
+.nav-desktop a {
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.nav-desktop a:hover { color: var(--blue); }
+.header-actions { display: flex; gap: 0.6rem; align-items: center; }
+.btn-outline {
+  border: 1.5px solid var(--blue);
+  color: var(--blue);
+  border-radius: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.btn-outline:hover { background: #eef4ff; }
+
+@media (min-width: 980px) {
+  .nav-desktop { display: flex; }
+}
+
+.portal {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 3.5rem;
+}
+.portal-intro {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.portal-intro h1 {
+  margin: 0 0 0.65rem;
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 2.85rem);
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+.portal-intro p {
+  margin: 0 auto;
+  max-width: 42rem;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 0.98rem;
+}
+
+.portal-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+@media (min-width: 860px) {
+  .portal-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+}
+
+.card {
+  background: var(--card);
+  border-radius: 1rem;
+  box-shadow: 0 12px 30px rgba(28, 36, 48, 0.06);
+  border: 1px solid #eef2f7;
+  padding: 1.5rem 1.4rem 1.45rem;
+}
+.card h2 {
+  margin: 0 0 1rem;
+  font-family: var(--display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.card h3 {
+  margin: 1.35rem 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--blue-dark);
+  font-weight: 700;
+}
+
+.checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+.checks li {
+  position: relative;
+  padding-left: 1.45rem;
+  color: var(--ink);
+  font-size: 0.94rem;
+  font-weight: 500;
+}
+.checks li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--blue);
+  font-weight: 700;
+}
+.checks.soft li::before { color: var(--green); }
+
+.login-form {
+  display: grid;
+  gap: 0.85rem;
+}
+.login-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.login-form input[type="email"],
+.login-form input[type="password"] {
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  padding: 0.75rem 0.85rem;
+  font: inherit;
+  font-weight: 500;
+  color: var(--ink);
+  background: #fff;
+}
+.login-form input:focus {
+  outline: 2px solid rgba(31, 79, 156, 0.18);
+  border-color: var(--blue);
+}
+.remember {
+  display: flex !important;
+  align-items: center;
+  gap: 0.45rem;
+  grid-template-columns: none !important;
+  font-weight: 500 !important;
+  color: var(--ink) !important;
+}
+
+.btn-primary {
+  appearance: none;
+  border: 0;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 0.55rem;
+  padding: 0.85rem 1rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary:hover { background: var(--blue-dark); }
+
+.register-block {
+  margin-top: 1.25rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.register-block p {
+  margin: 0 0 0.7rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.btn-register {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+  background: var(--green);
+  color: #fff;
+  border-radius: 0.55rem;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+}
+.btn-register:hover { background: var(--green-dark); color: #fff; }
+
+.site-footer {
+  text-align: center;
+  padding: 1.25rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+
+.flash {
+  max-width: 1080px;
+  margin: 0 auto 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.flash-error { background: #fef2f2; color: #b91c1c; }
+.flash-ok { background: #ecfdf5; color: #0f7a45; }
+
+.register-card { max-width: 640px; margin: 0 auto; }
+.login-form textarea {
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  padding: 0.75rem 0.85rem;
+  font: inherit;
+  font-weight: 500;
+  color: var(--ink);
+  resize: vertical;
+}
+.register-note {
+  margin: 1rem 0 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.alert{border-radius:.55rem;padding:.7rem .85rem;margin-bottom:.85rem;font-size:.88rem;font-weight:500}
+.alert-error{background:#fef2f2;color:#b91c1c}
+.alert-success{background:#ecfdf5;color:#0f7a45}
+.login-form{display:grid;gap:.85rem}
+.login-form label{display:grid;gap:.35rem;font-size:.82rem;font-weight:600;color:#667085}
+.login-form input,.login-form textarea{border:1px solid #e6ebf2;border-radius:.55rem;padding:.75rem .85rem;font:inherit;color:#1c2430}
+.btn-primary{appearance:none;border:0;background:#1f4f9c;color:#fff;border-radius:.55rem;padding:.85rem 1rem;font:inherit;font-weight:700;cursor:pointer}
+.card{background:#fff;border-radius:1rem;box-shadow:0 12px 30px rgba(28,36,48,.06);border:1px solid #eef2f7;padding:1.5rem}
+.portal{max-width:1080px;margin:0 auto;padding:2.5rem 1.25rem}
+.portal-intro{text-align:center;margin-bottom:2rem}
+.portal-intro h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:2.4rem;margin:0 0 .65rem}
