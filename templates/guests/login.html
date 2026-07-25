@@ -22,6 +22,12 @@
     <h1>Welcome back</h1>
     <p class="lede">Sign in to search hotels, manage bookings, and continue where you left off.</p>
 
+    <div class="gp-flash" style="background:#e8fafc;border-color:#9fe3ec">
+      <strong>Demo guest login</strong><br>
+      Email: <code>demo@magicsandsdmc.com</code><br>
+      Password: <code>Demo1234</code>
+    </div>
+
     {% if messages %}
       {% for message in messages %}
       <div class="gp-flash gp-flash-{{ message.tags }}">{{ message }}</div>

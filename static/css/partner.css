@@ -787,6 +787,27 @@ a:hover { color: var(--navy); }
   padding: 0.35rem 0.65rem;
   background: rgba(27, 107, 116, 0.1);
 }
+.admin-hub-guest {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.2rem;
+  background: #fff;
+  border: 1px dashed rgba(27, 107, 116, 0.35);
+  border-radius: 1.1rem;
+}
+.admin-hub-guest h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+  color: var(--navy);
+}
+.admin-hub-guest p {
+  margin: 0 0 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.admin-hub-demo {
+  margin: 0.85rem 0 0 !important;
+  font-size: 0.88rem;
+}
 .admin-hub-foot {
   margin-top: 1.75rem;
   color: var(--muted);

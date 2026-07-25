@@ -67,10 +67,22 @@
       </a>
     </div>
 
+    <section class="admin-hub-guest">
+      <h2>Guest front-end portal</h2>
+      <p>Hotel search dashboard for travelers (Nuitee-style left menu). This is separate from admin.</p>
+      <a class="pl-btn small" href="{% url 'guest_login' %}">Open guest login →</a>
+      <p class="admin-hub-demo">
+        Demo login: <strong>demo@magicsandsdmc.com</strong> /
+        <strong>Demo1234</strong>
+      </p>
+    </section>
+
     <p class="admin-hub-foot">
       <a href="{% url 'home' %}">← Back to website</a>
       ·
-      <a href="{% url 'book_home' %}">Guest hotel search</a>
+      <a href="{% url 'book_home' %}">Public hotel search</a>
+      ·
+      <a href="{% url 'guest_login' %}">Guest portal login</a>
     </p>
   </main>
 </body>

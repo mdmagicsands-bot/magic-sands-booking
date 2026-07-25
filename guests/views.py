@@ -58,8 +58,14 @@ def _authenticate_guest(request, email: str, password: str):
 def guest_login(request):
     if _is_guest_user(request.user):
         return redirect("guest_dashboard")
+    # Staff sessions were sending people back to the admin hub.
+    # Sign them out so the guest front-end login is always reachable.
     if request.user.is_authenticated and request.user.is_staff:
-        return redirect("admin_hub")
+        logout(request)
+        messages.info(
+            request,
+            "Signed out of admin. Use a guest account below for the front-end booking portal.",
+        )
 
     form = GuestLoginForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
