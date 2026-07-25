@@ -34,7 +34,11 @@
     {% if success %}
     <section class="pr-success">
       <h2>Application received</h2>
-      <p>Thank you. Our partnerships team will review your documents and contact you shortly.</p>
+      <p>
+        Thank you. Your partner registration is now
+        <strong>Pending Verification</strong>.
+        A confirmation email has been generated, and our admin team has been notified.
+      </p>
       <a class="pl-btn" href="{% url 'partner_login' %}" style="width:auto;display:inline-flex">Go to partner login</a>
     </section>
     {% else %}

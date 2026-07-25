@@ -14,8 +14,8 @@
     <p>Pending payment</p>
     <strong>{{ stats.pending }}</strong>
   </article>
-  <article class="pa-stat">
-    <p>Partner requests</p>
+  <article class="pa-stat warn">
+    <p>Pending verification</p>
     <strong>{{ stats.partner_requests }}</strong>
   </article>
   <article class="pa-stat">
@@ -24,19 +24,29 @@
   </article>
 </section>
 
-<section class="pa-card">
+<section class="pa-card pa-new-partners">
   <div class="pa-card-head">
-    <h2>Pending partner registrations</h2>
-    <a href="{% url 'partner_requests' %}" class="pa-link">View all</a>
+    <div>
+      <p class="pa-step-label">Step 2</p>
+      <h2>New Partner Registration</h2>
+    </div>
+    <a href="{% url 'partner_requests' %}?status=pending" class="pa-link">View all</a>
   </div>
+
   {% if pending_partners %}
-  <ul class="muted" style="margin:0;padding-left:1.1rem">
+  <div class="pa-partner-feed">
     {% for r in pending_partners %}
-    <li><strong>{{ r.company_name }}</strong> — {{ r.email }} ({{ r.created_at|date:"Y-m-d" }})</li>
+    <a class="pa-partner-item" href="{% url 'partner_request_detail' r.pk %}">
+      <div>
+        <strong>{{ r.company_name }}</strong>
+        <span class="muted">{{ r.contact_name }} · {{ r.email }}</span>
+      </div>
+      <span class="status status-pending">Pending Verification</span>
+    </a>
     {% endfor %}
-  </ul>
+  </div>
   {% else %}
-  <p class="muted">No pending requests. Hostinger registrations appear here.</p>
+  <p class="muted">No new partner registrations awaiting verification.</p>
   {% endif %}
 </section>
 

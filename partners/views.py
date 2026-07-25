@@ -155,6 +155,9 @@ def _save_partner_registration(request, *, redirect_error, redirect_ok):
             setattr(reg, field_name, uploaded)
 
     reg.save()
+    from .emails import send_partner_registration_emails
+
+    send_partner_registration_emails(reg)
     return redirect(redirect_ok)
 
 

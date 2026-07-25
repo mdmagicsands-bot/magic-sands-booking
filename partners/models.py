@@ -8,7 +8,7 @@ def partner_upload_to(instance, filename: str) -> str:
 
 class PartnerRegistration(models.Model):
     class Status(models.TextChoices):
-        PENDING = "pending", "Pending review"
+        PENDING = "pending", "Pending Verification"
         APPROVED = "approved", "Approved"
         REJECTED = "rejected", "Rejected"
 

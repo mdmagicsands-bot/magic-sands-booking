@@ -142,3 +142,23 @@ if DEBUG:
     ):
         if origin not in CSRF_TRUSTED_ORIGINS:
             CSRF_TRUSTED_ORIGINS.append(origin)
+
+# Email — configure SMTP later for production partner registration alerts
+EMAIL_BACKEND = os.getenv(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.console.EmailBackend" if DEBUG else "django.core.mail.backends.smtp.EmailBackend",
+)
+EMAIL_HOST = os.getenv("EMAIL_HOST", "")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() in ("1", "true", "yes")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@magicsandsdmc.com")
+PARTNER_REGISTRATION_NOTIFY_EMAIL = os.getenv(
+    "PARTNER_REGISTRATION_NOTIFY_EMAIL",
+    "oman@magicsandsdmc.com",
+)
+PARTNER_REGISTRATION_EMAILS_ENABLED = os.getenv(
+    "PARTNER_REGISTRATION_EMAILS_ENABLED", "True"
+).lower() in ("1", "true", "yes")
+EMAIL_FILE_PATH = os.getenv("EMAIL_FILE_PATH", str(BASE_DIR / "tmp" / "emails"))

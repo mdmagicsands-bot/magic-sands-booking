@@ -59,7 +59,7 @@
         <span class="admin-hub-badge">
           {% if booking_pending %}{{ booking_pending }} pending booking{{ booking_pending|pluralize }}{% endif %}
           {% if booking_pending and partner_pending %} · {% endif %}
-          {% if partner_pending %}{{ partner_pending }} partner request{{ partner_pending|pluralize }}{% endif %}
+          {% if partner_pending %}{{ partner_pending }} pending verification{% endif %}
         </span>
         {% else %}
         <span class="admin-hub-cta">Open booking admin →</span>
