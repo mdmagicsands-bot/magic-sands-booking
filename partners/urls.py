@@ -1,6 +1,17 @@
 from django.urls import path
 
 from . import views
+from .menu import MODULE_PAGES
+
+module_urls = [
+    path(
+        f"admin/modules/{key.replace('admin_mod_', '').replace('_', '-')}/",
+        views.admin_module_page,
+        {"module_key": key},
+        name=key,
+    )
+    for key in MODULE_PAGES.keys()
+]
 
 urlpatterns = [
     # Hostinger → Railway gateways (CSRF exempt form posts)
@@ -18,6 +29,26 @@ urlpatterns = [
     path("admin/", views.admin_hub, name="admin_hub"),
     path("admin/booking/", views.dashboard, name="partner_dashboard"),
     path("admin/bookings/", views.booking_list, name="partner_bookings"),
+    path(
+        "admin/bookings/pending/",
+        views.booking_list_pending,
+        name="partner_bookings_pending",
+    ),
+    path(
+        "admin/bookings/confirmed/",
+        views.booking_list_confirmed,
+        name="partner_bookings_confirmed",
+    ),
+    path(
+        "admin/bookings/cancelled/",
+        views.booking_list_cancelled,
+        name="partner_bookings_cancelled",
+    ),
+    path(
+        "admin/bookings/failed/",
+        views.booking_list_failed,
+        name="partner_bookings_failed",
+    ),
     path("admin/bookings/<int:booking_id>/", views.booking_detail, name="partner_booking_detail"),
     path(
         "admin/bookings/<int:booking_id>/status/",
@@ -35,4 +66,5 @@ urlpatterns = [
         views.partner_request_status,
         name="partner_request_status",
     ),
+    *module_urls,
 ]

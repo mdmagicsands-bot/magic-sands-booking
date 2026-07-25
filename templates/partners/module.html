@@ -1,0 +1,43 @@
+{% extends "partners/base_admin.html" %}
+{% block eyebrow %}{{ module.eyebrow }}{% endblock %}
+{% block heading %}{{ module.title }}{% endblock %}
+{% block title %}{{ module.title }} | Magic Sands{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <p class="pa-module-status">{{ module.status }}</p>
+  <p class="pa-module-summary">{{ module.summary }}</p>
+  {% if module.bullets %}
+  <ul class="pa-module-bullets">
+    {% for bullet in module.bullets %}
+    <li>{{ bullet }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <div class="mk-admin-actions">
+    {% if module.cta_url_name %}
+    <a class="pl-btn small" href="{% url module.cta_url_name %}">{{ module.cta_label }}</a>
+    {% elif module.cta_href %}
+    <a class="pl-btn small" href="{{ module.cta_href }}">{{ module.cta_label }}</a>
+    {% endif %}
+    <a class="pa-link" href="{% url 'partner_dashboard' %}">← Back to dashboard</a>
+  </div>
+</section>
+
+<section class="pa-feature-row">
+  <article class="pa-card mini">
+    <h3>Nuitee channel</h3>
+    <p>Live hotel search, rates, and payments via LiteAPI / Nuitee Connect.</p>
+    <a class="pl-btn small" href="{% url 'book_home' %}" target="_blank" rel="noopener">Open search</a>
+  </article>
+  <article class="pa-card mini">
+    <h3>Direct contracts</h3>
+    <p>Allotments, contracted rates, and stop-sales for Magic Sands hotel agreements.</p>
+    <a class="pl-btn small" href="{% url 'admin_mod_direct_hotels' %}">Direct hotels</a>
+  </article>
+  <article class="pa-card mini">
+    <h3>B2B partners</h3>
+    <p>Registrations, credit, and partner rate plans for agencies.</p>
+    <a class="pl-btn small" href="{% url 'partner_requests' %}?status=pending">New registrations</a>
+  </article>
+</section>
+{% endblock %}

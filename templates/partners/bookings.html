@@ -1,6 +1,6 @@
 {% extends "partners/base_admin.html" %}
-{% block eyebrow %}Operations{% endblock %}
-{% block heading %}Bookings{% endblock %}
+{% block eyebrow %}Reservations{% endblock %}
+{% block heading %}{{ list_title|default:"Bookings" }}{% endblock %}
 {% block content %}
 <section class="pa-card">
   <form class="pa-filters" method="get">

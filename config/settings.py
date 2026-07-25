@@ -69,6 +69,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "hotels.context_processors.branding",
+                "partners.context_processors.booking_admin_nav",
             ],
         },
     },

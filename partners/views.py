@@ -333,10 +333,8 @@ def partner_request_status(request, registration_id: int):
     return redirect(next_url)
 
 
-@login_required(login_url="admin_login")
-@user_passes_test(_is_staff, login_url="admin_login")
-def booking_list(request):
-    status = (request.GET.get("status") or "").strip()
+def _booking_list_response(request, *, forced_status: str | None = None, list_title: str | None = None):
+    status = forced_status if forced_status is not None else (request.GET.get("status") or "").strip()
     q = (request.GET.get("q") or "").strip()
     qs = Booking.objects.all()
     if status:
@@ -350,6 +348,12 @@ def booking_list(request):
             | Q(liteapi_booking_id__icontains=q)
             | Q(hotel_confirmation_code__icontains=q)
         )
+    titles = {
+        "pending_payment": "Pending payment",
+        "confirmed": "Confirmed bookings",
+        "cancelled": "Cancellations",
+        "failed": "Failed / errors",
+    }
     return render(
         request,
         "partners/bookings.html",
@@ -358,7 +362,54 @@ def booking_list(request):
             "status": status,
             "q": q,
             "status_choices": Booking.Status.choices,
+            "list_title": list_title or titles.get(status, "All bookings"),
         },
+    )
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(_is_staff, login_url="admin_login")
+def booking_list(request):
+    return _booking_list_response(request)
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(_is_staff, login_url="admin_login")
+def booking_list_pending(request):
+    return _booking_list_response(
+        request,
+        forced_status=Booking.Status.PENDING_PAYMENT,
+        list_title="Pending payment",
+    )
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(_is_staff, login_url="admin_login")
+def booking_list_confirmed(request):
+    return _booking_list_response(
+        request,
+        forced_status=Booking.Status.CONFIRMED,
+        list_title="Confirmed bookings",
+    )
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(_is_staff, login_url="admin_login")
+def booking_list_cancelled(request):
+    return _booking_list_response(
+        request,
+        forced_status=Booking.Status.CANCELLED,
+        list_title="Cancellations",
+    )
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(_is_staff, login_url="admin_login")
+def booking_list_failed(request):
+    return _booking_list_response(
+        request,
+        forced_status=Booking.Status.FAILED,
+        list_title="Failed / errors",
     )
 
 
@@ -383,3 +434,21 @@ def booking_update_status(request, booking_id: int):
     else:
         messages.error(request, "Invalid status.")
     return redirect("partner_booking_detail", booking_id=booking.pk)
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(_is_staff, login_url="admin_login")
+def admin_module_page(request, module_key: str):
+    from .menu import MODULE_PAGES
+
+    page = MODULE_PAGES.get(module_key)
+    if not page:
+        return redirect("partner_dashboard")
+    return render(
+        request,
+        "partners/module.html",
+        {
+            "module": page,
+            "module_key": module_key,
+        },
+    )

@@ -366,41 +366,108 @@ a:hover { color: var(--navy); }
   background: var(--bg);
 }
 @media (min-width: 900px) {
-  .partner-admin { grid-template-columns: 250px 1fr; }
+  .partner-admin { grid-template-columns: 280px 1fr; }
 }
 
 .pa-sidebar {
   background: var(--navy);
   color: #fff;
-  padding: 1.25rem 1rem;
+  padding: 1.1rem 0.85rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.85rem;
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
 }
 .pa-brand {
   display: flex; gap: 0.7rem; align-items: center; color: #fff;
+  padding: 0 0.35rem;
 }
 .pa-brand strong { display: block; font-size: 0.95rem; }
 .pa-brand small { opacity: 0.75; font-size: 0.72rem; }
-.pa-nav { display: grid; gap: 0.35rem; }
+.pa-nav {
+  display: grid;
+  gap: 0.2rem;
+  overflow-y: auto;
+  padding-right: 0.15rem;
+  flex: 1;
+}
+.pa-nav-hub {
+  color: rgba(255,255,255,0.75) !important;
+  font-size: 0.82rem !important;
+  margin-bottom: 0.35rem;
+}
 .pa-nav a {
   color: rgba(255,255,255,0.85);
-  padding: 0.7rem 0.85rem;
-  border-radius: 0.7rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.55rem;
   font-weight: 600;
-  font-size: 0.92rem;
+  font-size: 0.84rem;
+  display: block;
 }
 .pa-nav a:hover, .pa-nav a.active {
   background: rgba(255,255,255,0.12);
   color: #fff;
 }
-.pa-logout { margin-top: auto; }
+.pa-nav-group {
+  border: 0;
+  margin: 0.15rem 0;
+}
+.pa-nav-group summary {
+  list-style: none;
+  cursor: pointer;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.65rem 0.75rem 0.35rem;
+  user-select: none;
+}
+.pa-nav-group summary::-webkit-details-marker { display: none; }
+.pa-nav-group summary::after {
+  content: "+";
+  float: right;
+  opacity: 0.7;
+}
+.pa-nav-group[open] summary::after { content: "–"; }
+.pa-nav-items {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0 0 0.25rem;
+}
+.pa-logout { margin-top: 0.5rem; flex-shrink: 0; }
 .pa-logout button {
   width: 100%; border: 1px solid rgba(255,255,255,0.25);
   background: transparent; color: #fff; border-radius: 0.7rem;
   padding: 0.7rem; font: inherit; font-weight: 600; cursor: pointer;
 }
 .pa-logout button:hover { background: rgba(255,255,255,0.1); }
+
+.pa-module-status {
+  display: inline-block;
+  margin: 0 0 0.85rem;
+  padding: 0.35rem 0.6rem;
+  background: #eef4ff;
+  color: var(--navy);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.pa-module-summary {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 46rem;
+}
+.pa-module-bullets {
+  margin: 0 0 1.25rem;
+  padding-left: 1.1rem;
+  color: var(--ink);
+  line-height: 1.55;
+}
+.pa-module-bullets li { margin: 0.25rem 0; }
 
 .pa-main { padding: 1.25rem 1.25rem 2.5rem; }
 .pa-top {

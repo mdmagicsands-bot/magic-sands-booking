@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Partner Admin | Magic Sands{% endblock %}</title>
+  <title>{% block title %}Booking Admin | Magic Sands{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,17 +16,33 @@
       <span class="pl-mark">MS</span>
       <span>
         <strong>Magic Sands</strong>
-        <small>Booking admin</small>
+        <small>B2B Booking System</small>
       </span>
     </a>
-    <nav class="pa-nav">
-      <a href="{% url 'admin_hub' %}">← Admin hub</a>
-      <a href="{% url 'partner_dashboard' %}" class="{% if request.resolver_match.url_name == 'partner_dashboard' %}active{% endif %}">Dashboard</a>
-      <a href="{% url 'partner_bookings' %}" class="{% if request.resolver_match.url_name == 'partner_bookings' or request.resolver_match.url_name == 'partner_booking_detail' %}active{% endif %}">Bookings</a>
-      <a href="{% url 'partner_requests' %}" class="{% if request.resolver_match.url_name == 'partner_requests' %}active{% endif %}">Partner requests</a>
-      <a href="{% url 'home' %}" target="_blank" rel="noopener">Guest site ↗</a>
-      <a href="/django-admin/">System admin</a>
+
+    <nav class="pa-nav" aria-label="Booking admin">
+      <a class="pa-nav-hub" href="{% url 'admin_hub' %}">← Admin hub</a>
+
+      {% for group in booking_menu_groups %}
+      <details class="pa-nav-group" {% if group.open %}open{% endif %}>
+        <summary>{{ group.label }}</summary>
+        <div class="pa-nav-items">
+          {% for item in group.items %}
+          <a
+            href="{{ item.href }}"
+            class="{% if item.active %}active{% endif %}"
+            {% if item.external %}target="_blank" rel="noopener"{% endif %}
+          >{{ item.label }}{% if item.external %} ↗{% endif %}</a>
+          {% endfor %}
+        </div>
+      </details>
+      {% empty %}
+      <a href="{% url 'partner_dashboard' %}">Dashboard</a>
+      <a href="{% url 'partner_bookings' %}">Bookings</a>
+      <a href="{% url 'partner_requests' %}">Partner requests</a>
+      {% endfor %}
     </nav>
+
     <form method="post" action="{% url 'partner_logout' %}" class="pa-logout">
       {% csrf_token %}
       <button type="submit">Sign out</button>
