@@ -20,7 +20,18 @@ _raw_hosts = [
 # In DEBUG, allow LAN / tunnel hosts so phones can open the site.
 ALLOWED_HOSTS = ["*"] if DEBUG and ("*" in _raw_hosts or not _raw_hosts) else _raw_hosts
 if DEBUG and "*" not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS = list({*_raw_hosts, "localhost", "127.0.0.1", "0.0.0.0", ".ngrok-free.app", ".ngrok.io", ".loca.lt"})
+    ALLOWED_HOSTS = list(
+        {
+            *_raw_hosts,
+            "localhost",
+            "127.0.0.1",
+            "0.0.0.0",
+            ".ngrok-free.app",
+            ".ngrok.io",
+            ".loca.lt",
+            ".trycloudflare.com",
+        }
+    )
 
 INSTALLED_APPS = [
     "django.contrib.admin",
