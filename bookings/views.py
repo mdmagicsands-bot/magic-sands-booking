@@ -25,6 +25,15 @@ def checkout(request):
         if not offer_id:
             messages.error(request, "Select a room rate to continue.")
             return redirect("book_home")
+        guest_defaults = {}
+        if request.user.is_authenticated and not request.user.is_staff:
+            profile = getattr(request.user, "guest_profile", None)
+            guest_defaults = {
+                "first_name": request.user.first_name,
+                "last_name": request.user.last_name,
+                "email": request.user.email,
+                "phone": getattr(profile, "phone", "") if profile else "",
+            }
         return render(
             request,
             "bookings/checkout.html",
@@ -35,6 +44,7 @@ def checkout(request):
                 "checkin": checkin,
                 "checkout": checkout_date,
                 "adults": adults,
+                "guest_defaults": guest_defaults,
             },
         )
 
@@ -54,6 +64,7 @@ def checkout(request):
         return redirect(request.get_full_path())
 
     booking = Booking.objects.create(
+        user=request.user if request.user.is_authenticated and not request.user.is_staff else None,
         offer_id=offer_id,
         hotel_id=hotel_id,
         hotel_name=hotel_name,

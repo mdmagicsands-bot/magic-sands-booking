@@ -1,0 +1,14 @@
+{% extends "guests/base_guest.html" %}
+{% block title %}Help & support | Magic Sands{% endblock %}
+{% block eyebrow %}Account{% endblock %}
+{% block heading %}Help & support{% endblock %}
+{% block content %}
+<section class="gp-card">
+  <h2>Need help with a booking?</h2>
+  <p class="gp-muted">Contact Magic Sands and we’ll assist with your Nuitee-powered reservation.</p>
+  <dl class="gp-kv" style="margin-top:1rem">
+    <div><dt>Email</dt><dd><a href="mailto:oman@magicsandsdmc.com">oman@magicsandsdmc.com</a></dd></div>
+    <div><dt>Website</dt><dd><a href="{% url 'home' %}">magicsandsdmc.com</a></dd></div>
+  </dl>
+</section>
+{% endblock %}

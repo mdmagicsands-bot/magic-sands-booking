@@ -1,0 +1,177 @@
+{% extends "guests/base_guest.html" %}
+{% block title %}Hotel search | Magic Sands{% endblock %}
+{% block eyebrow %}Hotels{% endblock %}
+{% block heading %}Hotel search{% endblock %}
+{% block content %}
+
+<section class="gp-card">
+  <div class="gp-card-head">
+    <h2>Find your stay</h2>
+  </div>
+  {% include "guests/_search_form.html" %}
+</section>
+
+{% if searched %}
+<section class="nuitee-page">
+  {% if sandbox %}
+  <div class="sandbox-banner">Sandbox mode: test data only, no real transactions.</div>
+  {% endif %}
+
+  <div class="nuitee-results-head">
+    <h1><span id="visible-count">{{ result_count }}</span> hotels in {{ destination|default:"your destination" }}</h1>
+    <label class="sort-label">
+      Sort by
+      <select id="sort-select" class="sort-select">
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+        <option value="stars-desc">Stars: high to low</option>
+        <option value="name-asc">Name: A–Z</option>
+      </select>
+    </label>
+  </div>
+
+  {% if not cards %}
+  <div class="gp-empty gp-card">
+    <p>No hotels found for these dates. Try another destination.</p>
+  </div>
+  {% else %}
+  <div class="nuitee-layout">
+    <aside class="nuitee-filters" id="filters">
+      <h2>Filters</h2>
+      <div class="filter-block">
+        <h3>Hotel name</h3>
+        <input type="search" id="filter-name" placeholder="Search hotel" class="filter-input">
+      </div>
+      <div class="filter-block">
+        <h3>Price ({{ cards.0.currency|default:"USD" }})</h3>
+        <div class="price-row">
+          <input type="number" id="filter-price-min" class="filter-input" value="{{ price_min }}" min="0">
+          <span>—</span>
+          <input type="number" id="filter-price-max" class="filter-input" value="{{ price_max }}" min="0">
+        </div>
+      </div>
+      <div class="filter-block">
+        <h3>Star rating</h3>
+        <label class="check"><input type="checkbox" name="stars" value="5"> 5 stars</label>
+        <label class="check"><input type="checkbox" name="stars" value="4"> 4 stars</label>
+        <label class="check"><input type="checkbox" name="stars" value="3"> 3 stars</label>
+        <label class="check"><input type="checkbox" name="stars" value="2"> 2 stars</label>
+        <label class="check"><input type="checkbox" name="stars" value="1"> 1 star</label>
+      </div>
+      <div class="filter-block">
+        <h3>Cancellation</h3>
+        <label class="check"><input type="checkbox" id="filter-refundable"> Refundable only</label>
+      </div>
+      <button type="button" class="gp-btn ghost" id="reset-filters" style="width:100%">Reset</button>
+    </aside>
+
+    <div class="nuitee-list" id="results-list">
+      {% for card in cards %}
+      <article
+        class="nuitee-hotel-card"
+        data-name="{{ card.name|lower }}"
+        data-price="{{ card.price|default:0 }}"
+        data-stars="{{ card.stars|default:0 }}"
+        data-refundable="{{ card.refundable }}"
+      >
+        <div class="nuitee-photo" {% if card.photo %}style="background-image:url('{{ card.photo }}')"{% endif %}></div>
+        <div class="nuitee-info">
+          <div class="nuitee-title-row">
+            <h3>{{ card.name }}</h3>
+            {% if card.stars %}<span class="stars">{{ card.stars }}★</span>{% endif %}
+          </div>
+          <p class="address">{{ card.address }}</p>
+          {% if card.room_name %}<p class="room">{{ card.room_name }}{% if card.board %} · {{ card.board }}{% endif %}</p>{% endif %}
+        </div>
+        <div class="nuitee-deal">
+          {% if card.price is not None %}
+          <p class="price"><strong>{{ card.currency }} {{ card.price|floatformat:0 }}</strong></p>
+          <p class="nights">{{ nights }} night{{ nights|pluralize }} total</p>
+          {% else %}
+          <p class="price">Rates on request</p>
+          {% endif %}
+          <a class="gp-btn small" href="{% url 'hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}">View rooms</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{% include "guests/_search_js.html" %}
+{% if searched and cards %}
+<script>
+(function () {
+  const rows = Array.from(document.querySelectorAll('.nuitee-hotel-card'));
+  const nameInput = document.getElementById('filter-name');
+  const minInput = document.getElementById('filter-price-min');
+  const maxInput = document.getElementById('filter-price-max');
+  const refundable = document.getElementById('filter-refundable');
+  const sortSelect = document.getElementById('sort-select');
+  const countEl = document.getElementById('visible-count');
+  const list = document.getElementById('results-list');
+
+  function selectedStars() {
+    return Array.from(document.querySelectorAll('input[name="stars"]:checked')).map(el => el.value);
+  }
+
+  function apply() {
+    const q = (nameInput.value || '').trim().toLowerCase();
+    const min = parseFloat(minInput.value) || 0;
+    const max = parseFloat(maxInput.value) || Infinity;
+    const stars = selectedStars();
+    const onlyRefund = refundable.checked;
+    let visible = 0;
+    rows.forEach(row => {
+      const name = row.dataset.name || '';
+      const price = parseFloat(row.dataset.price) || 0;
+      const star = String(row.dataset.stars || '0');
+      const ref = (row.dataset.refundable || '').toUpperCase();
+      let ok = true;
+      if (q && !name.includes(q)) ok = false;
+      if (price < min || price > max) ok = false;
+      if (stars.length && !stars.includes(star)) ok = false;
+      if (onlyRefund && ref !== 'RFN') ok = false;
+      row.style.display = ok ? '' : 'none';
+      if (ok) visible += 1;
+    });
+    if (countEl) countEl.textContent = visible;
+  }
+
+  function sort() {
+    const mode = sortSelect.value;
+    const sorted = rows.slice().sort((a, b) => {
+      const pa = parseFloat(a.dataset.price) || 0;
+      const pb = parseFloat(b.dataset.price) || 0;
+      const sa = parseFloat(a.dataset.stars) || 0;
+      const sb = parseFloat(b.dataset.stars) || 0;
+      const na = a.dataset.name || '';
+      const nb = b.dataset.name || '';
+      if (mode === 'price-desc') return pb - pa;
+      if (mode === 'stars-desc') return sb - sa;
+      if (mode === 'name-asc') return na.localeCompare(nb);
+      return pa - pb;
+    });
+    sorted.forEach(row => list.appendChild(row));
+  }
+
+  [nameInput, minInput, maxInput, refundable].forEach(el => el && el.addEventListener('input', apply));
+  document.querySelectorAll('input[name="stars"]').forEach(el => el.addEventListener('change', apply));
+  sortSelect.addEventListener('change', () => { sort(); apply(); });
+  document.getElementById('reset-filters').addEventListener('click', () => {
+    nameInput.value = '';
+    minInput.value = '{{ price_min }}';
+    maxInput.value = '{{ price_max }}';
+    refundable.checked = false;
+    document.querySelectorAll('input[name="stars"]').forEach(el => el.checked = false);
+    sortSelect.value = 'price-asc';
+    sort(); apply();
+  });
+})();
+</script>
+{% endif %}
+{% endblock %}

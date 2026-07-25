@@ -1,0 +1,12 @@
+{% extends "guests/base_guest.html" %}
+{% block title %}Saved hotels | Magic Sands{% endblock %}
+{% block eyebrow %}Account{% endblock %}
+{% block heading %}Saved hotels{% endblock %}
+{% block content %}
+<section class="gp-card">
+  <div class="gp-empty">
+    <p>Save hotels from search results — coming next.</p>
+    <a class="gp-btn small" href="{% url 'guest_search' %}">Browse hotels</a>
+  </div>
+</section>
+{% endblock %}

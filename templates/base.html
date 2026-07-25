@@ -20,7 +20,11 @@
     <nav>
       <a href="{% url 'home' %}" class="nav-link">Website</a>
       <a href="{% url 'book_home' %}" class="nav-link">Search</a>
-      <a href="{% url 'admin_login' %}" class="btn btn-login">Admin login</a>
+      {% if user.is_authenticated and not user.is_staff %}
+      <a href="{% url 'guest_dashboard' %}" class="btn btn-login">My dashboard</a>
+      {% else %}
+      <a href="{% url 'guest_login' %}" class="btn btn-login">Guest login</a>
+      {% endif %}
     </nav>
   </header>
 

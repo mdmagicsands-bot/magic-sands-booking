@@ -1,0 +1,68 @@
+<script>
+(function () {
+  const input = document.getElementById('destination');
+  const placeId = document.getElementById('place_id');
+  const countryCode = document.getElementById('country_code');
+  const box = document.getElementById('place-suggestions');
+  const vibe = document.getElementById('q');
+  const checkin = document.getElementById('checkin');
+  const checkout = document.getElementById('checkout');
+  const form = document.getElementById('guest-search-form');
+  if (!input || !form) return;
+  let timer = null;
+
+  function syncCheckoutMin() {
+    if (!checkin.value) return;
+    const d = new Date(checkin.value + 'T00:00:00');
+    d.setDate(d.getDate() + 1);
+    const minOut = d.toISOString().slice(0, 10);
+    checkout.min = minOut;
+    if (checkout.value && checkout.value <= checkin.value) checkout.value = minOut;
+  }
+  checkin.addEventListener('change', syncCheckoutMin);
+  syncCheckoutMin();
+
+  input.addEventListener('input', () => {
+    placeId.value = '';
+    countryCode.value = '';
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 2) { box.hidden = true; return; }
+    timer = setTimeout(() => {
+      fetch(`{% url 'places_autocomplete' %}?q=${encodeURIComponent(q)}`)
+        .then(r => r.json())
+        .then(data => {
+          const results = data.results || [];
+          if (!results.length) { box.hidden = true; box.innerHTML = ''; return; }
+          box.innerHTML = results.map(p =>
+            `<button type="button" data-id="${p.placeId || ''}" data-cc="${p.countryCode || ''}" data-name="${(p.displayName || '').replace(/"/g, '&quot;')}">${p.displayName || ''}<small>${p.formattedAddress || ''}</small></button>`
+          ).join('');
+          box.hidden = false;
+          box.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+              input.value = btn.dataset.name || '';
+              placeId.value = btn.dataset.id || '';
+              countryCode.value = btn.dataset.cc || '';
+              if (vibe) vibe.value = '';
+              box.hidden = true;
+            });
+          });
+        })
+        .catch(() => { box.hidden = true; });
+    }, 250);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!box.contains(e.target) && e.target !== input) box.hidden = true;
+  });
+
+  form.addEventListener('submit', (e) => {
+    const hasDest = input.value.trim();
+    const hasVibe = vibe && vibe.value.trim();
+    if (!hasDest && !hasVibe) {
+      e.preventDefault();
+      alert('Choose a destination or enter a vibe search.');
+    }
+  });
+})();
+</script>

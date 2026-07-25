@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -7,6 +8,14 @@ class Booking(models.Model):
         CONFIRMED = "confirmed", "Confirmed"
         FAILED = "failed", "Failed"
         CANCELLED = "cancelled", "Cancelled"
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="bookings",
+    )
 
     # LiteAPI ids
     offer_id = models.CharField(max_length=255, blank=True)

@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Guest portal | Magic Sands{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <link rel="stylesheet" href="{% static 'css/guest-portal.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="guest-portal">
+  <div class="gp-shell">
+    <aside class="gp-sidebar">
+      <a class="gp-brand" href="{% url 'guest_dashboard' %}">
+        <span class="gp-mark">MS</span>
+        <span>
+          <strong>Magic Sands</strong>
+          <small>Guest booking</small>
+        </span>
+      </a>
+
+      <nav class="gp-nav" aria-label="Guest portal">
+        {% for group in guest_menu_groups %}
+        <div class="gp-nav-group">
+          <p class="gp-nav-group-label">{{ group.label }}</p>
+          <div class="gp-nav-items">
+            {% for item in group.items %}
+            <a href="{{ item.href }}" class="{% if item.active %}active{% endif %}">{{ item.label }}</a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </nav>
+
+      <form method="post" action="{% url 'guest_logout' %}" class="gp-logout">
+        {% csrf_token %}
+        <button type="submit">Sign out</button>
+      </form>
+    </aside>
+
+    <div class="gp-main">
+      <header class="gp-top">
+        <div>
+          <p class="gp-eyebrow">{% block eyebrow %}Guest portal{% endblock %}</p>
+          <h1>{% block heading %}Dashboard{% endblock %}</h1>
+        </div>
+        <div class="gp-user">
+          {{ request.user.get_full_name|default:request.user.get_username }}
+        </div>
+      </header>
+
+      {% if messages %}
+      <div class="gp-messages">
+        {% for message in messages %}
+        <div class="gp-flash gp-flash-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends "guests/base_guest.html" %}
+{% block title %}Profile | Magic Sands{% endblock %}
+{% block eyebrow %}Account{% endblock %}
+{% block heading %}Profile{% endblock %}
+{% block content %}
+<section class="gp-card">
+  <p class="gp-muted" style="margin-top:0">Signed in as <strong>{{ request.user.email }}</strong></p>
+  <form method="post" action="">
+    {% csrf_token %}
+    <div class="gp-field">
+      <label for="id_first_name">First name</label>
+      <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value|default:'' }}" required>
+    </div>
+    <div class="gp-field">
+      <label for="id_last_name">Last name</label>
+      <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:'' }}" required>
+    </div>
+    <div class="gp-field">
+      <label for="id_phone">Phone</label>
+      <input type="text" name="phone" id="id_phone" value="{{ form.phone.value|default:'' }}">
+    </div>
+    <div class="gp-field">
+      <label for="id_nationality">Nationality (ISO)</label>
+      <input type="text" name="nationality" id="id_nationality" value="{{ form.nationality.value|default:'OM' }}" maxlength="2">
+    </div>
+    <div class="gp-field">
+      <label for="id_preferred_currency">Preferred currency</label>
+      <input type="text" name="preferred_currency" id="id_preferred_currency" value="{{ form.preferred_currency.value|default:'USD' }}" maxlength="8">
+    </div>
+    <button class="gp-btn" type="submit">Save profile</button>
+  </form>
+</section>
+{% endblock %}

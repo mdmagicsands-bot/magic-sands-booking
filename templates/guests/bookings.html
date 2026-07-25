@@ -1,0 +1,60 @@
+{% extends "guests/base_guest.html" %}
+{% block title %}My bookings | Magic Sands{% endblock %}
+{% block eyebrow %}Trips{% endblock %}
+{% block heading %}My bookings{% endblock %}
+{% block content %}
+<section class="gp-card">
+  <form method="get" class="gp-search-panel" style="grid-template-columns:1fr auto;margin-bottom:1rem">
+    <label class="gp-field">
+      <span style="font-size:0.72rem;font-weight:700;color:var(--gp-muted);text-transform:uppercase">Status</span>
+      <select name="status">
+        <option value="">All statuses</option>
+        {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <div class="gp-field">
+      <span>&nbsp;</span>
+      <button class="gp-btn small" type="submit">Filter</button>
+    </div>
+  </form>
+
+  {% if bookings %}
+  <div class="gp-table-wrap">
+    <table class="gp-table">
+      <thead>
+        <tr>
+          <th>Hotel</th>
+          <th>Dates</th>
+          <th>Guests</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+        <tr>
+          <td>
+            <strong>{{ b.hotel_name|default:b.hotel_id|default:"—" }}</strong><br>
+            <span class="gp-muted" style="font-size:0.82rem">{{ b.liteapi_booking_id|default:b.prebook_id|default:"" }}</span>
+          </td>
+          <td>{{ b.check_in|default:"—" }} → {{ b.check_out|default:"—" }}</td>
+          <td>{{ b.adults }}</td>
+          <td>{% if b.amount %}{{ b.currency }} {{ b.amount }}{% else %}—{% endif %}</td>
+          <td><span class="gp-status gp-status-{{ b.status }}">{{ b.get_status_display }}</span></td>
+          <td><a class="gp-link" href="{% url 'guest_booking_detail' b.pk %}">Details</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="gp-empty">
+    <p>No bookings found.</p>
+    <a class="gp-btn small" href="{% url 'guest_search' %}">Search hotels</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

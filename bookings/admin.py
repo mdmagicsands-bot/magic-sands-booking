@@ -9,6 +9,7 @@ class BookingAdmin(admin.ModelAdmin):
         "liteapi_booking_id",
         "hotel_name",
         "guest_email",
+        "user",
         "check_in",
         "check_out",
         "amount",
@@ -26,6 +27,7 @@ class BookingAdmin(admin.ModelAdmin):
         "guest_first_name",
         "guest_last_name",
         "hotel_confirmation_code",
+        "user__email",
     )
     readonly_fields = (
         "offer_id",

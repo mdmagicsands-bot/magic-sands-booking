@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "hotels",
     "bookings",
     "partners",
+    "guests",
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "hotels.context_processors.branding",
                 "partners.context_processors.booking_admin_nav",
+                "guests.context_processors.guest_portal_nav",
             ],
         },
     },

@@ -1,0 +1,26 @@
+{% extends "guests/base_guest.html" %}
+{% block title %}Booking detail | Magic Sands{% endblock %}
+{% block eyebrow %}Trips{% endblock %}
+{% block heading %}Booking details{% endblock %}
+{% block content %}
+<section class="gp-card">
+  <div class="gp-card-head">
+    <h2>{{ booking.hotel_name|default:booking.hotel_id|default:"Booking" }}</h2>
+    <span class="gp-status gp-status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+  </div>
+  <dl class="gp-kv">
+    <div><dt>Confirmation</dt><dd>{{ booking.liteapi_booking_id|default:booking.hotel_confirmation_code|default:"—" }}</dd></div>
+    <div><dt>Dates</dt><dd>{{ booking.check_in|default:"—" }} → {{ booking.check_out|default:"—" }}</dd></div>
+    <div><dt>Guests</dt><dd>{{ booking.adults }} adult{{ booking.adults|pluralize }}</dd></div>
+    <div><dt>Guest</dt><dd>{{ booking.guest_full_name }} · {{ booking.guest_email }}</dd></div>
+    <div><dt>Amount</dt><dd>{% if booking.amount %}{{ booking.currency }} {{ booking.amount }}{% else %}—{% endif %}</dd></div>
+    <div><dt>Created</dt><dd>{{ booking.created_at }}</dd></div>
+  </dl>
+  <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap">
+    <a class="gp-btn ghost small" href="{% url 'guest_bookings' %}">← Back to bookings</a>
+    {% if booking.hotel_id %}
+    <a class="gp-btn small" href="{% url 'hotel_detail' booking.hotel_id %}">View hotel</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

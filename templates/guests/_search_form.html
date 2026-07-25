@@ -1,0 +1,30 @@
+<form class="gp-search-panel" method="get" action="{% url 'guest_search_results' %}" id="guest-search-form" autocomplete="off">
+  <input type="hidden" name="place_id" id="place_id" value="{{ place_id }}">
+  <input type="hidden" name="country_code" id="country_code" value="{{ country_code }}">
+
+  <label class="gp-field">
+    <span style="font-size:0.72rem;font-weight:700;color:var(--gp-muted);text-transform:uppercase;letter-spacing:.04em">Destination</span>
+    <input id="destination" name="destination" type="text" value="{{ destination }}" placeholder="City (e.g. Muscat, Dubai)">
+    <div id="place-suggestions" class="gp-suggestions" hidden></div>
+  </label>
+  <label class="gp-field">
+    <span style="font-size:0.72rem;font-weight:700;color:var(--gp-muted);text-transform:uppercase;letter-spacing:.04em">Check-in</span>
+    <input id="checkin" name="checkin" type="date" value="{{ checkin }}" min="{{ min_date }}" required>
+  </label>
+  <label class="gp-field">
+    <span style="font-size:0.72rem;font-weight:700;color:var(--gp-muted);text-transform:uppercase;letter-spacing:.04em">Check-out</span>
+    <input id="checkout" name="checkout" type="date" value="{{ checkout }}" min="{{ min_date }}" required>
+  </label>
+  <label class="gp-field">
+    <span style="font-size:0.72rem;font-weight:700;color:var(--gp-muted);text-transform:uppercase;letter-spacing:.04em">Guests</span>
+    <input name="adults" type="number" min="1" max="8" value="{{ adults }}">
+  </label>
+  <div class="gp-field">
+    <span>&nbsp;</span>
+    <button class="gp-btn" type="submit">Search</button>
+  </div>
+  <label class="gp-field full">
+    <span style="font-size:0.72rem;font-weight:700;color:var(--gp-muted);text-transform:uppercase;letter-spacing:.04em">Or vibe search</span>
+    <input id="q" name="q" type="text" value="{{ query }}" placeholder="e.g. beach resort in Salalah">
+  </label>
+</form>

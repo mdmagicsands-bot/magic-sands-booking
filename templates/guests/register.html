@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create guest account | Magic Sands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/guest-portal.css' %}">
+</head>
+<body class="gp-auth-page">
+  <div class="gp-auth-card">
+    <div class="gp-brand" style="border:0;padding:0;margin-bottom:0.75rem;color:var(--gp-ink)">
+      <span class="gp-mark">MS</span>
+      <span>
+        <strong style="color:var(--gp-ink)">Magic Sands</strong>
+        <small style="color:var(--gp-muted)">Guest booking portal</small>
+      </span>
+    </div>
+    <h1>Create account</h1>
+    <p class="lede">Join Magic Sands to book hotels worldwide with live Nuitee rates.</p>
+
+    <form method="post" action="">
+      {% csrf_token %}
+      <div class="gp-field">
+        <label for="id_first_name">First name</label>
+        <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value|default:'' }}" required>
+      </div>
+      <div class="gp-field">
+        <label for="id_last_name">Last name</label>
+        <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:'' }}" required>
+      </div>
+      <div class="gp-field">
+        <label for="id_email">Email</label>
+        <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required>
+        {% for e in form.email.errors %}<span class="error">{{ e }}</span>{% endfor %}
+      </div>
+      <div class="gp-field">
+        <label for="id_phone">Phone</label>
+        <input type="text" name="phone" id="id_phone" value="{{ form.phone.value|default:'' }}">
+      </div>
+      <div class="gp-field">
+        <label for="id_password">Password</label>
+        <input type="password" name="password" id="id_password" required minlength="8">
+        {% for e in form.password.errors %}<span class="error">{{ e }}</span>{% endfor %}
+      </div>
+      <div class="gp-field">
+        <label for="id_password_confirm">Confirm password</label>
+        <input type="password" name="password_confirm" id="id_password_confirm" required>
+        {% for e in form.password_confirm.errors %}<span class="error">{{ e }}</span>{% endfor %}
+      </div>
+      <div class="gp-auth-actions">
+        <button class="gp-btn" type="submit">Create account</button>
+      </div>
+    </form>
+    <p class="gp-auth-foot">
+      Already have an account? <a href="{% url 'guest_login' %}">Sign in</a>
+    </p>
+  </div>
+</body>
+</html>
