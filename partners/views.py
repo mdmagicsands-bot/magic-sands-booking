@@ -82,37 +82,116 @@ def gateway_partner_login(request):
     return redirect(_marketing_url("/partner-login/?error=1"))
 
 
+def _parse_year(value: str):
+    value = (value or "").strip()
+    if not value:
+        return None
+    try:
+        year = int(value)
+    except ValueError:
+        return None
+    if 1800 <= year <= 2100:
+        return year
+    return None
+
+
+def _save_partner_registration(request, *, redirect_error, redirect_ok):
+    """Shared create logic for on-app and Hostinger gateway posts."""
+    company = (request.POST.get("company_name") or "").strip()
+    contact = (request.POST.get("contact_name") or "").strip()
+    email = (request.POST.get("email") or "").strip()
+    accepted = request.POST.get("accepted_terms") in ("on", "1", "true", "True")
+
+    if not company or not contact or not email or not accepted:
+        return redirect(redirect_error)
+
+    business_types = request.POST.getlist("business_types")
+    if not business_types:
+        raw = (request.POST.get("business_types") or "").strip()
+        business_types = [p.strip() for p in raw.split(",") if p.strip()]
+
+    telephone = (request.POST.get("telephone") or request.POST.get("phone") or "").strip()
+    mobile = (request.POST.get("mobile") or "").strip()
+
+    reg = PartnerRegistration(
+        company_name=company,
+        trade_license_number=(request.POST.get("trade_license_number") or "").strip(),
+        vat_tax_number=(request.POST.get("vat_tax_number") or "").strip(),
+        year_established=_parse_year(request.POST.get("year_established")),
+        website=(request.POST.get("website") or "").strip(),
+        company_registration_country=(
+            request.POST.get("company_registration_country") or ""
+        ).strip(),
+        office_address=(request.POST.get("office_address") or "").strip(),
+        country=(request.POST.get("country") or "").strip(),
+        city=(request.POST.get("city") or "").strip(),
+        postal_code=(request.POST.get("postal_code") or "").strip(),
+        telephone=telephone,
+        whatsapp=(request.POST.get("whatsapp") or "").strip(),
+        contact_name=contact,
+        designation=(request.POST.get("designation") or "").strip(),
+        email=email,
+        mobile=mobile,
+        phone=telephone or mobile,
+        markets_served=(request.POST.get("markets_served") or "").strip(),
+        main_destinations_sold=(request.POST.get("main_destinations_sold") or "").strip(),
+        business_types=", ".join(business_types),
+        annual_passenger_volume=(request.POST.get("annual_passenger_volume") or "").strip(),
+        preferred_currency=(request.POST.get("preferred_currency") or "").strip(),
+        accepted_terms=True,
+        message=(request.POST.get("message") or "").strip(),
+    )
+
+    file_map = {
+        "trade_license_file": "trade_license_file",
+        "passport_id_file": "passport_id_file",
+        "vat_certificate_file": "vat_certificate_file",
+        "company_profile_file": "company_profile_file",
+        "logo_file": "logo_file",
+    }
+    for field_name, input_name in file_map.items():
+        uploaded = request.FILES.get(input_name)
+        if uploaded:
+            setattr(reg, field_name, uploaded)
+
+    reg.save()
+    return redirect(redirect_ok)
+
+
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
 def gateway_partner_register(request):
     """
-    Receives partner registration from Hostinger.
-    GET shows a Railway fallback form; POST saves a pending registration.
+    Partner registration:
+    - GET renders the multi-step form on this app
+    - POST saves the full application (also used by Hostinger gateway)
     """
     if request.method == "GET":
-        return render(request, "partners/register.html")
+        return render(
+            request,
+            "partners/register.html",
+            {
+                "success": request.GET.get("ok") == "1",
+                "error": request.GET.get("error") == "1",
+                "currencies": ["USD", "EUR", "GBP", "AED", "OMR", "SAR", "QAR", "BHD", "KWD", "EGP"],
+            },
+        )
 
-    company = (request.POST.get("company_name") or "").strip()
-    contact = (request.POST.get("contact_name") or "").strip()
-    email = (request.POST.get("email") or "").strip()
-    phone = (request.POST.get("phone") or "").strip()
-    country = (request.POST.get("country") or "").strip()
-    website = (request.POST.get("website") or "").strip()
-    message = (request.POST.get("message") or "").strip()
+    # Hostinger posts go back to Hostinger; on-app posts stay here.
+    referer = request.META.get("HTTP_REFERER") or ""
+    from_hostinger = "magicsandsdmc.com" in referer and "partner-register" in referer
+    if from_hostinger:
+        return _save_partner_registration(
+            request,
+            redirect_error=_marketing_url("/partner-register/?error=1"),
+            redirect_ok=_marketing_url("/partner-register/?ok=1"),
+        )
 
-    if not company or not contact or not email:
-        return redirect(_marketing_url("/partner-register/?error=1"))
-
-    PartnerRegistration.objects.create(
-        company_name=company,
-        contact_name=contact,
-        email=email,
-        phone=phone,
-        country=country,
-        website=website,
-        message=message,
+    return _save_partner_registration(
+        request,
+        redirect_error=f"{reverse('partner_register')}?error=1",
+        redirect_ok=f"{reverse('partner_register')}?ok=1",
     )
-    return redirect(_marketing_url("/partner-register/?ok=1"))
 
 
 @require_http_methods(["GET", "POST"])
@@ -219,6 +298,20 @@ def partner_requests(request):
 
 @login_required(login_url="admin_login")
 @user_passes_test(_is_staff, login_url="admin_login")
+def partner_request_detail(request, registration_id: int):
+    reg = get_object_or_404(PartnerRegistration, pk=registration_id)
+    return render(
+        request,
+        "partners/registration_detail.html",
+        {
+            "reg": reg,
+            "status_choices": PartnerRegistration.Status.choices,
+        },
+    )
+
+
+@login_required(login_url="admin_login")
+@user_passes_test(_is_staff, login_url="admin_login")
 @require_POST
 def partner_request_status(request, registration_id: int):
     reg = get_object_or_404(PartnerRegistration, pk=registration_id)
@@ -233,7 +326,8 @@ def partner_request_status(request, registration_id: int):
         messages.success(request, f"Registration marked {reg.get_status_display()}.")
     else:
         messages.error(request, "Invalid status.")
-    return redirect("partner_requests")
+    next_url = request.POST.get("next") or reverse("partner_requests")
+    return redirect(next_url)
 
 
 @login_required(login_url="admin_login")

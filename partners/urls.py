@@ -26,6 +26,11 @@ urlpatterns = [
     ),
     path("admin/partners/", views.partner_requests, name="partner_requests"),
     path(
+        "admin/partners/<int:registration_id>/",
+        views.partner_request_detail,
+        name="partner_request_detail",
+    ),
+    path(
         "admin/partners/<int:registration_id>/status/",
         views.partner_request_status,
         name="partner_request_status",

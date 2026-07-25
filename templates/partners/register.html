@@ -4,74 +4,204 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Register as a Partner | Magic Sands</title>
-  <meta name="description" content="Register as a Magic Sands travel partner for B2B rates and support.">
+  <title>Partner Registration | Magic Sands</title>
+  <meta name="description" content="Register as a Magic Sands travel partner — multi-step B2B application.">
   <link rel="icon" href="https://www.magicsandsdmc.com/assets/images/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/partner.css' %}">
 </head>
-<body class="partner-login-page">
-  <header class="pl-top">
+<body class="partner-login-page partner-register-page">
+  <header class="pl-top pl-top-solid">
     <a class="pl-brand" href="{% url 'home' %}">
       <img src="https://www.magicsandsdmc.com/assets/images/logo.png" alt="Magic Sands" width="140" height="44">
     </a>
     <nav class="pl-top-nav" aria-label="Primary">
       <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'about' %}">About</a>
-      <a class="pl-top-cta" href="{% url 'partner_login' %}">Partner Login</a>
+      <a href="{% url 'partner_login' %}">Partner Login</a>
+      <a class="pl-top-cta" href="{% url 'contact' %}">Contact</a>
     </nav>
   </header>
 
-  <section class="pl-hero pl-hero-register" style="--pl-hero-image:url('https://www.magicsandsdmc.com/uploads/banner/banner2.jpg')">
-    <div class="pl-hero-veil" aria-hidden="true"></div>
-    <div class="pl-hero-inner pl-hero-inner-single">
-      <div class="pl-panel pl-panel-wide">
-        <p class="pl-panel-brand">Magic Sands</p>
-        <h2>Register as a partner</h2>
-        <p class="pl-panel-sub">Submit your agency details. Our team will review and activate your B2B access.</p>
+  <main class="pr-wrap">
+    <header class="pr-intro">
+      <p class="pr-kicker">Magic Sands</p>
+      <h1>Partner Registration</h1>
+      <p>Complete this professional multi-step application to join our B2B partner network across Arabia.</p>
+    </header>
 
-        {% if messages %}
-          {% for message in messages %}
-          <div class="pl-alert pl-alert-{{ message.tags }}">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
+    {% if success %}
+    <section class="pr-success">
+      <h2>Application received</h2>
+      <p>Thank you. Our partnerships team will review your documents and contact you shortly.</p>
+      <a class="pl-btn" href="{% url 'partner_login' %}" style="width:auto;display:inline-flex">Go to partner login</a>
+    </section>
+    {% else %}
 
-        <form class="pl-form pl-form-grid" method="post" action="{% url 'gateway_partner_register' %}">
-          {% csrf_token %}
-          <label class="pl-label">Company / agency name
-            <input type="text" name="company_name" required placeholder="Your travel agency">
+    {% if error %}
+    <div class="pl-alert pl-alert-error">Please complete required fields and accept the Terms &amp; Conditions.</div>
+    {% endif %}
+
+    <ol class="pr-steps" id="pr-steps" aria-label="Registration steps">
+      <li class="is-active" data-step-label="1">Company</li>
+      <li data-step-label="2">Office</li>
+      <li data-step-label="3">Contact</li>
+      <li data-step-label="4">Business</li>
+      <li data-step-label="5">Documents</li>
+      <li data-step-label="6">Terms</li>
+    </ol>
+
+    <form class="pr-form" method="post" action="{% url 'partner_register' %}" enctype="multipart/form-data" id="partner-register-form" novalidate>
+      {% csrf_token %}
+
+      <section class="pr-panel is-active" data-step="0">
+        <h2>Company Information</h2>
+        <div class="pr-grid">
+          <label class="pl-label">Company Name *
+            <input type="text" name="company_name" required maxlength="255" placeholder="Agency / company legal name">
           </label>
-          <label class="pl-label">Contact name
-            <input type="text" name="contact_name" required placeholder="Full name">
+          <label class="pl-label">Trade License Number *
+            <input type="text" name="trade_license_number" required maxlength="120" placeholder="Trade license no.">
           </label>
-          <label class="pl-label">Email
-            <input type="email" name="email" required placeholder="you@agency.com">
+          <label class="pl-label">VAT / Tax Number
+            <input type="text" name="vat_tax_number" maxlength="120" placeholder="VAT / tax ID">
           </label>
-          <label class="pl-label">Phone
-            <input type="tel" name="phone" placeholder="+968 …">
-          </label>
-          <label class="pl-label">Country
-            <input type="text" name="country" placeholder="Country">
+          <label class="pl-label">Year Established
+            <input type="number" name="year_established" min="1800" max="2100" placeholder="e.g. 2015">
           </label>
           <label class="pl-label">Website
             <input type="url" name="website" placeholder="https://">
           </label>
-          <label class="pl-label pl-span-2">Message
-            <textarea name="message" rows="4" placeholder="Tell us about your agency and markets"></textarea>
+          <label class="pl-label">Company Registration Country *
+            <input type="text" name="company_registration_country" required maxlength="120" placeholder="Country of registration">
           </label>
-          <div class="pl-span-2">
-            <button type="submit" class="pl-btn">Submit registration</button>
-          </div>
-        </form>
-        <p class="pl-register">
-          Already a partner?
-          <a href="{% url 'partner_login' %}">Partner login</a>
-        </p>
+        </div>
+      </section>
+
+      <section class="pr-panel" data-step="1" hidden>
+        <h2>Office Details</h2>
+        <div class="pr-grid">
+          <label class="pl-label pr-span-2">Office Address *
+            <textarea name="office_address" rows="3" required placeholder="Street, building, area"></textarea>
+          </label>
+          <label class="pl-label">Country *
+            <input type="text" name="country" required maxlength="100" placeholder="Country">
+          </label>
+          <label class="pl-label">City *
+            <input type="text" name="city" required maxlength="120" placeholder="City">
+          </label>
+          <label class="pl-label">Postal Code
+            <input type="text" name="postal_code" maxlength="40" placeholder="Postal / ZIP">
+          </label>
+          <label class="pl-label">Telephone *
+            <input type="tel" name="telephone" required maxlength="64" placeholder="+968 …">
+          </label>
+          <label class="pl-label">WhatsApp
+            <input type="tel" name="whatsapp" maxlength="64" placeholder="+968 …">
+          </label>
+        </div>
+      </section>
+
+      <section class="pr-panel" data-step="2" hidden>
+        <h2>Primary Contact</h2>
+        <div class="pr-grid">
+          <label class="pl-label">Name *
+            <input type="text" name="contact_name" required maxlength="255" placeholder="Full name">
+          </label>
+          <label class="pl-label">Designation *
+            <input type="text" name="designation" required maxlength="160" placeholder="Job title">
+          </label>
+          <label class="pl-label">Email *
+            <input type="email" name="email" required placeholder="you@agency.com">
+          </label>
+          <label class="pl-label">Mobile *
+            <input type="tel" name="mobile" required maxlength="64" placeholder="+968 …">
+          </label>
+        </div>
+      </section>
+
+      <section class="pr-panel" data-step="3" hidden>
+        <h2>Business Details</h2>
+        <div class="pr-grid">
+          <label class="pl-label pr-span-2">Markets Served *
+            <textarea name="markets_served" rows="3" required placeholder="e.g. Italy, France, GCC, India"></textarea>
+          </label>
+          <label class="pl-label pr-span-2">Main Destinations Sold *
+            <textarea name="main_destinations_sold" rows="3" required placeholder="e.g. Oman, UAE, Saudi Arabia, Egypt"></textarea>
+          </label>
+          <fieldset class="pr-fieldset pr-span-2">
+            <legend>FIT / Groups / MICE *</legend>
+            <div class="pr-checks">
+              <label><input type="checkbox" name="business_types" value="FIT"> FIT</label>
+              <label><input type="checkbox" name="business_types" value="Groups"> Groups</label>
+              <label><input type="checkbox" name="business_types" value="MICE"> MICE</label>
+            </div>
+          </fieldset>
+          <label class="pl-label">Annual Passenger Volume
+            <input type="text" name="annual_passenger_volume" maxlength="120" placeholder="e.g. 500–1000">
+          </label>
+          <label class="pl-label">Preferred Currency
+            <select name="preferred_currency">
+              <option value="">Select currency</option>
+              {% for c in currencies %}
+              <option value="{{ c }}">{{ c }}</option>
+              {% endfor %}
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="pr-panel" data-step="4" hidden>
+        <h2>Documents Upload</h2>
+        <p class="pr-help">Upload clear PDF or image files. Max ~10 MB each.</p>
+        <div class="pr-grid">
+          <label class="pl-label">Trade License *
+            <input type="file" name="trade_license_file" accept=".pdf,.jpg,.jpeg,.png,.webp" required>
+          </label>
+          <label class="pl-label">Passport / ID *
+            <input type="file" name="passport_id_file" accept=".pdf,.jpg,.jpeg,.png,.webp" required>
+          </label>
+          <label class="pl-label">VAT Certificate (optional)
+            <input type="file" name="vat_certificate_file" accept=".pdf,.jpg,.jpeg,.png,.webp">
+          </label>
+          <label class="pl-label">Company Profile *
+            <input type="file" name="company_profile_file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+          </label>
+          <label class="pl-label">Logo *
+            <input type="file" name="logo_file" accept=".png,.jpg,.jpeg,.webp,.svg" required>
+          </label>
+        </div>
+      </section>
+
+      <section class="pr-panel" data-step="5" hidden>
+        <h2>Terms &amp; Submit</h2>
+        <div class="pr-terms">
+          <p>
+            By submitting this application you confirm that the information and documents provided are accurate,
+            and you agree to Magic Sands DMC partner terms, confidentiality, and fair trading practices.
+          </p>
+          <label class="pr-accept">
+            <input type="checkbox" name="accepted_terms" value="on" required>
+            <span>I accept the Terms &amp; Conditions *</span>
+          </label>
+          <label class="pl-label">Additional notes (optional)
+            <textarea name="message" rows="3" placeholder="Anything else we should know"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <div class="pr-nav">
+        <button type="button" class="pr-btn-secondary" id="pr-prev" hidden>Back</button>
+        <div class="pr-nav-right">
+          <span class="pr-progress" id="pr-progress">Step 1 of 6</span>
+          <button type="button" class="pl-btn pr-btn-next" id="pr-next" style="width:auto">Continue</button>
+          <button type="submit" class="pl-btn" id="pr-submit" hidden style="width:auto">Submit application</button>
+        </div>
       </div>
-    </div>
-  </section>
+    </form>
+    {% endif %}
+  </main>
 
   <footer class="pl-footer">
     <div class="pl-footer-inner">
@@ -83,7 +213,7 @@
             <small>Partner registration</small>
           </span>
         </div>
-        <p>We review partner applications and activate portal access for approved agencies.</p>
+        <p>Applications are reviewed by our partnerships team. Approved agencies receive portal access by email.</p>
       </div>
       <div class="pl-footer-links">
         <a href="{% url 'partner_login' %}">Partner login</a>
@@ -93,5 +223,9 @@
     </div>
     <p class="pl-legal">© {% now "Y" %} Magic Sands DMC.</p>
   </footer>
+
+  {% if not success %}
+  <script src="{% static 'js/partner-register.js' %}" defer></script>
+  {% endif %}
 </body>
 </html>

@@ -19,7 +19,6 @@
     </a>
     <nav class="pl-top-nav" aria-label="Primary">
       <a href="https://www.magicsandsdmc.com/">Home</a>
-      <a href="https://www.magicsandsdmc.com/about">About</a>
       <a class="pl-top-cta" href="/partner-login/">Partner Login</a>
     </nav>
   </header>
@@ -28,35 +27,12 @@
     <div class="pl-hero-inner pl-hero-inner-single">
       <div class="pl-panel pl-panel-wide">
         <p class="pl-panel-brand">Magic Sands</p>
-        <h2>Register as a partner</h2>
-        <p class="pl-panel-sub">Submit your agency details. Our team will review and activate your B2B access.</p>
-        <div id="flash" class="flash" hidden></div>
-        <form id="register-form" class="pl-form pl-form-grid" method="post">
-          <label class="pl-label">Company / agency name
-            <input type="text" name="company_name" required placeholder="Your travel agency">
-          </label>
-          <label class="pl-label">Contact name
-            <input type="text" name="contact_name" required placeholder="Full name">
-          </label>
-          <label class="pl-label">Email
-            <input type="email" name="email" required placeholder="you@agency.com">
-          </label>
-          <label class="pl-label">Phone
-            <input type="tel" name="phone" placeholder="+968 …">
-          </label>
-          <label class="pl-label">Country
-            <input type="text" name="country" placeholder="Country">
-          </label>
-          <label class="pl-label">Website
-            <input type="url" name="website" placeholder="https://">
-          </label>
-          <label class="pl-label pl-span-2">Message
-            <textarea name="message" rows="4" placeholder="Tell us about your agency and markets"></textarea>
-          </label>
-          <div class="pl-span-2">
-            <button type="submit" class="pl-btn">Submit registration</button>
-          </div>
-        </form>
+        <h2>Partner Registration</h2>
+        <p class="pl-panel-sub">
+          Our full multi-step partner application (company, office, contact, business details, and document uploads)
+          is hosted on the Magic Sands booking system.
+        </p>
+        <a id="full-register" class="pl-btn" href="#">Start partner registration</a>
         <p class="pl-register">
           Already a partner?
           <a href="/partner-login/">Partner login</a>
@@ -75,12 +51,11 @@
             <small>Partner registration</small>
           </span>
         </div>
-        <p>Registrations are stored in the Magic Sands Booking admin.</p>
+        <p>Applications include document uploads and are reviewed by our partnerships team.</p>
       </div>
       <div class="pl-footer-links">
         <a href="/partner-login/">Partner login</a>
         <a href="https://www.magicsandsdmc.com/contact">Contact us</a>
-        <a href="https://www.magicsandsdmc.com/">Website</a>
       </div>
     </div>
     <p class="pl-legal">© Magic Sands DMC.</p>
@@ -90,19 +65,7 @@
     (function () {
       var cfg = window.MAGIC_SANDS_CONFIG || {};
       var base = (cfg.BOOKING_APP_URL || "").replace(/\/$/, "");
-      document.getElementById("register-form").action = base + "/gateway/partner-register/";
-
-      var params = new URLSearchParams(window.location.search);
-      var flash = document.getElementById("flash");
-      if (params.get("ok") === "1") {
-        flash.hidden = false;
-        flash.className = "flash flash-ok";
-        flash.textContent = "Thank you — your partner request was submitted. We will contact you shortly.";
-      } else if (params.get("error") === "1") {
-        flash.hidden = false;
-        flash.className = "flash flash-error";
-        flash.textContent = "Please complete company name, contact name, and email.";
-      }
+      document.getElementById("full-register").href = base + "/partner-register/";
     })();
   </script>
 </body>

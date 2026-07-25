@@ -31,24 +31,18 @@
         <tr>
           <td>
             <strong>{{ r.company_name }}</strong>
-            {% if r.message %}<br><span class="muted">{{ r.message|truncatechars:80 }}</span>{% endif %}
+            {% if r.trade_license_number %}<br><span class="muted">License: {{ r.trade_license_number }}</span>{% endif %}
           </td>
-          <td>{{ r.contact_name }}{% if r.phone %}<br><span class="muted">{{ r.phone }}</span>{% endif %}</td>
+          <td>
+            {{ r.contact_name }}
+            {% if r.designation %}<br><span class="muted">{{ r.designation }}</span>{% endif %}
+            {% if r.mobile %}<br><span class="muted">{{ r.mobile }}</span>{% endif %}
+          </td>
           <td>{{ r.email }}</td>
-          <td>{{ r.country|default:"—" }}</td>
+          <td>{{ r.country|default:r.company_registration_country|default:"—" }}</td>
           <td><span class="status status-{{ r.status }}">{{ r.get_status_display }}</span></td>
           <td>{{ r.created_at|date:"Y-m-d H:i" }}</td>
-          <td>
-            <form method="post" action="{% url 'partner_request_status' r.pk %}" style="display:flex;gap:.35rem;flex-wrap:wrap">
-              {% csrf_token %}
-              <select name="status">
-                {% for value, label in status_choices %}
-                <option value="{{ value }}" {% if r.status == value %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-              </select>
-              <button type="submit" class="pl-btn small">Save</button>
-            </form>
-          </td>
+          <td><a class="pa-link" href="{% url 'partner_request_detail' r.pk %}">Open</a></td>
         </tr>
         {% empty %}
         <tr><td colspan="7" class="muted">No partner registration requests yet.</td></tr>

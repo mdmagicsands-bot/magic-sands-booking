@@ -1,0 +1,84 @@
+{% extends "partners/base_admin.html" %}
+{% block eyebrow %}Partners{% endblock %}
+{% block heading %}{{ reg.company_name }}{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Application status</h2>
+    <a class="pa-link" href="{% url 'partner_requests' %}">← All requests</a>
+  </div>
+  <p><span class="status status-{{ reg.status }}">{{ reg.get_status_display }}</span> · Submitted {{ reg.created_at|date:"Y-m-d H:i" }}</p>
+  <form method="post" action="{% url 'partner_request_status' reg.pk %}" class="pa-status-form">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{% url 'partner_request_detail' reg.pk %}">
+    <label>Update status
+      <select name="status">
+        {% for value, label in status_choices %}
+        <option value="{{ value }}" {% if reg.status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <button type="submit" class="pl-btn small">Save</button>
+  </form>
+</section>
+
+<section class="pa-detail-grid">
+  <article class="pa-card">
+    <h2>Company Information</h2>
+    <dl class="pa-dl">
+      <div><dt>Company</dt><dd>{{ reg.company_name }}</dd></div>
+      <div><dt>Trade license</dt><dd>{{ reg.trade_license_number|default:"—" }}</dd></div>
+      <div><dt>VAT / Tax</dt><dd>{{ reg.vat_tax_number|default:"—" }}</dd></div>
+      <div><dt>Year established</dt><dd>{{ reg.year_established|default:"—" }}</dd></div>
+      <div><dt>Website</dt><dd>{% if reg.website %}<a href="{{ reg.website }}" target="_blank" rel="noopener">{{ reg.website }}</a>{% else %}—{% endif %}</dd></div>
+      <div><dt>Registration country</dt><dd>{{ reg.company_registration_country|default:"—" }}</dd></div>
+    </dl>
+  </article>
+
+  <article class="pa-card">
+    <h2>Office Details</h2>
+    <dl class="pa-dl">
+      <div><dt>Address</dt><dd>{{ reg.office_address|linebreaksbr|default:"—" }}</dd></div>
+      <div><dt>Country</dt><dd>{{ reg.country|default:"—" }}</dd></div>
+      <div><dt>City</dt><dd>{{ reg.city|default:"—" }}</dd></div>
+      <div><dt>Postal code</dt><dd>{{ reg.postal_code|default:"—" }}</dd></div>
+      <div><dt>Telephone</dt><dd>{{ reg.telephone|default:"—" }}</dd></div>
+      <div><dt>WhatsApp</dt><dd>{{ reg.whatsapp|default:"—" }}</dd></div>
+    </dl>
+  </article>
+
+  <article class="pa-card">
+    <h2>Primary Contact</h2>
+    <dl class="pa-dl">
+      <div><dt>Name</dt><dd>{{ reg.contact_name }}</dd></div>
+      <div><dt>Designation</dt><dd>{{ reg.designation|default:"—" }}</dd></div>
+      <div><dt>Email</dt><dd><a href="mailto:{{ reg.email }}">{{ reg.email }}</a></dd></div>
+      <div><dt>Mobile</dt><dd>{{ reg.mobile|default:"—" }}</dd></div>
+    </dl>
+  </article>
+
+  <article class="pa-card">
+    <h2>Business Details</h2>
+    <dl class="pa-dl">
+      <div><dt>Markets served</dt><dd>{{ reg.markets_served|linebreaksbr|default:"—" }}</dd></div>
+      <div><dt>Main destinations</dt><dd>{{ reg.main_destinations_sold|linebreaksbr|default:"—" }}</dd></div>
+      <div><dt>FIT / Groups / MICE</dt><dd>{{ reg.business_types|default:"—" }}</dd></div>
+      <div><dt>Annual passengers</dt><dd>{{ reg.annual_passenger_volume|default:"—" }}</dd></div>
+      <div><dt>Preferred currency</dt><dd>{{ reg.preferred_currency|default:"—" }}</dd></div>
+      <div><dt>Notes</dt><dd>{{ reg.message|linebreaksbr|default:"—" }}</dd></div>
+      <div><dt>Terms accepted</dt><dd>{% if reg.accepted_terms %}Yes{% else %}No{% endif %}</dd></div>
+    </dl>
+  </article>
+</section>
+
+<section class="pa-card">
+  <h2>Documents</h2>
+  <ul class="pa-doc-list">
+    <li>Trade license: {% if reg.trade_license_file %}<a href="{{ reg.trade_license_file.url }}" target="_blank" rel="noopener">Download</a>{% else %}—{% endif %}</li>
+    <li>Passport / ID: {% if reg.passport_id_file %}<a href="{{ reg.passport_id_file.url }}" target="_blank" rel="noopener">Download</a>{% else %}—{% endif %}</li>
+    <li>VAT certificate: {% if reg.vat_certificate_file %}<a href="{{ reg.vat_certificate_file.url }}" target="_blank" rel="noopener">Download</a>{% else %}—{% endif %}</li>
+    <li>Company profile: {% if reg.company_profile_file %}<a href="{{ reg.company_profile_file.url }}" target="_blank" rel="noopener">Download</a>{% else %}—{% endif %}</li>
+    <li>Logo: {% if reg.logo_file %}<a href="{{ reg.logo_file.url }}" target="_blank" rel="noopener">Download</a>{% else %}—{% endif %}</li>
+  </ul>
+</section>
+{% endblock %}
