@@ -30,12 +30,17 @@ def _env_list(name: str, default: str = "") -> list[str]:
 
 DEBUG = _env_bool("DEBUG", default=True)
 
+ON_RAILWAY = bool(os.getenv("RAILWAY_ENVIRONMENT_NAME") or os.getenv("RAILWAY_SERVICE_ID"))
+
 SECRET_KEY = os.getenv("SECRET_KEY", "").strip()
 if not SECRET_KEY:
     if DEBUG:
         SECRET_KEY = "django-insecure-dev-only-change-me"
     elif "collectstatic" in sys.argv or "migrate" in sys.argv:
         SECRET_KEY = "django-insecure-railway-build-step-only"
+    elif ON_RAILWAY:
+        # Allow Railway boot/healthcheck; set a real SECRET_KEY in the dashboard.
+        SECRET_KEY = "django-insecure-railway-set-secret-key-in-dashboard"
     else:
         raise RuntimeError("SECRET_KEY environment variable is required in production.")
 
@@ -58,7 +63,6 @@ elif DEBUG:
 else:
     ALLOWED_HOSTS = _raw_hosts
 
-ON_RAILWAY = bool(os.getenv("RAILWAY_ENVIRONMENT_NAME") or os.getenv("RAILWAY_SERVICE_ID"))
 SITE_PROFILE = resolve_site_profile(on_railway=ON_RAILWAY)
 MARKETING_ONLY = SITE_PROFILE == "marketing"
 
@@ -67,7 +71,7 @@ if ON_RAILWAY:
         railway_host = os.getenv(env_name, "").strip()
         if railway_host and railway_host not in ALLOWED_HOSTS:
             ALLOWED_HOSTS.append(railway_host)
-    for railway_wildcard in (".up.railway.app", ".railway.app"):
+    for railway_wildcard in (".up.railway.app", ".railway.app", ".railway.internal"):
         if railway_wildcard not in ALLOWED_HOSTS:
             ALLOWED_HOSTS.append(railway_wildcard)
     for internal_host in ("127.0.0.1", "localhost"):
@@ -105,6 +109,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "config.middleware.HealthCheckMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -233,6 +238,7 @@ EMAIL_FILE_PATH = os.getenv("EMAIL_FILE_PATH", str(BASE_DIR / "tmp" / "emails"))
 
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    SECURE_SSL_REDIRECT = _env_bool("SECURE_SSL_REDIRECT", default=ON_RAILWAY)
+    # Railway terminates TLS at the edge; internal healthchecks use HTTP.
+    SECURE_SSL_REDIRECT = _env_bool("SECURE_SSL_REDIRECT", default=False)
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True

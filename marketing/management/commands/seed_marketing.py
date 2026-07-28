@@ -21,8 +21,17 @@ class Command(BaseCommand):
             help="Overwrite existing CMS rows with static defaults.",
         )
 
+        parser.add_argument(
+            "--if-empty",
+            action="store_true",
+            help="Skip seeding when marketing CMS rows already exist.",
+        )
+
     def handle(self, *args, **options):
         force = options["force"]
+        if options["if_empty"] and MarketingSettings.objects.exists():
+            self.stdout.write("Marketing CMS already present — skipping seed_marketing.")
+            return
         created = 0
 
         if force or not MarketingSettings.objects.exists():
