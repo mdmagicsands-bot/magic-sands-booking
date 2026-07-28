@@ -1,0 +1,1078 @@
+/* TBO-style partner hotel detail page (Magic Sands tokens) */
+
+.tbo-hotel-searchbar .tbo-hotel-searchbar-inner {
+  gap: 0.75rem;
+}
+
+.tbo-hotel-search-fields {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.45rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.tbo-hotel-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--pp-line);
+  background: #f7fbfb;
+  color: var(--pp-ink);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 650;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.tbo-hotel-field:hover {
+  border-color: var(--gp-cyan);
+  background: #fff;
+}
+
+.tbo-hotel-field svg {
+  flex-shrink: 0;
+  color: var(--gp-cyan);
+}
+
+.tbo-hotel-field-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 16rem;
+}
+
+.tbo-hotel-search-btn {
+  border: 0;
+  background: var(--pp-navy);
+  color: #fff;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  padding: 0.6rem 1.15rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.tbo-hotel-search-btn:hover {
+  background: var(--gp-cyan-deep, #0a6b78);
+}
+
+.tbo-hotel-trips {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--gp-cyan-deep, #0a6b78);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-decoration: none;
+  padding: 0.35rem 0.25rem;
+}
+
+.tbo-hotel-trips:hover {
+  text-decoration: underline;
+}
+
+.tbo-hotel-page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1rem 1.35rem 2.5rem;
+}
+
+.tbo-hotel-promo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem 1rem;
+  margin-top: 0.85rem;
+  padding: 0.7rem 0.95rem;
+  background: #fff8e8;
+  border: 1px solid #f0e0b8;
+  border-radius: 10px;
+}
+
+.tbo-hotel-promo-copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.85rem;
+  min-width: 0;
+}
+
+.tbo-hotel-promo-kicker {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #8a6a22;
+  letter-spacing: 0.02em;
+}
+
+.tbo-hotel-promo-msg {
+  font-size: 0.84rem;
+  font-weight: 650;
+  color: var(--pp-ink);
+}
+
+
+.tbo-hotel-summary {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid var(--pp-line);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(15, 77, 84, 0.04);
+}
+
+@media (min-width: 900px) {
+  .tbo-hotel-summary {
+    grid-template-columns: 240px minmax(0, 1fr) 220px;
+    align-items: stretch;
+  }
+}
+
+.tbo-hotel-summary-media {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  min-height: 180px;
+  background: #e8eef0;
+}
+
+.tbo-hotel-summary-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  background-size: cover;
+  background-position: center;
+  background-color: #d9e4e6;
+}
+
+@media (min-width: 900px) {
+  .tbo-hotel-summary-media,
+  .tbo-hotel-summary-photo {
+    min-height: 100%;
+  }
+}
+
+.tbo-hotel-photo-badge {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.55rem;
+  background: rgba(18, 38, 43, 0.78);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.25rem 0.45rem;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.tbo-hotel-summary-main {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.tbo-hotel-summary-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.7rem;
+}
+
+.tbo-hotel-summary-title h1 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  font-weight: 800;
+  color: var(--pp-navy);
+  line-height: 1.25;
+}
+
+.tbo-hotel-address {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.65rem;
+  font-size: 0.84rem;
+  color: var(--pp-muted);
+  font-weight: 600;
+}
+
+.tbo-hotel-highlight {
+  margin: 0.15rem 0 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.86rem;
+  color: var(--pp-ink);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.tbo-hotel-flag {
+  color: #c9851a;
+  flex-shrink: 0;
+}
+
+.tbo-hotel-amenity-row {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--pp-ink);
+}
+
+.tbo-hotel-amenity-row .ok {
+  color: #14805a;
+  font-weight: 900;
+  margin-right: 0.15rem;
+}
+
+.tbo-hotel-staybox {
+  background: #fff8e8;
+  border: 1px solid #f0e0b8;
+  border-radius: 12px;
+  padding: 0.85rem 0.95rem;
+}
+
+.tbo-hotel-staybox-title {
+  margin: 0 0 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a6a22;
+}
+
+.tbo-hotel-staybox-title svg {
+  flex-shrink: 0;
+}
+
+
+.tbo-hotel-staybox dl {
+  margin: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.tbo-hotel-staybox dt {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8a6a22;
+}
+
+.tbo-hotel-staybox dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--pp-ink);
+}
+
+.tbo-hotel-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 1rem 0 0;
+  padding: 0.35rem;
+  background: #fff;
+  border: 1px solid var(--pp-line);
+  border-radius: 12px 12px 0 0;
+  border-bottom: 0;
+}
+
+.tbo-hotel-tab {
+  border: 0;
+  background: transparent;
+  color: var(--pp-muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.65rem 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tbo-hotel-tab:hover {
+  color: var(--pp-navy);
+  background: var(--gp-cyan-soft);
+}
+
+.tbo-hotel-tab.is-active {
+  color: var(--pp-navy);
+  background: #fff4d6;
+  border-bottom-color: #d4a017;
+}
+
+.tbo-hotel-panels {
+  background: #fff;
+  border: 1px solid var(--pp-line);
+  border-radius: 0 0 12px 12px;
+  padding: 1rem 1.1rem 1.35rem;
+  min-height: 12rem;
+}
+
+.tbo-hotel-panel[hidden] {
+  display: none !important;
+}
+
+.tbo-map-external {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--gp-cyan-deep);
+}
+
+.tbo-amenity-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.55rem 0.85rem;
+}
+
+.tbo-amenity-grid li {
+  position: relative;
+  padding: 0.55rem 0.7rem 0.55rem 1.7rem;
+  background: #f7fbfb;
+  border: 1px solid var(--pp-line);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 650;
+  color: var(--pp-ink);
+}
+
+.tbo-amenity-grid li::before {
+  content: "✓";
+  position: absolute;
+  left: 0.6rem;
+  color: #14805a;
+  font-weight: 900;
+}
+
+.tbo-hotel-subhead {
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--pp-navy);
+}
+
+.tbo-reviews-summary {
+  margin-bottom: 0.75rem;
+}
+
+.pp-page-hotel .pp-hotel-rates {
+  margin: 0;
+}
+
+/* ── Image gallery (below rates) ─────────────────────────────── */
+.tbo-gallery-block {
+  margin-top: 1.25rem;
+  padding: 1.1rem 1.15rem 1.25rem;
+  background: #fff;
+  border: 1px solid var(--pp-line);
+  border-radius: 12px;
+}
+
+.tbo-gallery-head {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.tbo-gallery-title {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.55rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--pp-ink);
+}
+
+.tbo-gallery-sep {
+  color: var(--pp-muted);
+  font-weight: 600;
+}
+
+.tbo-gallery-hotel {
+  color: var(--pp-navy);
+}
+
+.tbo-gallery-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tbo-gallery-filter {
+  border: 1px solid var(--pp-line);
+  background: #fff;
+  color: var(--pp-muted);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.tbo-gallery-filter:hover {
+  color: var(--pp-navy);
+  border-color: var(--gp-cyan);
+}
+
+.tbo-gallery-filter.is-active {
+  color: var(--pp-navy);
+  border-color: var(--pp-navy);
+  background: #f4f8f9;
+}
+
+.tbo-gallery-bento {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.45rem;
+  min-height: 280px;
+}
+
+@media (min-width: 860px) {
+  .tbo-gallery-bento {
+    grid-template-columns: 1.15fr 1fr;
+    min-height: 420px;
+  }
+}
+
+.tbo-gallery-hero,
+.tbo-gallery-thumb,
+.tbo-gallery-all-item {
+  position: relative;
+  display: block;
+  background-size: cover;
+  background-position: center;
+  background-color: #d9e4e6;
+  border-radius: 10px;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.tbo-gallery-hero {
+  min-height: 260px;
+}
+
+@media (min-width: 860px) {
+  .tbo-gallery-hero {
+    min-height: 100%;
+  }
+}
+
+.tbo-gallery-thumbs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0.45rem;
+  min-height: 220px;
+}
+
+.tbo-gallery-thumb {
+  min-height: 110px;
+}
+
+.tbo-gallery-caption {
+  position: absolute;
+  left: 0.55rem;
+  top: 0.55rem;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1e293b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+}
+
+.tbo-gallery-thumb.is-see-all::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.62);
+}
+
+.tbo-gallery-see-all {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-align: center;
+  padding: 0.75rem;
+}
+
+.tbo-gallery-all-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.45rem;
+}
+
+.tbo-gallery-all-item {
+  aspect-ratio: 4 / 3;
+}
+
+/* ── Hotel on Map accordion ──────────────────────────────────── */
+.tbo-map-accordion {
+  margin-top: 1rem;
+  background: #fff;
+  border: 1px solid var(--pp-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tbo-map-accordion-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: #fff;
+  color: var(--pp-ink);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 0.95rem 1.15rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.tbo-map-accordion-toggle.is-open {
+  border-bottom-color: var(--pp-line);
+}
+
+.tbo-map-chevron {
+  color: #94a3b8;
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+
+.tbo-map-accordion-toggle.is-open .tbo-map-chevron {
+  transform: rotate(180deg);
+}
+
+.tbo-map-accordion-panel[hidden] {
+  display: none !important;
+}
+
+.tbo-map-stage {
+  position: relative;
+  min-height: 420px;
+  background: #eef3f4;
+}
+
+.tbo-map-stage iframe {
+  width: 100%;
+  min-height: 420px;
+  border: 0;
+  display: block;
+}
+
+.tbo-map-infocard {
+  position: absolute;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: min(280px, calc(100% - 2rem));
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.18);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.tbo-map-stage.infocard-hidden .tbo-map-infocard {
+  display: none;
+}
+
+.tbo-map-infocard-close {
+  position: absolute;
+  right: 0.35rem;
+  top: 0.25rem;
+  z-index: 1;
+  border: 0;
+  background: rgba(255, 255, 255, 0.9);
+  color: #334155;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tbo-map-infocard-photo {
+  height: 120px;
+  background-size: cover;
+  background-position: center;
+  background-color: #d9e4e6;
+}
+
+.tbo-map-infocard-body {
+  padding: 0.7rem 0.85rem 0.85rem;
+}
+
+.tbo-map-infocard-name {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--pp-ink);
+}
+
+.tbo-map-infocard-addr {
+  margin: 0.25rem 0 0.55rem;
+  font-size: 0.78rem;
+  color: var(--pp-muted);
+  font-weight: 600;
+}
+
+.tbo-map-empty {
+  margin: 0;
+  padding: 1rem 1.15rem 1.25rem;
+}
+
+.tbo-hotel-tab-link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ── Hotel Details + Amenities (below map) ───────────────────── */
+.tbo-content-card {
+  margin-top: 1rem;
+  background: #fff;
+  border: 1px solid var(--pp-line);
+  border-radius: 12px;
+  padding: 1.1rem 1.2rem 1.35rem;
+}
+
+.tbo-content-card-head {
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--pp-line);
+}
+
+.tbo-content-card-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--pp-ink);
+}
+
+.tbo-amenities-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.65rem;
+}
+
+.tbo-amenities-note {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+}
+
+.tbo-details-body {
+  display: grid;
+  gap: 0.95rem;
+}
+
+.tbo-details-section h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--pp-ink);
+}
+
+.tbo-details-section h3::after {
+  content: ":";
+}
+
+.tbo-details-section p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #334155;
+  font-weight: 550;
+}
+
+.tbo-details-section ul {
+  margin: 0.15rem 0 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.tbo-details-section li {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #334155;
+  font-weight: 550;
+}
+
+.tbo-amenities-columns {
+  column-count: 1;
+  column-gap: 1.5rem;
+}
+
+@media (min-width: 700px) {
+  .tbo-amenities-columns { column-count: 2; }
+}
+
+@media (min-width: 1000px) {
+  .tbo-amenities-columns { column-count: 4; }
+}
+
+.tbo-amenity-group {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+}
+
+.tbo-amenity-group-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--pp-ink);
+}
+
+.tbo-amenity-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.28rem;
+}
+
+.tbo-amenity-group li {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.35;
+}
+
+.tbo-amenity-group .ok {
+  color: #0f172a;
+  font-weight: 900;
+  margin-right: 0.2rem;
+}
+
+/* ── Guest Reviews ───────────────────────────────────────────── */
+.tbo-reviews-block {
+  margin-bottom: 0.5rem;
+}
+
+.tbo-reviews-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.25rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.tbo-reviews-scorebox {
+  display: grid;
+  place-items: center;
+  gap: 0.15rem;
+  min-width: 4.5rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--gp-cyan-deep, #0a6b78);
+  color: #fff;
+  border-radius: 10px;
+}
+
+.tbo-reviews-score {
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.tbo-reviews-score-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+.tbo-reviews-top-meta {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.tbo-reviews-summary-line {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--pp-ink);
+}
+
+.tbo-reviews-narrative {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #334155;
+  font-weight: 550;
+}
+
+.tbo-reviews-good {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.9rem;
+  background: #f4f8f9;
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+}
+
+.tbo-reviews-good-title {
+  margin: 0 0 0.4rem;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--pp-navy);
+}
+
+.tbo-reviews-good ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.tbo-reviews-good li {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.tbo-reviews-cats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 800px) {
+  .tbo-reviews-cats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.tbo-reviews-cat {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.tbo-reviews-cat-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.tbo-reviews-cat-head h3 {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--pp-ink);
+}
+
+.tbo-reviews-cat-head strong {
+  font-size: 0.95rem;
+  color: var(--gp-cyan-deep, #0a6b78);
+}
+
+.tbo-reviews-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.tbo-reviews-bar span {
+  display: block;
+  height: 100%;
+  background: var(--gp-cyan-deep, #0a6b78);
+  border-radius: 999px;
+}
+
+.tbo-reviews-cat-desc {
+  margin: 0.45rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #475569;
+  font-weight: 550;
+}
+
+.tbo-reviews-traveler-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0 0 0.85rem;
+  border-bottom: 1px solid var(--pp-line);
+  padding-bottom: 0.35rem;
+}
+
+.tbo-reviews-traveler-tab {
+  border: 0;
+  background: transparent;
+  color: var(--pp-muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 0.45rem 0.65rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tbo-reviews-traveler-tab.is-active {
+  color: var(--pp-navy);
+  border-bottom-color: var(--gp-cyan-deep, #0a6b78);
+}
+
+.tbo-reviews-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.tbo-review-card {
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  background: #fafcfc;
+}
+
+.tbo-review-card[hidden] {
+  display: none !important;
+}
+
+.tbo-review-card-head {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  margin-bottom: 0.35rem;
+}
+
+.tbo-review-score {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.2rem;
+  height: 2.2rem;
+  padding: 0 0.35rem;
+  border-radius: 8px;
+  background: var(--gp-cyan-deep, #0a6b78);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.tbo-review-name {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--pp-ink);
+}
+
+.tbo-review-meta {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+}
+
+.tbo-review-headline {
+  margin: 0.35rem 0 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--pp-navy);
+}
+
+.tbo-review-pros,
+.tbo-review-cons {
+  margin: 0.25rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #334155;
+}
+
+.tbo-review-pros strong { color: #14805a; }
+.tbo-review-cons strong { color: #b42318; }
+
+.tbo-reviews-empty-filter {
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 720px) {
+  .tbo-hotel-page {
+    padding: 0.85rem 1rem 2rem;
+  }
+
+  .tbo-hotel-field-text {
+    max-width: 11rem;
+  }
+
+  .tbo-hotel-trips span {
+    display: none;
+  }
+
+  .tbo-hotel-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .tbo-hotel-tab {
+    white-space: nowrap;
+  }
+
+  .tbo-gallery-filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+  }
+
+  .tbo-gallery-filter {
+    white-space: nowrap;
+  }
+
+  .tbo-map-infocard {
+    top: 10%;
+  }
+}
+

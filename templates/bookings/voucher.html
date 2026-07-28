@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Hotel voucher {{ voucher.booking_id }} | {{ SITE_NAME }}{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/booking-voucher.css' %}?v=20260728b">
+{% endblock %}
+{% block content %}
+<section class="page bk-voucher-page">
+  {% include "bookings/_voucher_body.html" %}
+  <div class="bk-voucher-actions">
+    <button type="button" class="btn btn-ghost" onclick="window.print()">Print voucher</button>
+    <a class="btn btn-primary" href="{% url 'book_home' %}">Book another stay</a>
+  </div>
+</section>
+{% endblock %}

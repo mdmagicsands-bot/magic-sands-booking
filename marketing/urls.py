@@ -10,6 +10,7 @@ urlpatterns = [
     path("destinations/<slug:slug>/", views.destination_detail, name="destination_detail"),
     path("testimonials/", views.testimonials, name="testimonials"),
     path("contact/", views.contact, name="contact"),
+    path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
     # Marketing CMS (staff)
     path("admin/marketing/", admin_views.marketing_dashboard, name="marketing_admin"),
     path(

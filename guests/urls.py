@@ -9,9 +9,12 @@ urlpatterns = [
     path("", views.dashboard, name="guest_dashboard"),
     path("search/", views.search_home, name="guest_search"),
     path("search/results/", views.search_results, name="guest_search_results"),
+    path("hotels/<str:hotel_id>/rates/", views.hotel_rates_api, name="guest_hotel_rates_api"),
+    path("hotels/<str:hotel_id>/", views.hotel_detail, name="guest_hotel_detail"),
     path("bookings/", views.bookings_list, name="guest_bookings"),
     path("bookings/<int:booking_id>/", views.booking_detail, name="guest_booking_detail"),
     path("saved/", views.saved_hotels, name="guest_saved"),
     path("profile/", views.profile, name="guest_profile"),
     path("support/", views.support, name="guest_support"),
+    path("privacy-policy/", views.privacy_policy, name="guest_privacy_policy"),
 ]

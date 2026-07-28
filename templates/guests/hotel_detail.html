@@ -1,0 +1,700 @@
+{% extends "guests/base_guest.html" %}
+{% load static %}
+{% block title %}{{ hotel.name|default:hotel_id }} | Magic Sands DMC — Booking Platform{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/rates-table.css' %}?v=20260728c">
+<link rel="stylesheet" href="{% static 'css/tbo-results.css' %}?v=20260728c">
+<link rel="stylesheet" href="{% static 'css/tbo-hotel.css' %}?v=20260728c">
+{% endblock %}
+{% block body_class %} pp-page-hotel pp-has-results{% endblock %}
+{% block content %}
+
+<nav class="tbo-stepper" aria-label="Booking progress">
+  <ol class="tbo-stepper-list">
+    <li class="tbo-step is-done">
+      <span class="tbo-step-num" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12.5 10 17.5 19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="tbo-step-label">Search Hotels</span>
+    </li>
+    <li class="tbo-step is-active" aria-current="step">
+      <span class="tbo-step-num" aria-hidden="true">2</span>
+      <span class="tbo-step-label">Choose Hotel &amp; Room</span>
+    </li>
+    <li class="tbo-step">
+      <span class="tbo-step-num" aria-hidden="true">3</span>
+      <span class="tbo-step-label">Guest Details &amp; Book</span>
+    </li>
+  </ol>
+</nav>
+
+<section class="tbo-search-ribbon tbo-hotel-searchbar" id="pp-summary-bar">
+  <div class="tbo-ribbon-inner tbo-hotel-searchbar-inner">
+    <div class="tbo-hotel-search-fields" role="group" aria-label="Current search">
+      <button type="button" class="tbo-hotel-field" id="pp-modify-search" title="Modify search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <span class="tbo-hotel-field-text">{{ hotel.name|default:destination|default:"Hotel" }}</span>
+      </button>
+      <button type="button" class="tbo-hotel-field" data-open-search title="Change dates">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <span class="tbo-hotel-field-text">{{ checkin_display }} — {{ checkout_display }}{% if nights %} ({{ nights }} Night{% if nights != 1 %}s{% endif %}){% endif %}</span>
+      </button>
+      <button type="button" class="tbo-hotel-field" data-open-search title="Change guests">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M3 19c0-3 2.5-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="17" cy="9" r="2.2" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span class="tbo-hotel-field-text">{{ stay_occupancy_label|default:adults_rooms_label|default:occupancy_label }}</span>
+      </button>
+      <button type="button" class="tbo-hotel-field" data-open-search title="Change nationality">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="currentColor" stroke-width="1.4"/>
+        </svg>
+        <span class="tbo-hotel-field-text">{% for code, label in nationality_choices %}{% if code == nationality %}{{ label }}{% endif %}{% empty %}{{ nationality|default:"—" }}{% endfor %}</span>
+      </button>
+    </div>
+    <div class="tbo-ribbon-actions">
+      <button type="button" class="tbo-hotel-search-btn" data-open-search>Search</button>
+      <a class="tbo-hotel-trips" href="{% url 'guest_bookings' %}" title="My Bookings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" stroke="currentColor" stroke-width="1.8"/>
+          <rect x="4" y="7" width="16" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <span>My Trips</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div id="pp-search-panel" class="pp-search-panel-wrap is-collapsed">
+  {% include "guests/_portal_search.html" %}
+</div>
+
+<section class="tbo-hotel-page">
+  {% if sandbox %}
+  <div class="sandbox-banner">Sandbox mode: test data only, no real transactions.</div>
+  {% endif %}
+
+  <article class="tbo-hotel-summary">
+    <div class="tbo-hotel-summary-media">
+      <span class="tbo-hotel-summary-photo" {% if main_photo %}style="background-image:url('{{ main_photo }}')"{% endif %}></span>
+      {% if extra_photos %}
+      <a class="tbo-hotel-photo-badge" href="#hotel-gallery" data-tab-jump="gallery">+{{ extra_photos }}</a>
+      {% endif %}
+    </div>
+
+    <div class="tbo-hotel-summary-main">
+      <div class="tbo-hotel-summary-title">
+        <h1>{{ hotel.name|default:hotel_id }}</h1>
+        {% if hotel_stars %}
+        <span class="tbo-stars" aria-label="{{ hotel_stars }} star rating">
+          {% for i in "12345" %}
+            <span class="{% if forloop.counter <= hotel_stars %}on{% endif %}">★</span>
+          {% endfor %}
+        </span>
+        {% endif %}
+      </div>
+
+      {% if hotel.address or hotel.city %}
+      <p class="tbo-hotel-address">
+        <span>{{ hotel.address|default:hotel.city }}{% if hotel.city and hotel.address %}, {{ hotel.city }}{% endif %}</span>
+        {% if hotel_lat and hotel_lng %}
+        <a class="tbo-map-link" href="#hotel-map" data-tab-jump="map">View on map</a>
+        {% endif %}
+      </p>
+      {% endif %}
+
+      {% if review_display %}
+      <div class="tbo-score-row">
+        <span class="tbo-score-badge">{{ review_display }}/100</span>
+        {% if guest_rating_label %}<span class="tbo-score-label">{{ guest_rating_label }}</span>{% endif %}
+        {% if review_count %}<span class="tbo-score-count">({{ review_count }} reviews)</span>{% endif %}
+      </div>
+      {% endif %}
+
+      {% if hotel_highlight %}
+      <p class="tbo-hotel-highlight">
+        <span class="tbo-hotel-flag" aria-hidden="true">⚑</span>
+        <span>{{ hotel_highlight }}</span>
+      </p>
+      {% endif %}
+
+      {% if highlight_amenities %}
+      <ul class="tbo-hotel-amenity-row">
+        {% for item in highlight_amenities %}
+        <li><span class="ok" aria-hidden="true">✓</span> {{ item }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <aside class="tbo-hotel-staybox">
+      <p class="tbo-hotel-staybox-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        Your stay
+      </p>
+      <dl>
+        <div>
+          <dt>Check-in</dt>
+          <dd>{{ checkin_display }}{% if checkin_time %} After {{ checkin_time }}{% endif %}</dd>
+        </div>
+        <div>
+          <dt>Check-out</dt>
+          <dd>{{ checkout_display }}{% if checkout_time %} Before {{ checkout_time }}{% endif %}</dd>
+        </div>
+        <div>
+          <dt>Occupancy</dt>
+          <dd>{{ stay_occupancy_label|default:occupancy_summary }}</dd>
+        </div>
+      </dl>
+    </aside>
+  </article>
+
+  <nav class="tbo-hotel-tabs" aria-label="Hotel sections">
+    <button type="button" class="tbo-hotel-tab is-active" data-tab="rates" aria-selected="true">
+      Available Rateplans{% if rate_count %} ({{ rate_count }}){% endif %}
+    </button>
+    <a class="tbo-hotel-tab tbo-hotel-tab-link" href="#hotel-gallery" data-jump="gallery">Hotel Image Gallery</a>
+    <a class="tbo-hotel-tab tbo-hotel-tab-link" href="#hotel-map" data-jump="map">Hotel on Map</a>
+    <a class="tbo-hotel-tab tbo-hotel-tab-link" href="#hotel-details" data-jump="details">Hotel Details</a>
+    <a class="tbo-hotel-tab tbo-hotel-tab-link" href="#hotel-amenities" data-jump="amenities">Hotel Amenities</a>
+    <a class="tbo-hotel-tab tbo-hotel-tab-link" href="#hotel-reviews" data-jump="reviews">Guest Reviews</a>
+  </nav>
+
+  <div class="tbo-hotel-panels">
+    <section class="tbo-hotel-panel is-active" id="tab-rates" data-panel="rates">
+      <div class="pp-hotel-rates">
+        {% with book_portal="partner" %}
+        {% include "hotels/_rates_table.html" %}
+        {% endwith %}
+      </div>
+    </section>
+  </div>
+
+  {# ── Image gallery (below rates) ───────────────────────────── #}
+  <section class="tbo-gallery-block" id="hotel-gallery" aria-label="Hotel image gallery">
+    <header class="tbo-gallery-head">
+      <h2 class="tbo-gallery-title">
+        Hotel Image Gallery
+        <span class="tbo-gallery-sep" aria-hidden="true">|</span>
+        <span class="tbo-gallery-hotel">{{ hotel.name|default:hotel_id }}</span>
+        {% if hotel_stars %}
+        <span class="tbo-stars" aria-label="{{ hotel_stars }} star rating">
+          {% for i in "12345" %}
+            <span class="{% if forloop.counter <= hotel_stars %}on{% endif %}">★</span>
+          {% endfor %}
+        </span>
+        {% endif %}
+      </h2>
+      {% if gallery_categories|length > 1 %}
+      <div class="tbo-gallery-filters" role="tablist" aria-label="Filter photos">
+        {% for cat in gallery_categories %}
+        <button
+          type="button"
+          class="tbo-gallery-filter{% if forloop.first %} is-active{% endif %}"
+          data-gallery-filter="{{ cat }}"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+        >{{ cat }}</button>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </header>
+
+    {% if gallery_items %}
+    <div class="tbo-gallery-bento" id="tbo-gallery-bento">
+      {% if gallery_feature %}
+      <a
+        class="tbo-gallery-hero"
+        href="{{ gallery_feature.url }}"
+        target="_blank"
+        rel="noopener"
+        data-category="{{ gallery_feature.category }}"
+        style="background-image:url('{{ gallery_feature.url }}')"
+      >
+        <span class="tbo-gallery-caption">{{ gallery_feature.caption }}</span>
+      </a>
+      {% endif %}
+      <div class="tbo-gallery-thumbs">
+        {% for item in gallery_thumbs %}
+        <a
+          class="tbo-gallery-thumb{% if forloop.last and photo_count > 5 %} is-see-all{% endif %}"
+          href="{% if forloop.last and photo_count > 5 %}#{% else %}{{ item.url }}{% endif %}"
+          {% if forloop.last and photo_count > 5 %}data-see-all="1"{% else %}target="_blank" rel="noopener"{% endif %}
+          data-category="{{ item.category }}"
+          style="background-image:url('{{ item.thumb }}')"
+        >
+          {% if forloop.last and photo_count > 5 %}
+          <span class="tbo-gallery-see-all">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="5" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.6"/>
+              <rect x="14" y="5" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.6"/>
+              <rect x="3" y="13" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.6"/>
+              <rect x="14" y="13" width="7" height="6" rx="1" stroke="currentColor" stroke-width="1.6"/>
+            </svg>
+            See All {{ photo_count }} Images
+          </span>
+          {% endif %}
+        </a>
+        {% empty %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="tbo-gallery-all" id="tbo-gallery-all" hidden>
+      <div class="tbo-gallery-all-grid">
+        {% for item in gallery_items %}
+        <a
+          class="tbo-gallery-all-item"
+          href="{{ item.url }}"
+          target="_blank"
+          rel="noopener"
+          data-category="{{ item.category }}"
+          style="background-image:url('{{ item.thumb }}')"
+          title="{{ item.caption }}"
+        >
+          <span class="tbo-gallery-caption">{{ item.caption }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <p class="ms-muted">No photos available for this property.</p>
+    {% endif %}
+  </section>
+
+  {# ── Hotel on Map (collapsed until opened) ─────────────────── #}
+  <section class="tbo-map-accordion" id="hotel-map">
+    <button
+      type="button"
+      class="tbo-map-accordion-toggle"
+      id="tbo-map-toggle"
+      aria-expanded="false"
+      aria-controls="tbo-map-panel"
+    >
+      <span>Hotel on Map</span>
+      <svg class="tbo-map-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div class="tbo-map-accordion-panel" id="tbo-map-panel" hidden>
+      {% if hotel_lat and hotel_lng %}
+      <div class="tbo-map-stage">
+        <iframe
+          id="tbo-map-iframe"
+          title="Map for {{ hotel.name|default:hotel_id }}"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          data-src="https://maps.google.com/maps?q={{ hotel_lat }},{{ hotel_lng }}&amp;z=14&amp;output=embed"
+        ></iframe>
+        <div class="tbo-map-infocard" role="dialog" aria-label="{{ hotel.name|default:hotel_id }}">
+          <button type="button" class="tbo-map-infocard-close" id="tbo-map-infocard-close" aria-label="Close hotel card">×</button>
+          {% if main_photo %}
+          <div class="tbo-map-infocard-photo" style="background-image:url('{{ main_photo }}')"></div>
+          {% endif %}
+          <div class="tbo-map-infocard-body">
+            <p class="tbo-map-infocard-name">
+              {{ hotel.name|default:hotel_id }}
+              {% if hotel_stars %}
+              <span class="tbo-stars" aria-hidden="true">
+                {% for i in "12345" %}
+                  <span class="{% if forloop.counter <= hotel_stars %}on{% endif %}">★</span>
+                {% endfor %}
+              </span>
+              {% endif %}
+            </p>
+            {% if hotel.address or hotel.city %}
+            <p class="tbo-map-infocard-addr">{{ hotel.address|default:hotel.city }}</p>
+            {% endif %}
+            <a
+              class="tbo-map-external"
+              href="https://www.google.com/maps?q={{ hotel_lat }},{{ hotel_lng }}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Open in Google Maps</a>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <p class="ms-muted tbo-map-empty">Map coordinates are not available for this hotel.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  {# ── Hotel Details (LiteAPI description sections) ──────────── #}
+  <section class="tbo-content-card" id="hotel-details">
+    <header class="tbo-content-card-head">
+      <h2>Hotel Details</h2>
+    </header>
+    {% if detail_sections %}
+    <div class="tbo-details-body">
+      {% for section in detail_sections %}
+      <div class="tbo-details-section">
+        <h3>{{ section.title }}</h3>
+        {% if section.is_list %}
+        <ul>
+          {% for item in section.items %}
+          <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>{{ section.body }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% elif hotel.hotelDescription %}
+    <div class="tbo-details-body prose-lite">{{ hotel.hotelDescription|safe }}</div>
+    {% else %}
+    <p class="ms-muted">No detailed description returned for this property.</p>
+    {% endif %}
+  </section>
+
+  {# ── Amenities (categorized from LiteAPI facilities) ───────── #}
+  <section class="tbo-content-card" id="hotel-amenities">
+    <header class="tbo-content-card-head tbo-amenities-head">
+      <h2>Amenities</h2>
+      <span class="tbo-amenities-note">(Amenities are subject to availability and may be chargeable as per the hotel policy)</span>
+    </header>
+    {% if amenity_groups %}
+    <div class="tbo-amenities-columns">
+      {% for group in amenity_groups %}
+      <div class="tbo-amenity-group">
+        <h3 class="tbo-amenity-group-title">{{ group.category }}</h3>
+        <ul>
+          {% for item in group.items %}
+          <li><span class="ok" aria-hidden="true">✓</span> {{ item }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="ms-muted">Amenity list was not returned by the supplier for this hotel.</p>
+    {% endif %}
+  </section>
+
+  {# ── Guest Reviews (LiteAPI /data/reviews + sentiment) ─────── #}
+  <section class="tbo-content-card tbo-reviews-block" id="hotel-reviews">
+    <header class="tbo-content-card-head">
+      <h2>Guest Reviews</h2>
+    </header>
+
+    {% if has_guest_reviews %}
+    <div class="tbo-reviews-top">
+      {% if review_overall %}
+      <div class="tbo-reviews-scorebox">
+        <span class="tbo-reviews-score">{{ review_overall }}</span>
+        <span class="tbo-reviews-score-label">{{ review_overall_label|default:"Rated" }}</span>
+      </div>
+      {% elif review_display %}
+      <div class="tbo-reviews-scorebox">
+        <span class="tbo-reviews-score">{{ review_display }}</span>
+        <span class="tbo-reviews-score-label">{{ guest_rating_label|default:"Rated" }}</span>
+      </div>
+      {% endif %}
+      <div class="tbo-reviews-top-meta">
+        <p class="tbo-reviews-summary-line">
+          Summary of {{ review_summary_count|default:review_fetched_count }} review{{ review_summary_count|default:review_fetched_count|pluralize }}
+        </p>
+        {% if review_narrative %}
+        <p class="tbo-reviews-narrative">
+          {% if review_overall %}Rated {{ review_overall }}/5 based on reviews from travelers.{% endif %}
+          {{ review_narrative }}
+        </p>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if review_pros %}
+    <div class="tbo-reviews-good">
+      <p class="tbo-reviews-good-title">Good to know</p>
+      <ul>
+        {% for item in review_pros %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    {% if review_categories %}
+    <div class="tbo-reviews-cats">
+      {% for cat in review_categories %}
+      <article class="tbo-reviews-cat">
+        <div class="tbo-reviews-cat-head">
+          <h3>{{ cat.name }}</h3>
+          <strong>{{ cat.score }}</strong>
+        </div>
+        <div class="tbo-reviews-bar" aria-hidden="true">
+          <span style="width:{{ cat.pct }}%"></span>
+        </div>
+        {% if cat.description %}
+        <p class="tbo-reviews-cat-desc">{{ cat.description }}</p>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if review_traveler_tabs|length > 1 %}
+    <div class="tbo-reviews-traveler-tabs" role="tablist" aria-label="Filter by traveler type">
+      {% for tab in review_traveler_tabs %}
+      <button
+        type="button"
+        class="tbo-reviews-traveler-tab{% if forloop.first %} is-active{% endif %}"
+        data-traveler="{{ tab.key }}"
+        role="tab"
+        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+      >{{ tab.label }} {{ tab.pct }}%</button>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if guest_reviews %}
+    <div class="tbo-reviews-list" id="tbo-reviews-list">
+      {% for rev in guest_reviews %}
+      <article class="tbo-review-card" data-traveler="{{ rev.traveler }}">
+        <header class="tbo-review-card-head">
+          {% if rev.score %}<span class="tbo-review-score">{{ rev.score }}</span>{% endif %}
+          <div>
+            <p class="tbo-review-name">{{ rev.name }}{% if rev.traveler and rev.traveler != "Other" %} · {{ rev.traveler }}{% endif %}</p>
+            {% if rev.date or rev.country %}
+            <p class="tbo-review-meta">{% if rev.date %}{{ rev.date }}{% endif %}{% if rev.date and rev.country %} · {% endif %}{% if rev.country %}{{ rev.country }}{% endif %}</p>
+            {% endif %}
+          </div>
+        </header>
+        {% if rev.headline %}<h3 class="tbo-review-headline">{{ rev.headline }}</h3>{% endif %}
+        {% if rev.pros %}<p class="tbo-review-pros"><strong>Pros:</strong> {{ rev.pros }}</p>{% endif %}
+        {% if rev.cons %}<p class="tbo-review-cons"><strong>Cons:</strong> {{ rev.cons }}</p>{% endif %}
+      </article>
+      {% endfor %}
+    </div>
+    <p class="ms-muted tbo-reviews-empty-filter" id="tbo-reviews-empty-filter" hidden>No reviews for this traveler type.</p>
+    {% elif review_categories or review_overall %}
+    <p class="ms-muted">Category scores are available from guest feedback. Individual written reviews were not returned for this property.</p>
+    {% endif %}
+
+    {% else %}
+    <p class="ms-muted">No guest reviews are available for this property yet.</p>
+    {% endif %}
+  </section>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/partner-occupancy.js' %}?v=20260726f"></script>
+{% include "guests/_portal_search_js.html" %}
+<script>
+(function () {
+  const searchPanel = document.getElementById('pp-search-panel');
+  function openSearchPanel() {
+    if (!searchPanel) return;
+    searchPanel.classList.remove('is-collapsed');
+    searchPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function toggleSearchPanel() {
+    if (!searchPanel) return;
+    searchPanel.classList.toggle('is-collapsed');
+    if (!searchPanel.classList.contains('is-collapsed')) {
+      searchPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  document.querySelectorAll('[data-open-search]').forEach(function (el) {
+    el.addEventListener('click', openSearchPanel);
+  });
+  const modifyBtn = document.getElementById('pp-modify-search');
+  if (modifyBtn) modifyBtn.addEventListener('click', toggleSearchPanel);
+
+  const tabs = Array.from(document.querySelectorAll('.tbo-hotel-tab'));
+  const panels = Array.from(document.querySelectorAll('.tbo-hotel-panel'));
+
+  function setActiveTab(el) {
+    tabs.forEach(function (tab) {
+      const on = tab === el;
+      tab.classList.toggle('is-active', on);
+      if (tab.hasAttribute('aria-selected')) {
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      }
+    });
+  }
+
+  function showRatesPanel() {
+    panels.forEach(function (panel) {
+      const on = panel.dataset.panel === 'rates';
+      panel.classList.toggle('is-active', on);
+      panel.hidden = !on;
+    });
+  }
+
+  function jumpTo(name) {
+    showRatesPanel();
+    if (name === 'gallery') {
+      const g = document.getElementById('hotel-gallery');
+      if (g) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    if (name === 'map') {
+      openMapAccordion();
+      return;
+    }
+    if (name === 'details') {
+      const d = document.getElementById('hotel-details');
+      if (d) d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    if (name === 'amenities') {
+      const a = document.getElementById('hotel-amenities');
+      if (a) a.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    if (name === 'reviews') {
+      const r = document.getElementById('hotel-reviews');
+      if (r) r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    const rates = document.getElementById('tab-rates') || document.getElementById('ms-rates');
+    if (rates) rates.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function (e) {
+      const jump = tab.getAttribute('data-jump') || tab.dataset.tab || '';
+      if (tab.tagName === 'A') e.preventDefault();
+      setActiveTab(tab);
+      jumpTo(jump);
+    });
+  });
+
+  document.querySelectorAll('[data-tab-jump]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      const name = el.getAttribute('data-tab-jump');
+      if (!name) return;
+      e.preventDefault();
+      const match = tabs.find(function (t) {
+        return (t.getAttribute('data-jump') || t.dataset.tab) === name;
+      });
+      if (match) setActiveTab(match);
+      jumpTo(name);
+    });
+  });
+
+  const filters = Array.from(document.querySelectorAll('[data-gallery-filter]'));
+  const bento = document.getElementById('tbo-gallery-bento');
+  const allWrap = document.getElementById('tbo-gallery-all');
+  const allItems = Array.from(document.querySelectorAll('.tbo-gallery-all-item'));
+
+  function setFilter(cat) {
+    filters.forEach(function (btn) {
+      const on = btn.getAttribute('data-gallery-filter') === cat;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    if (!allWrap || allWrap.hidden) return;
+    allItems.forEach(function (item) {
+      const show = cat === 'All' || item.getAttribute('data-category') === cat;
+      item.hidden = !show;
+    });
+  }
+
+  filters.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const cat = btn.getAttribute('data-gallery-filter') || 'All';
+      setFilter(cat);
+      if (allWrap && allWrap.hidden && cat !== 'All') {
+        showAllGallery();
+      }
+    });
+  });
+
+  function showAllGallery() {
+    if (bento) bento.hidden = true;
+    if (allWrap) allWrap.hidden = false;
+    const active = filters.find(function (b) { return b.classList.contains('is-active'); });
+    setFilter(active ? active.getAttribute('data-gallery-filter') : 'All');
+  }
+
+  document.querySelectorAll('[data-see-all]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      showAllGallery();
+      const g = document.getElementById('hotel-gallery');
+      if (g) g.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  const mapToggle = document.getElementById('tbo-map-toggle');
+  const mapPanel = document.getElementById('tbo-map-panel');
+  const mapIframe = document.getElementById('tbo-map-iframe');
+  const mapStage = document.querySelector('.tbo-map-stage');
+  const infoClose = document.getElementById('tbo-map-infocard-close');
+
+  function openMapAccordion() {
+    if (!mapToggle || !mapPanel) return;
+    mapPanel.hidden = false;
+    mapToggle.setAttribute('aria-expanded', 'true');
+    mapToggle.classList.add('is-open');
+    if (mapIframe && !mapIframe.getAttribute('src')) {
+      const src = mapIframe.getAttribute('data-src');
+      if (src) mapIframe.setAttribute('src', src);
+    }
+    if (mapStage) mapStage.classList.remove('infocard-hidden');
+    document.getElementById('hotel-map').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function closeMapAccordion() {
+    if (!mapToggle || !mapPanel) return;
+    mapPanel.hidden = true;
+    mapToggle.setAttribute('aria-expanded', 'false');
+    mapToggle.classList.remove('is-open');
+  }
+
+  if (mapToggle) {
+    mapToggle.addEventListener('click', function () {
+      const open = mapToggle.getAttribute('aria-expanded') === 'true';
+      if (open) closeMapAccordion();
+      else openMapAccordion();
+    });
+  }
+  if (infoClose) {
+    infoClose.addEventListener('click', function () {
+      if (mapStage) mapStage.classList.add('infocard-hidden');
+    });
+  }
+
+  /* Traveler-type filter on guest reviews */
+  const travelerTabs = Array.from(document.querySelectorAll('[data-traveler].tbo-reviews-traveler-tab'));
+  const reviewCards = Array.from(document.querySelectorAll('.tbo-review-card'));
+  const reviewEmpty = document.getElementById('tbo-reviews-empty-filter');
+  travelerTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      const key = tab.getAttribute('data-traveler') || 'All';
+      travelerTabs.forEach(function (t) {
+        const on = t === tab;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      let visible = 0;
+      reviewCards.forEach(function (card) {
+        const show = key === 'All' || card.getAttribute('data-traveler') === key;
+        card.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (reviewEmpty) reviewEmpty.hidden = visible !== 0;
+    });
+  });
+})();
+</script>
+{% endblock %}

@@ -1,37 +1,41 @@
 {% extends "guests/base_guest.html" %}
-{% block title %}Dashboard | Magic Sands{% endblock %}
-{% block eyebrow %}Overview{% endblock %}
-{% block heading %}Hello, {{ profile.display_name }}{% endblock %}
+{% block title %}Dashboard | Magic Sands DMC — Booking Platform{% endblock %}
 {% block content %}
 
-<section class="gp-stats">
-  <article class="gp-stat">
+<section class="pp-dash-hero">
+  <div>
+    <p class="pp-eyebrow">Partner dashboard</p>
+    <h1>Hello, {{ profile.display_name }}</h1>
+    <p class="pp-lede">Search live hotel rates, manage bookings, and track your credit.</p>
+  </div>
+  <a class="pp-search-btn" href="{% url 'guest_search' %}">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+      <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    New search
+  </a>
+</section>
+
+<section class="pp-dash-strip">
+  <div class="pp-dash-stat">
     <p>Total bookings</p>
     <strong>{{ stats.total }}</strong>
-  </article>
-  <article class="gp-stat">
+  </div>
+  <div class="pp-dash-stat">
     <p>Confirmed</p>
     <strong>{{ stats.confirmed }}</strong>
-  </article>
-  <article class="gp-stat">
+  </div>
+  <div class="pp-dash-stat">
     <p>Upcoming stays</p>
     <strong>{{ stats.upcoming }}</strong>
-  </article>
-</section>
-
-<section class="gp-card">
-  <div class="gp-card-head">
-    <h2>Hotel search</h2>
-    <a class="gp-link" href="{% url 'guest_search' %}">Open full search</a>
   </div>
-  <p class="gp-muted" style="margin:0 0 1rem">Live rates from Nuitee Connect — search any destination worldwide.</p>
-  {% include "guests/_search_form.html" %}
 </section>
 
-<section class="gp-card">
-  <div class="gp-card-head">
+<section class="pp-card">
+  <div class="pp-card-head">
     <h2>Recent bookings</h2>
-    <a class="gp-link" href="{% url 'guest_bookings' %}">View all</a>
+    <a href="{% url 'guest_bookings' %}">View all</a>
   </div>
   {% if recent_bookings %}
   <div class="gp-table-wrap">
@@ -52,18 +56,17 @@
           <td>{{ b.check_in|default:"—" }} → {{ b.check_out|default:"—" }}</td>
           <td>{% if b.amount %}{{ b.currency }} {{ b.amount }}{% else %}—{% endif %}</td>
           <td><span class="gp-status gp-status-{{ b.status }}">{{ b.get_status_display }}</span></td>
-          <td><a class="gp-link" href="{% url 'guest_booking_detail' b.pk %}">Open</a></td>
+          <td><a href="{% url 'guest_booking_detail' b.pk %}">Open</a></td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
   {% else %}
-  <div class="gp-empty">
+  <div class="pp-empty">
     <p>No bookings yet. Search hotels to get started.</p>
-    <a class="gp-btn small" href="{% url 'guest_search' %}">Search hotels</a>
+    <a class="pp-search-btn pp-search-btn-sm" href="{% url 'guest_search' %}">Search hotels</a>
   </div>
   {% endif %}
 </section>
 {% endblock %}
-{% block extra_js %}{% include "guests/_search_js.html" %}{% endblock %}

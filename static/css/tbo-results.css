@@ -1,0 +1,1221 @@
+/* TBO-style partner B2B hotel search results — Magic Sands DMC cyan brand */
+@import url("ms-brand.css");
+
+/* ── Booking stepper ─────────────────────────────────────────── */
+.tbo-stepper {
+  background: #fff;
+  border-bottom: 1px solid var(--pp-line);
+}
+
+.tbo-stepper-list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0.95rem 1.35rem 1rem;
+  max-width: 1240px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+}
+
+.tbo-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--pp-muted);
+  font-size: 0.86rem;
+  font-weight: 600;
+  position: relative;
+  flex: 0 1 auto;
+}
+
+.tbo-step:not(:last-child) {
+  padding-right: 0;
+  margin-right: 0;
+  flex: 1 1 0;
+}
+
+.tbo-step:not(:last-child)::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 2.5rem;
+  height: 0;
+  margin: 0 0.85rem 0 0.95rem;
+  border-top: 2px dotted #c8d5d9;
+  align-self: center;
+}
+
+.tbo-step.is-done:not(:last-child)::after {
+  border-top: 2px solid var(--gp-cyan);
+}
+
+.tbo-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  border: 2px solid #c8d5d9;
+  background: #fff;
+  color: var(--pp-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tbo-step-label {
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.tbo-step.is-done {
+  color: var(--gp-cyan-deep);
+}
+
+.tbo-step.is-done .tbo-step-num {
+  background: var(--gp-cyan);
+  border-color: var(--gp-cyan);
+  color: #fff;
+}
+
+.tbo-step.is-active {
+  color: var(--pp-navy);
+  font-weight: 800;
+}
+
+.tbo-step.is-active .tbo-step-num {
+  background: #fff;
+  border-color: var(--gp-cyan);
+  color: var(--gp-cyan-deep);
+  box-shadow: 0 0 0 3px var(--ms-cyan-glow);
+}
+
+.tbo-step.is-active .tbo-step-label {
+  color: var(--pp-navy);
+  border-bottom: 2px solid var(--gp-cyan);
+  padding-bottom: 0.1rem;
+}
+
+/* ── Sticky search ribbon ────────────────────────────────────── */
+.tbo-search-ribbon {
+  position: sticky;
+  top: 6.5rem; /* below .pp-header */
+  z-index: 35;
+  background: #fff;
+  border-bottom: 1px solid var(--pp-line);
+  box-shadow: 0 1px 0 rgba(15, 77, 84, 0.04), 0 4px 12px rgba(15, 77, 84, 0.06);
+}
+
+.tbo-ribbon-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0.7rem 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tbo-ribbon-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 1.25rem;
+  min-width: 0;
+}
+
+.tbo-ribbon-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--pp-ink);
+  font-size: 0.86rem;
+  font-weight: 600;
+  min-width: 0;
+}
+
+.tbo-ribbon-item svg {
+  flex-shrink: 0;
+  color: var(--gp-cyan);
+}
+
+.tbo-ribbon-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 18rem;
+}
+
+.tbo-ribbon-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.tbo-ribbon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1.5px solid var(--pp-navy);
+  background: #fff;
+  color: var(--pp-navy);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 0.5rem 0.95rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.tbo-ribbon-btn:hover {
+  background: var(--pp-navy);
+  color: #fff;
+}
+
+.tbo-ribbon-btn svg {
+  flex-shrink: 0;
+}
+
+/* ── Results shell ───────────────────────────────────────────── */
+.tbo-results.pp-results,
+.tbo-results {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1.1rem 1.35rem 2.5rem;
+  background: transparent;
+  color: var(--pp-ink);
+}
+
+.tbo-results-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--pp-line);
+}
+
+.tbo-sort-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: #f4f8f9;
+  border: 1px solid var(--pp-line);
+  border-radius: 10px;
+  padding: 0.2rem;
+}
+
+.tbo-sort-tab {
+  border: 0;
+  background: transparent;
+  color: var(--pp-muted);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tbo-sort-tab:hover {
+  color: var(--pp-navy);
+}
+
+.tbo-sort-tab.is-active {
+  background: #fff;
+  color: var(--pp-navy);
+  box-shadow: 0 1px 3px rgba(15, 77, 84, 0.1);
+}
+
+.tbo-results-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.tbo-visible-count {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+}
+
+.tbo-visible-count #visible-count,
+.tbo-visible-count span {
+  color: var(--pp-navy);
+  font-weight: 800;
+}
+
+/* ── Layout: sidebar + list ──────────────────────────────────── */
+.tbo-layout {
+  display: grid;
+  gap: 1.15rem;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .tbo-layout {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+}
+
+/* ── Filters sidebar ─────────────────────────────────────────── */
+.tbo-filters {
+  background: #fff;
+  border: 1px solid var(--pp-line);
+  border-radius: 14px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 77, 84, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 960px) {
+  .tbo-filters {
+    /* Keep sidebar visible while scrolling hotels, but don't clip filters. */
+    position: sticky;
+    top: 7.5rem;
+    max-height: calc(100vh - 8rem);
+  }
+}
+
+.tbo-map-teaser {
+  background: linear-gradient(160deg, var(--gp-cyan-soft) 0%, #f0f7f8 55%, #eef4f5 100%);
+  border-bottom: 1px solid var(--pp-line);
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tbo-map-teaser-inner {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--gp-cyan-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.55rem 0.85rem;
+}
+
+.tbo-map-teaser-inner svg {
+  color: var(--gp-cyan);
+  opacity: 0.85;
+  width: 16px;
+  height: 16px;
+}
+
+.tbo-compare-row {
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid var(--pp-line);
+  background: #fafcfc;
+}
+
+.tbo-compare-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+  cursor: not-allowed;
+  user-select: none;
+  margin: 0;
+}
+
+.tbo-compare-toggle input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--pp-navy);
+  cursor: not-allowed;
+}
+
+.tbo-filters-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem 0.6rem;
+  border-bottom: 1px solid var(--pp-line);
+  flex-shrink: 0;
+}
+
+.tbo-filters-head h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--pp-navy);
+}
+
+.tbo-filters-body {
+  padding: 0.75rem 0.85rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  flex: 1 1 auto;
+  min-height: 0;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #9bb5ba transparent;
+}
+
+.tbo-filters-body::-webkit-scrollbar {
+  width: 8px;
+}
+.tbo-filters-body::-webkit-scrollbar-thumb {
+  background: #9bb5ba;
+  border-radius: 999px;
+}
+.tbo-filters-body::-webkit-scrollbar-track {
+  background: #eef3f4;
+}
+
+.tbo-filters-foot {
+  flex-shrink: 0;
+  padding: 0.7rem 1rem;
+  border-top: 1px solid var(--pp-line);
+  background: #fafcfc;
+}
+
+/* Filter controls scoped to sidebar */
+.tbo-filters .filter-block {
+  margin-bottom: 1.1rem;
+}
+
+.tbo-filters .filter-block:last-child {
+  margin-bottom: 0;
+}
+
+.tbo-filters .filter-block h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--pp-muted);
+  font-weight: 800;
+}
+
+.tbo-filters .filter-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--pp-line);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--pp-ink);
+  background: #fbfcfe;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.tbo-filters .filter-input:hover {
+  border-color: #b7c7c9;
+}
+
+.tbo-filters .filter-input:focus {
+  outline: none;
+  border-color: var(--pp-navy);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(15, 77, 84, 0.12);
+}
+
+.tbo-filters .price-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tbo-filters .price-sep {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+}
+
+.tbo-filters .check {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.86rem;
+  color: var(--pp-ink);
+  margin: 0 0 0.35rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tbo-filters .check:last-child {
+  margin-bottom: 0;
+}
+
+.tbo-filters .check input {
+  width: 0.95rem;
+  height: 0.95rem;
+  accent-color: var(--pp-navy);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Star chips */
+.tbo-star-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tbo-star-chip {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  margin: 0;
+  user-select: none;
+}
+
+.tbo-star-chip input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.tbo-star-chip span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--pp-line);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--pp-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.tbo-star-chip span::after {
+  content: "★";
+  margin-left: 0.15rem;
+  color: #c9a227;
+  font-size: 0.72rem;
+}
+
+.tbo-star-chip:has(input:checked) span,
+.tbo-star-chip input:checked + span {
+  background: var(--gp-cyan-soft);
+  border-color: var(--gp-cyan);
+  color: var(--gp-cyan-deep);
+}
+
+.tbo-star-chip:hover span {
+  border-color: var(--gp-cyan);
+}
+
+/* Guest rating pills */
+.tbo-rating-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.tbo-rating-pill {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  margin: 0;
+  user-select: none;
+}
+
+.tbo-rating-pill input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.tbo-rating-pill span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--pp-line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--pp-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.tbo-rating-pill:has(input:checked) span,
+.tbo-rating-pill input:checked + span {
+  background: var(--pp-navy);
+  border-color: var(--pp-navy);
+  color: #fff;
+}
+
+.tbo-rating-pill:hover span {
+  border-color: var(--pp-navy);
+}
+
+/* ── Hotel list ──────────────────────────────────────────────── */
+.tbo-list {
+  display: grid;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.tbo-hotel-block {
+  background: #fff;
+  border: 1px solid var(--pp-line);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tbo-hotel-block:hover {
+  border-color: #b8cdd0;
+  box-shadow: 0 4px 16px rgba(15, 77, 84, 0.07);
+}
+
+.tbo-hotel-block.is-expanded {
+  border-color: var(--gp-cyan);
+  box-shadow: 0 4px 18px rgba(15, 77, 84, 0.1);
+}
+
+.tbo-hotel-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  background: #fff;
+  min-width: 0;
+}
+
+@media (min-width: 860px) {
+  .tbo-hotel-card {
+    grid-template-columns: 220px minmax(0, 1fr) 180px;
+    grid-template-rows: 1fr auto;
+    align-items: stretch;
+  }
+  .tbo-photo-link { grid-row: 1; }
+  .tbo-main { grid-row: 1; }
+  .tbo-deal { grid-row: 1; }
+  .tbo-view-more-bar {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+.tbo-view-more-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: #e8f4f5;
+  color: var(--gp-cyan-deep);
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+  border-top: 1px solid #d5e8ea;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.tbo-view-more-bar:hover {
+  background: var(--gp-cyan-soft);
+  color: var(--pp-navy);
+}
+
+/* Photo */
+.tbo-photo-link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #e8eef0;
+  min-height: 160px;
+  text-decoration: none;
+}
+
+@media (min-width: 860px) {
+  .tbo-photo-link {
+    min-height: 100%;
+    align-self: stretch;
+  }
+}
+
+.tbo-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  background-color: #d9e4e6;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.35s ease;
+}
+
+@media (min-width: 860px) {
+  .tbo-photo {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+  }
+}
+
+.tbo-photo-link:hover .tbo-photo {
+  transform: scale(1.04);
+}
+
+.tbo-photo-badge {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 0.55rem;
+  z-index: 1;
+  background: rgba(15, 38, 43, 0.72);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.22rem 0.45rem;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+/* Main content column */
+.tbo-main {
+  padding: 0.95rem 1rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.tbo-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.tbo-title-row h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--pp-navy);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.tbo-title-row h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.tbo-title-row h3 a:hover {
+  color: var(--gp-cyan-deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tbo-stars {
+  display: inline-flex;
+  gap: 0.05rem;
+  flex-shrink: 0;
+  line-height: 1;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: #d5dde0;
+}
+
+.tbo-stars .on,
+.tbo-stars span.on {
+  color: #c9a227;
+}
+
+.tbo-score-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.55rem;
+}
+
+.tbo-score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f7a45;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0.22rem 0.45rem;
+  border-radius: 6px;
+  line-height: 1.2;
+}
+
+.tbo-score-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--pp-ink);
+}
+
+.tbo-score-count {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+}
+
+.tbo-location {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.45rem;
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--pp-muted);
+  line-height: 1.4;
+}
+
+.tbo-location svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: var(--gp-cyan);
+}
+
+.tbo-map-link {
+  font-weight: 700;
+  color: var(--gp-cyan-deep);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tbo-map-link:hover {
+  color: var(--pp-navy);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Featured room */
+.tbo-featured-room {
+  margin-top: 0.35rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed var(--pp-line);
+}
+
+.tbo-featured-label {
+  margin: 0 0 0.15rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gp-cyan);
+}
+
+.tbo-featured-name {
+  margin: 0 0 0.35rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--pp-ink);
+  line-height: 1.3;
+}
+
+.tbo-featured-attrs {
+  list-style: none;
+  margin: 0 0 0.45rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.65rem;
+}
+
+.tbo-featured-attrs li {
+  position: relative;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+  padding-left: 0.7rem;
+}
+
+.tbo-featured-attrs li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--pp-line);
+}
+
+.tbo-featured-attrs li.ok {
+  color: #0f7a45;
+}
+
+.tbo-featured-attrs li.ok::before {
+  color: #0f7a45;
+}
+
+.tbo-view-more {
+  border: 0;
+  background: transparent;
+  color: var(--gp-cyan-deep);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tbo-view-more:hover {
+  color: var(--pp-navy);
+}
+
+.tbo-view-more[aria-expanded="true"] {
+  color: var(--pp-navy);
+}
+
+/* Deal / price column */
+.tbo-deal {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.95rem 1rem;
+  background: #f7fbfb;
+  border-top: 1px solid var(--pp-line);
+  text-align: right;
+}
+
+@media (min-width: 860px) {
+  .tbo-deal {
+    border-top: 0;
+    border-left: 1px solid var(--pp-line);
+    text-align: center;
+    align-items: center;
+  }
+}
+
+.tbo-quote-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: flex-end;
+  margin: 0 0 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--pp-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+@media (min-width: 860px) {
+  .tbo-quote-toggle {
+    align-self: center;
+  }
+}
+
+.tbo-quote-toggle input,
+.tbo-quote-check {
+  width: 0.95rem;
+  height: 0.95rem;
+  accent-color: var(--pp-navy);
+  cursor: pointer;
+}
+
+.tbo-deal .price-label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pp-muted);
+}
+
+.tbo-deal .price {
+  margin: 0;
+  color: var(--pp-navy);
+  line-height: 1.15;
+}
+
+.tbo-deal .price .currency {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--pp-muted);
+  margin-right: 0.2rem;
+}
+
+.tbo-deal .price strong {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tbo-deal .price-note {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+}
+
+.tbo-book-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+  padding: 0.65rem 0.85rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--pp-navy);
+  color: #fff !important;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s ease;
+}
+
+.tbo-book-btn:hover {
+  background: var(--pp-navy-deep);
+  color: #fff !important;
+}
+
+.tbo-book-btn.tbo-book-fallback {
+  background: #fff;
+  color: var(--pp-navy) !important;
+  border: 1.5px solid var(--pp-navy);
+}
+
+.tbo-book-btn.tbo-book-fallback:hover {
+  background: var(--gp-cyan-soft);
+  color: var(--pp-navy-deep) !important;
+}
+
+/* Rates expand panel */
+.tbo-rates-panel {
+  border-top: 1px solid var(--pp-line);
+  background: #f8fbfb;
+}
+
+.tbo-rates-panel[hidden] {
+  display: none !important;
+}
+
+.tbo-hotel-block.is-expanded .tbo-rates-panel {
+  display: block;
+}
+
+.tbo-rates-inner {
+  padding: 0.85rem 1rem 1.1rem;
+}
+
+.tbo-rates-inner:empty::before {
+  content: "Loading rates…";
+  display: block;
+  padding: 0.75rem 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+}
+
+/* ── Mobile / responsive ─────────────────────────────────────── */
+@media (max-width: 959px) {
+  .tbo-filters {
+    order: -1;
+  }
+
+  .tbo-filters-body {
+    max-height: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .tbo-stepper-list {
+    padding: 0.85rem 1rem 0.9rem;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.75rem;
+  }
+
+  .tbo-step {
+    flex: 0 1 auto;
+    font-size: 0.78rem;
+  }
+
+  .tbo-step:not(:last-child) {
+    flex: 0 1 auto;
+  }
+
+  .tbo-step:not(:last-child)::after {
+    display: none;
+  }
+
+  .tbo-step-label {
+    white-space: normal;
+  }
+
+  .tbo-ribbon-inner {
+    padding: 0.65rem 1rem;
+  }
+
+  .tbo-ribbon-item span {
+    max-width: 12rem;
+  }
+
+  .tbo-ribbon-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .tbo-ribbon-actions {
+    width: 100%;
+  }
+
+  .tbo-results {
+    padding: 0.9rem 1rem 2rem;
+  }
+
+  .tbo-results-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tbo-sort-tabs {
+    width: 100%;
+  }
+
+  .tbo-sort-tab {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+
+  .tbo-results-meta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tbo-main {
+    padding: 0.85rem 0.9rem;
+  }
+
+  .tbo-deal {
+    padding: 0.85rem 0.9rem;
+    text-align: left;
+    align-items: stretch;
+  }
+
+  .tbo-quote-toggle {
+    align-self: flex-start;
+  }
+
+  .tbo-deal .price strong {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tbo-stepper-list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+  }
+
+  .tbo-step {
+    padding-right: 0;
+  }
+
+  .tbo-ribbon-items {
+    gap: 0.45rem 0.85rem;
+  }
+
+  .tbo-ribbon-item {
+    font-size: 0.8rem;
+  }
+
+  .tbo-photo-link,
+  .tbo-photo {
+    min-height: 140px;
+  }
+
+  .tbo-title-row h3 {
+    font-size: 0.98rem;
+  }
+}
+
+/* ── Hotel search sections (choice / recommended / nearby) ─── */
+.tbo-result-section {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.tbo-result-section + .tbo-result-section {
+  margin-top: 1.35rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--pp-line);
+}
+
+.tbo-result-section-head {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.tbo-result-section-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--pp-navy);
+  letter-spacing: -0.01em;
+}
+
+.tbo-result-section-lede {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--pp-muted);
+}
+
+.tbo-result-section-choice .tbo-result-section-title {
+  color: #16aad8;
+}
+
+.tbo-result-section-choice .tbo-hotel-block {
+  border-color: rgba(22, 170, 216, 0.35);
+  box-shadow: 0 10px 28px rgba(22, 170, 216, 0.12);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tbo-photo,
+  .tbo-hotel-block,
+  .tbo-ribbon-btn,
+  .tbo-book-btn,
+  .tbo-sort-tab,
+  .tbo-star-chip span,
+  .tbo-rating-pill span {
+    transition: none;
+  }
+
+  .tbo-photo-link:hover .tbo-photo {
+    transform: none;
+  }
+}

@@ -11,7 +11,7 @@
   <form class="search-panel" method="get" action="{% url 'search' %}" id="search-form" autocomplete="off">
     <div class="field grow">
       <label for="destination">Destination</label>
-      <input id="destination" name="destination" type="text" placeholder="City or area (e.g. Muscat, Dubai)"
+      <input id="destination" name="destination" type="text" placeholder="City or hotel in GCC & Egypt (e.g. Muscat, Dubai, Cairo)"
              value="{{ destination }}" required>
       <input type="hidden" name="place_id" id="place_id" value="{{ place_id }}">
       <input type="hidden" name="country_code" id="country_code" value="{{ country_code }}">

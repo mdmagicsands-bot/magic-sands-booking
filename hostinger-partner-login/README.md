@@ -11,7 +11,8 @@ magicsandsdmc.com (Hostinger)
   /partner-register/   → static page → POST → Railway /gateway/partner-register/
 
 Railway booking app
-  /admin/              → partner admin dashboard
+  /partner/            → partner Nuitee hotel search dashboard (non-staff)
+  /admin/login/        → website admin (staff)
   /admin/bookings/     → bookings
   /admin/partners/     → registration requests
   /                    → guest hotel search & book

@@ -1,0 +1,62 @@
+/* Magic Sands DMC — Booking Platform brand tokens */
+:root {
+  /* Logo cyan — sampled from ms-logo-cyan.png */
+  --ms-cyan: #16aad8;
+  --ms-cyan-deep: #1296c0;
+  --ms-cyan-light: #3ebde3;
+  --ms-cyan-soft: #e6f6fb;
+  --ms-cyan-glow: rgba(22, 170, 216, 0.18);
+
+  /* Surfaces */
+  --ms-black: #0a0a0a;
+  --ms-ink: #0f172a;
+  --ms-text: #1e293b;
+  --ms-muted: #64748b;
+  --ms-line: #e2e8f0;
+  --ms-bg: #f8fafc;
+  --ms-white: #ffffff;
+  --ms-surface-subtle: #f1f5f9;
+
+  /* Status */
+  --ms-ok: #059669;
+  --ms-warn: #d97706;
+  --ms-danger: #dc2626;
+
+  /* Shape & type */
+  --ms-radius: 12px;
+  --ms-radius-sm: 8px;
+  --ms-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+  --ms-shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.1);
+  --ms-font: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Partner portal aliases (legacy CSS) */
+  --pp-navy: var(--ms-cyan-deep);
+  --pp-navy-deep: #007aa8;
+  --pp-navy-soft: var(--ms-cyan);
+  --pp-sky: var(--ms-cyan-soft);
+  --pp-sky-2: #d4effc;
+  --pp-ink: var(--ms-ink);
+  --pp-muted: var(--ms-muted);
+  --pp-line: var(--ms-line);
+  --pp-card: var(--ms-white);
+  --pp-ok: var(--ms-ok);
+  --pp-used: var(--ms-danger);
+  --pp-radius: var(--ms-radius);
+  --pp-font: var(--ms-font);
+  --gp-cyan: var(--ms-cyan);
+  --gp-cyan-deep: var(--ms-cyan-deep);
+  --gp-cyan-soft: var(--ms-cyan-soft);
+  --gp-ink: var(--ms-ink);
+  --gp-muted: var(--ms-muted);
+  --gp-line: var(--ms-line);
+  --gp-bg: var(--ms-bg);
+  --gp-card: var(--ms-white);
+  --gp-radius: var(--ms-radius);
+  --gp-font: var(--ms-font);
+
+  /* Rates table */
+  --ms-rt-sea: var(--ms-cyan);
+  --ms-rt-sea-deep: var(--ms-cyan-deep);
+  --ms-rt-sky: var(--ms-cyan-soft);
+  --ms-rt-ink: var(--ms-ink);
+}

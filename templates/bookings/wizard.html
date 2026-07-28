@@ -1,0 +1,57 @@
+{% extends "guests/base_guest.html" %}
+{% load static %}
+{% block title %}Book {{ hotel_name|default:"stay" }} | Magic Sands Partner{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/tbo-results.css' %}?v=20260728c">
+<link rel="stylesheet" href="{% static 'css/booking-wizard.css' %}?v=20260728c">
+{% endblock %}
+{% block body_class %} pp-page-booking{% endblock %}
+{% block content %}
+
+<nav class="tbo-stepper" aria-label="Booking progress">
+  <ol class="tbo-stepper-list">
+    <li class="tbo-step is-done">
+      <span class="tbo-step-num" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12.5 10 17.5 19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="tbo-step-label">Search Hotels</span>
+    </li>
+    <li class="tbo-step is-done">
+      <span class="tbo-step-num" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12.5 10 17.5 19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="tbo-step-label">Choose Hotel &amp; Room</span>
+    </li>
+    <li class="tbo-step is-active" aria-current="step">
+      <span class="tbo-step-num" aria-hidden="true">3</span>
+      <span class="tbo-step-label">Guest Details &amp; Book</span>
+    </li>
+  </ol>
+</nav>
+
+<section class="bk-wizard-page">
+  {% include "bookings/_wizard_content.html" %}
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% if step == 3 and not is_partner %}
+<script src="https://payment-wrapper.liteapi.travel/dist/liteAPIPayment.js?v=a1"></script>
+<script>
+  var liteAPIConfig = {
+    publicKey: "{{ public_key }}",
+    secretKey: "{{ secret_key }}",
+    returnUrl: "{{ return_url|escapejs }}",
+    targetElement: "#liteapi-payment",
+    appearance: { theme: "flat" },
+    options: { business: { name: "Magic Sands Booking" } }
+  };
+  var liteAPIPayment = new LiteAPIPayment(liteAPIConfig);
+  liteAPIPayment.handlePayment();
+</script>
+{% endif %}
+{% endblock %}

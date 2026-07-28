@@ -8,8 +8,8 @@ MENU_GROUPS = [
         "items": [
             {
                 "label": "Dashboard",
-                "url_name": "partner_dashboard",
-                "match": ["partner_dashboard"],
+                "url_name": "booking_admin_dashboard",
+                "match": ["booking_admin_dashboard"],
             },
             {
                 "label": "Live hotel search",

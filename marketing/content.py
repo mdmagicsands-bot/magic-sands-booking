@@ -5,6 +5,17 @@ BRAND = "Magic Sands"
 BRAND_FULL = "Magic Sands DMC"
 SITE_URL = "https://www.magicsandsdmc.com"
 
+
+def marketing_page_url(path: str = "/") -> str:
+    """Absolute URL to a page on the public marketing website."""
+    from django.conf import settings
+
+    base = (getattr(settings, "MARKETING_SITE_URL", None) or SITE_URL).rstrip("/")
+    if not path.startswith("/"):
+        path = f"/{path}"
+    return f"{base}{path}"
+
+
 MEDIA = {
     "logo": f"{SITE_URL}/assets/images/logo.png",
     "favicon": f"{SITE_URL}/assets/images/favicon.png",

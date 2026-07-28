@@ -1,176 +1,593 @@
 {% extends "guests/base_guest.html" %}
-{% block title %}Hotel search | Magic Sands{% endblock %}
-{% block eyebrow %}Hotels{% endblock %}
-{% block heading %}Hotel search{% endblock %}
+{% load static %}
+{% block title %}{% if searched %}Results{% else %}Search{% endif %} | Magic Sands DMC — Booking Platform{% endblock %}
+{% block body_class %} pp-page-search{% if searched %} pp-has-results{% endif %}{% endblock %}
+{% block extra_head %}
+{% if searched %}
+<link rel="stylesheet" href="{% static 'css/tbo-results.css' %}?v=20260728d">
+{% endif %}
+{% endblock %}
 {% block content %}
 
-<section class="gp-card">
-  <div class="gp-card-head">
-    <h2>Find your stay</h2>
+{# Full-screen wait state — shown immediately on Search click #}
+<div id="pp-loading" class="pp-loading" hidden>
+  <div class="pp-loading-card">
+    <div class="pp-loading-scene" aria-hidden="true">
+      <img class="pp-loading-logo" src="{% static 'img/ms-search-loading.png' %}" alt="" width="480" height="480">
+    </div>
+    <p class="pp-loading-title">Loading<span class="pp-loading-dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p>
+    <p class="pp-loading-meta" id="pp-loading-meta"></p>
   </div>
-  {% include "guests/_search_form.html" %}
-</section>
+</div>
 
 {% if searched %}
-<section class="nuitee-page">
+<nav class="tbo-stepper" aria-label="Booking progress">
+  <ol class="tbo-stepper-list">
+    <li class="tbo-step is-done">
+      <span class="tbo-step-num" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12.5 10 17.5 19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="tbo-step-label">Search Hotels</span>
+    </li>
+    <li class="tbo-step is-active" aria-current="step">
+      <span class="tbo-step-num" aria-hidden="true">2</span>
+      <span class="tbo-step-label">Choose Hotel &amp; Room</span>
+    </li>
+    <li class="tbo-step">
+      <span class="tbo-step-num" aria-hidden="true">3</span>
+      <span class="tbo-step-label">Guest Details &amp; Book</span>
+    </li>
+  </ol>
+</nav>
+
+<section class="tbo-search-ribbon" id="pp-summary-bar">
+  <div class="tbo-ribbon-inner">
+    <div class="tbo-ribbon-items">
+      <div class="tbo-ribbon-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <span>{{ destination|default:"Destination" }}</span>
+      </div>
+      <div class="tbo-ribbon-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <span>{{ checkin_display }} — {{ checkout_display }}</span>
+      </div>
+      <div class="tbo-ribbon-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M3 19c0-3 2.5-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="17" cy="9" r="2.2" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span>{{ adults_rooms_label|default:occupancy_label }}</span>
+      </div>
+      <div class="tbo-ribbon-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" stroke="currentColor" stroke-width="1.4"/>
+        </svg>
+        <span>{% for code, label in nationality_choices %}{% if code == nationality %}{{ label }}{% endif %}{% empty %}{{ nationality|default:"—" }}{% endfor %}</span>
+      </div>
+    </div>
+    <div class="tbo-ribbon-actions">
+      <button type="button" class="tbo-ribbon-btn" id="pp-modify-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Modify Search
+      </button>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<div id="pp-search-panel" class="pp-search-panel-wrap{% if searched %} is-collapsed{% endif %}">
+  {% include "guests/_portal_search.html" %}
+</div>
+
+{% if searched %}
+<section class="pp-results tbo-results">
   {% if sandbox %}
   <div class="sandbox-banner">Sandbox mode: test data only, no real transactions.</div>
   {% endif %}
 
-  <div class="nuitee-results-head">
-    <h1><span id="visible-count">{{ result_count }}</span> hotels in {{ destination|default:"your destination" }}</h1>
-    <label class="sort-label">
-      Sort by
-      <select id="sort-select" class="sort-select">
-        <option value="price-asc">Price: low to high</option>
-        <option value="price-desc">Price: high to low</option>
-        <option value="stars-desc">Stars: high to low</option>
-        <option value="name-asc">Name: A–Z</option>
-      </select>
-    </label>
+  <div class="tbo-results-head">
+    <div class="tbo-sort-tabs" role="tablist" aria-label="Sort results">
+      <button type="button" class="tbo-sort-tab is-active" data-sort="recommended" role="tab" aria-selected="true">Recommended</button>
+      <button type="button" class="tbo-sort-tab" data-sort="price-asc" role="tab" aria-selected="false">Price</button>
+    </div>
+    <div class="tbo-results-meta">
+      <label class="sort-label">
+        <span>Sort by</span>
+        <select id="sort-select" class="sort-select">
+          <option value="recommended">Recommended</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+          <option value="stars-desc">Stars: high to low</option>
+          <option value="name-asc">Name: A–Z</option>
+        </select>
+      </label>
+      <p class="tbo-visible-count"><span id="visible-count">{{ result_count }}</span> properties found</p>
+    </div>
   </div>
 
-  {% if not cards %}
-  <div class="gp-empty gp-card">
+  {% if not cards and not hotel_search_mode %}
+  <div class="pp-empty">
     <p>No hotels found for these dates. Try another destination.</p>
   </div>
   {% else %}
-  <div class="nuitee-layout">
-    <aside class="nuitee-filters" id="filters">
-      <h2>Filters</h2>
-      <div class="filter-block">
-        <h3>Hotel name</h3>
-        <input type="search" id="filter-name" placeholder="Search hotel" class="filter-input">
+  <div class="tbo-layout">
+    <aside class="tbo-filters" id="filters">
+      <div class="tbo-filters-head">
+        <h2>Filters</h2>
+        <button type="button" class="pp-filter-reset" id="reset-filters">Reset</button>
       </div>
-      <div class="filter-block">
-        <h3>Price ({{ cards.0.currency|default:"USD" }})</h3>
-        <div class="price-row">
-          <input type="number" id="filter-price-min" class="filter-input" value="{{ price_min }}" min="0">
-          <span>—</span>
-          <input type="number" id="filter-price-max" class="filter-input" value="{{ price_max }}" min="0">
+
+      <div class="tbo-filters-body">
+        <div class="filter-block">
+          <h3>Search Hotel</h3>
+          <input type="search" id="filter-name" placeholder="Search by name" class="filter-input">
+        </div>
+
+        <div class="filter-block">
+          <h3>Price Range ({{ choice_hotel.currency|default:cards.0.currency|default:"USD" }})</h3>
+          <div class="price-row">
+            <input type="number" id="filter-price-min" class="filter-input" value="{{ price_min }}" min="0" aria-label="Minimum price">
+            <span class="price-sep">to</span>
+            <input type="number" id="filter-price-max" class="filter-input" value="{{ price_max }}" min="0" aria-label="Maximum price">
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <h3>Star Rating</h3>
+          <div class="tbo-star-chips">
+            <label class="tbo-star-chip"><input type="checkbox" name="stars" value="5"><span>5★</span></label>
+            <label class="tbo-star-chip"><input type="checkbox" name="stars" value="4"><span>4★</span></label>
+            <label class="tbo-star-chip"><input type="checkbox" name="stars" value="3"><span>3★</span></label>
+            <label class="tbo-star-chip"><input type="checkbox" name="stars" value="2"><span>2★</span></label>
+            <label class="tbo-star-chip"><input type="checkbox" name="stars" value="1"><span>&lt;2★</span></label>
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <h3>Meal Plan</h3>
+          <label class="check"><input type="checkbox" name="meal" value="RO"><span>RO</span></label>
+          <label class="check"><input type="checkbox" name="meal" value="BB"><span>BB</span></label>
+          <label class="check"><input type="checkbox" name="meal" value="HB"><span>HB</span></label>
+          <label class="check"><input type="checkbox" name="meal" value="FB"><span>FB</span></label>
+          <label class="check"><input type="checkbox" name="meal" value="AI"><span>AI</span></label>
+        </div>
+
+        <div class="filter-block">
+          <h3>Cancellation</h3>
+          <label class="check"><input type="checkbox" name="cancel" value="refundable"><span>Refundable</span></label>
+          <label class="check"><input type="checkbox" name="cancel" value="non_refundable"><span>Non Refundable</span></label>
+          <label class="check"><input type="checkbox" name="cancel" value="free_cancellation"><span>Free Cancellation</span></label>
+        </div>
+
+        <div class="filter-block">
+          <h3>Property Type</h3>
+          <label class="check"><input type="checkbox" name="property" value="hotel"><span>Hotel</span></label>
+          <label class="check"><input type="checkbox" name="property" value="resort"><span>Resort</span></label>
+          <label class="check"><input type="checkbox" name="property" value="apartment"><span>Apartment</span></label>
+          <label class="check"><input type="checkbox" name="property" value="villa"><span>Villa</span></label>
+          <label class="check"><input type="checkbox" name="property" value="camp"><span>Camp</span></label>
+        </div>
+
+        <div class="filter-block">
+          <h3>Amenities</h3>
+          <label class="check"><input type="checkbox" name="amenity" value="pool"><span>Swimming Pool</span></label>
+          <label class="check"><input type="checkbox" name="amenity" value="beach"><span>Beach</span></label>
+          <label class="check"><input type="checkbox" name="amenity" value="spa"><span>Spa</span></label>
+          <label class="check"><input type="checkbox" name="amenity" value="gym"><span>Gym</span></label>
+          <label class="check"><input type="checkbox" name="amenity" value="wifi"><span>Free WiFi</span></label>
+          <label class="check"><input type="checkbox" name="amenity" value="parking"><span>Parking</span></label>
+          <label class="check"><input type="checkbox" name="amenity" value="restaurant"><span>Restaurant</span></label>
+        </div>
+
+        <div class="filter-block">
+          <h3>Guest Rating</h3>
+          <div class="tbo-rating-pills">
+            <label class="tbo-rating-pill"><input type="checkbox" name="guest_rating" value="9"><span>9+</span></label>
+            <label class="tbo-rating-pill"><input type="checkbox" name="guest_rating" value="8"><span>8+</span></label>
+            <label class="tbo-rating-pill"><input type="checkbox" name="guest_rating" value="7"><span>7+</span></label>
+          </div>
+        </div>
+
+        <div class="filter-block">
+          <h3>Availability</h3>
+          <label class="check"><input type="checkbox" name="availability" value="instant"><span>Instant Confirmation</span></label>
+          <label class="check"><input type="checkbox" name="availability" value="on_request"><span>On Request</span></label>
+        </div>
+
+        <div class="filter-block">
+          <h3>Promotions</h3>
+          <label class="check"><input type="checkbox" name="promo" value="special"><span>Special Offer</span></label>
+          <label class="check"><input type="checkbox" name="promo" value="early_bird"><span>Early Bird</span></label>
+          <label class="check"><input type="checkbox" name="promo" value="last_minute"><span>Last Minute</span></label>
+        </div>
+
+        <div class="filter-block">
+          <h3>Supplier</h3>
+          <label class="check"><input type="checkbox" name="supplier" value="direct"><span>Direct Contract</span></label>
+          <label class="check"><input type="checkbox" name="supplier" value="api"><span>API</span></label>
+        </div>
+
+        <div class="filter-block">
+          <h3>Address</h3>
+          <input type="search" id="filter-address" placeholder="Area or street" class="filter-input">
+        </div>
+
+        <div class="filter-block">
+          <h3>Room name</h3>
+          <input type="search" id="filter-room" placeholder="e.g. Deluxe, Suite" class="filter-input">
         </div>
       </div>
-      <div class="filter-block">
-        <h3>Star rating</h3>
-        <label class="check"><input type="checkbox" name="stars" value="5"> 5 stars</label>
-        <label class="check"><input type="checkbox" name="stars" value="4"> 4 stars</label>
-        <label class="check"><input type="checkbox" name="stars" value="3"> 3 stars</label>
-        <label class="check"><input type="checkbox" name="stars" value="2"> 2 stars</label>
-        <label class="check"><input type="checkbox" name="stars" value="1"> 1 star</label>
+
+      <div class="tbo-filters-foot">
+        <button type="button" class="pp-filter-reset-btn" id="reset-filters-footer">Reset Filters</button>
       </div>
-      <div class="filter-block">
-        <h3>Cancellation</h3>
-        <label class="check"><input type="checkbox" id="filter-refundable"> Refundable only</label>
-      </div>
-      <button type="button" class="gp-btn ghost" id="reset-filters" style="width:100%">Reset</button>
     </aside>
 
-    <div class="nuitee-list" id="results-list">
+    <div class="tbo-list" id="results-list"
+         data-checkin="{{ checkin }}"
+         data-checkout="{{ checkout }}"
+         data-adults="{{ adults }}"
+         data-nationality="{{ nationality }}"
+         data-occupancies="{{ occupancies_json|escape }}"
+         data-checkout-url="{% url 'checkout' %}"
+         data-rates-url-template="{% url 'guest_hotel_rates_api' hotel_id='__HID__' %}">
+      {% if hotel_search_mode and choice_hotel %}
+      <section class="tbo-result-section tbo-result-section-choice">
+        <header class="tbo-result-section-head">
+          <h2 class="tbo-result-section-title">Your choice of hotel</h2>
+          <p class="tbo-result-section-lede">Rates for the property you searched</p>
+        </header>
+        {% include "guests/_hotel_result_card.html" with card=choice_hotel %}
+      </section>
+
+      {% if recommended_hotels %}
+      <section class="tbo-result-section">
+        <header class="tbo-result-section-head">
+          <h2 class="tbo-result-section-title">Recommended hotels</h2>
+          <p class="tbo-result-section-lede">Top-rated alternatives in {{ choice_hotel.city|default:"the area" }}</p>
+        </header>
+        {% for card in recommended_hotels %}
+          {% include "guests/_hotel_result_card.html" %}
+        {% endfor %}
+      </section>
+      {% endif %}
+
+      {% if nearby_hotels %}
+      <section class="tbo-result-section">
+        <header class="tbo-result-section-head">
+          <h2 class="tbo-result-section-title">Hotels near {{ choice_hotel_name }}</h2>
+          <p class="tbo-result-section-lede">Compare nearby properties and rates</p>
+        </header>
+        {% for card in nearby_hotels %}
+          {% include "guests/_hotel_result_card.html" %}
+        {% endfor %}
+      </section>
+      {% endif %}
+      {% else %}
       {% for card in cards %}
-      <article
-        class="nuitee-hotel-card"
-        data-name="{{ card.name|lower }}"
-        data-price="{{ card.price|default:0 }}"
-        data-stars="{{ card.stars|default:0 }}"
-        data-refundable="{{ card.refundable }}"
-      >
-        <div class="nuitee-photo" {% if card.photo %}style="background-image:url('{{ card.photo }}')"{% endif %}></div>
-        <div class="nuitee-info">
-          <div class="nuitee-title-row">
-            <h3>{{ card.name }}</h3>
-            {% if card.stars %}<span class="stars">{{ card.stars }}★</span>{% endif %}
-          </div>
-          <p class="address">{{ card.address }}</p>
-          {% if card.room_name %}<p class="room">{{ card.room_name }}{% if card.board %} · {{ card.board }}{% endif %}</p>{% endif %}
-        </div>
-        <div class="nuitee-deal">
-          {% if card.price is not None %}
-          <p class="price"><strong>{{ card.currency }} {{ card.price|floatformat:0 }}</strong></p>
-          <p class="nights">{{ nights }} night{{ nights|pluralize }} total</p>
-          {% else %}
-          <p class="price">Rates on request</p>
-          {% endif %}
-          <a class="gp-btn small" href="{% url 'hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}&amp;nationality={{ nationality }}">View rooms</a>
-        </div>
-      </article>
+        {% include "guests/_hotel_result_card.html" %}
       {% endfor %}
+      {% endif %}
+      <div class="pp-empty" id="no-filter-match" hidden>
+        <p>No hotels match these filters.</p>
+      </div>
     </div>
   </div>
   {% endif %}
 </section>
+
+{% if searched and cards or hotel_search_mode and choice_hotel %}
+<div class="ms-toast" id="ms-quote-toast" hidden>Added to quote</div>
+{% endif %}
 {% endif %}
 {% endblock %}
-
 {% block extra_js %}
-{% include "guests/_search_js.html" %}
-{% if searched and cards %}
+<script src="{% static 'js/partner-occupancy.js' %}?v=20260726f"></script>
+{% include "guests/_portal_search_js.html" %}
 <script>
 (function () {
-  const rows = Array.from(document.querySelectorAll('.nuitee-hotel-card'));
-  const nameInput = document.getElementById('filter-name');
-  const minInput = document.getElementById('filter-price-min');
-  const maxInput = document.getElementById('filter-price-max');
-  const refundable = document.getElementById('filter-refundable');
-  const sortSelect = document.getElementById('sort-select');
-  const countEl = document.getElementById('visible-count');
-  const list = document.getElementById('results-list');
+  const form = document.getElementById('guest-search-form');
+  const loading = document.getElementById('pp-loading');
+  const loadingMeta = document.getElementById('pp-loading-meta');
+  const modifyBtn = document.getElementById('pp-modify-search');
+  const searchPanel = document.getElementById('pp-search-panel');
 
-  function selectedStars() {
-    return Array.from(document.querySelectorAll('input[name="stars"]:checked')).map(el => el.value);
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso + 'T12:00:00');
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  if (form && loading) {
+    form.addEventListener('submit', function () {
+      const dest = (document.getElementById('destination') || {}).value || 'your destination';
+      const cin = (document.getElementById('checkin') || {}).value;
+      const cout = (document.getElementById('checkout') || {}).value;
+      if (loadingMeta) {
+        loadingMeta.textContent = dest + ' | ' + fmtDate(cin) + (cout ? ' to ' + fmtDate(cout) : '');
+      }
+      loading.hidden = false;
+      document.body.classList.add('pp-loading-active');
+    });
+  }
+
+  if (modifyBtn && searchPanel) {
+    const modifyIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> ';
+    modifyBtn.addEventListener('click', function () {
+      searchPanel.classList.toggle('is-collapsed');
+      const collapsed = searchPanel.classList.contains('is-collapsed');
+      modifyBtn.innerHTML = modifyIcon + (collapsed ? 'Modify Search' : 'Hide search');
+      if (!collapsed) {
+        searchPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+})();
+</script>
+{% if searched and cards or hotel_search_mode and choice_hotel %}
+<script>
+(function () {
+  const list = document.getElementById('results-list');
+  const countEl = document.getElementById('visible-count');
+  const emptyEl = document.getElementById('no-filter-match');
+  const nameFilter = document.getElementById('filter-name');
+  const addressFilter = document.getElementById('filter-address');
+  const roomFilter = document.getElementById('filter-room');
+  const priceMin = document.getElementById('filter-price-min');
+  const priceMax = document.getElementById('filter-price-max');
+  const sortSelect = document.getElementById('sort-select');
+  const sortTabs = Array.from(document.querySelectorAll('.tbo-sort-tab'));
+  const resetBtn = document.getElementById('reset-filters');
+  const resetBtnFoot = document.getElementById('reset-filters-footer');
+  const toast = document.getElementById('ms-quote-toast');
+  if (!list) return;
+
+  const QUOTE_KEY = 'ms_partner_quotes';
+  const checkin = list.dataset.checkin || '';
+  const checkout = list.dataset.checkout || '';
+
+  function blocks() { return Array.from(list.querySelectorAll('.tbo-hotel-block')); }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function checkedValues(name) {
+    return Array.from(document.querySelectorAll('#filters input[name="' + name + '"]:checked')).map(el => el.value);
+  }
+
+  function hasAny(selected, value) {
+    if (!selected.length) return true;
+    return selected.indexOf(value) !== -1;
+  }
+
+  function hasOverlap(selected, csv) {
+    if (!selected.length) return true;
+    const set = String(csv || '').split(',').map(s => s.trim()).filter(Boolean);
+    return selected.some(v => set.indexOf(v) !== -1);
+  }
+
+  function starsMatch(starBoxes, starsNum) {
+    if (!starBoxes.length) return true;
+    return starBoxes.some(function (v) {
+      const want = parseInt(v, 10);
+      if (want === 1) return starsNum <= 1;
+      return starsNum === want;
+    });
+  }
+
+  function syncSortTabs(value) {
+    sortTabs.forEach(function (tab) {
+      const isPriceTab = tab.dataset.sort === 'price-asc';
+      const selected =
+        (tab.dataset.sort === 'recommended' && value === 'recommended') ||
+        (isPriceTab && (value === 'price-asc' || value === 'price-desc')) ||
+        (tab.dataset.sort === value);
+      tab.classList.toggle('is-active', selected);
+      tab.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
   }
 
   function apply() {
-    const q = (nameInput.value || '').trim().toLowerCase();
-    const min = parseFloat(minInput.value) || 0;
-    const max = parseFloat(maxInput.value) || Infinity;
-    const stars = selectedStars();
-    const onlyRefund = refundable.checked;
+    const q = (nameFilter && nameFilter.value || '').toLowerCase().trim();
+    const addrQ = (addressFilter && addressFilter.value || '').toLowerCase().trim();
+    const roomQ = (roomFilter && roomFilter.value || '').toLowerCase().trim();
+    const min = parseFloat(priceMin.value || '0');
+    const max = parseFloat(priceMax.value || '999999');
+    const starBoxes = checkedValues('stars');
+    const meals = checkedValues('meal');
+    const cancels = checkedValues('cancel');
+    const properties = checkedValues('property');
+    const amenities = checkedValues('amenity');
+    const guestRatings = checkedValues('guest_rating').map(Number).filter(n => !Number.isNaN(n));
+    const availability = checkedValues('availability');
+    const promos = checkedValues('promo');
+    const suppliers = checkedValues('supplier');
     let visible = 0;
-    rows.forEach(row => {
-      const name = row.dataset.name || '';
-      const price = parseFloat(row.dataset.price) || 0;
-      const star = String(row.dataset.stars || '0');
-      const ref = (row.dataset.refundable || '').toUpperCase();
+    blocks().forEach(block => {
+      const name = block.dataset.name || '';
+      const address = block.dataset.address || '';
+      const room = block.dataset.room || '';
+      const price = parseFloat(block.dataset.price || '0');
+      const starsNum = parseFloat(block.dataset.stars || '0');
+      const board = (block.dataset.board || '').toUpperCase();
+      const property = block.dataset.property || 'hotel';
+      const guestRating = parseFloat(block.dataset.guestRating || '');
+      const avail = block.dataset.availability || 'instant';
+      const supplier = block.dataset.supplier || 'api';
+      const isRefundable = block.dataset.isRefundable === '1' || block.dataset.refundable === 'RFN';
+      const isNonRefundable = block.dataset.isNonRefundable === '1' || block.dataset.refundable === 'NRFN';
+      const freeCancel = block.dataset.freeCancellation === '1';
       let ok = true;
       if (q && !name.includes(q)) ok = false;
-      if (price < min || price > max) ok = false;
-      if (stars.length && !stars.includes(star)) ok = false;
-      if (onlyRefund && ref !== 'RFN') ok = false;
-      row.style.display = ok ? '' : 'none';
+      if (ok && addrQ && !address.includes(addrQ)) ok = false;
+      if (ok && roomQ && !room.includes(roomQ)) ok = false;
+      if (ok && (price < min || price > max)) ok = false;
+      if (ok && !starsMatch(starBoxes, starsNum)) ok = false;
+      if (ok && !hasAny(meals, board)) ok = false;
+      if (ok && cancels.length) {
+        const cancelOk =
+          (cancels.indexOf('refundable') !== -1 && isRefundable) ||
+          (cancels.indexOf('non_refundable') !== -1 && isNonRefundable) ||
+          (cancels.indexOf('free_cancellation') !== -1 && freeCancel);
+        if (!cancelOk) ok = false;
+      }
+      if (ok && !hasAny(properties, property)) ok = false;
+      if (ok && amenities.length) {
+        const hotelAmenities = String(block.dataset.amenities || '').split(',').map(s => s.trim()).filter(Boolean);
+        // Lenient: skip amenity filter when facility metadata was not returned.
+        if (hotelAmenities.length && !amenities.some(v => hotelAmenities.indexOf(v) !== -1)) ok = false;
+      }
+      if (ok && guestRatings.length) {
+        if (Number.isNaN(guestRating) || !guestRatings.some(minR => guestRating >= minR)) ok = false;
+      }
+      if (ok && !hasAny(availability, avail)) ok = false;
+      if (ok && !hasOverlap(promos, block.dataset.promotions || '')) ok = false;
+      if (ok && !hasAny(suppliers, supplier)) ok = false;
+      block.hidden = !ok;
       if (ok) visible += 1;
     });
-    if (countEl) countEl.textContent = visible;
-  }
+    if (countEl) countEl.textContent = String(visible);
+    if (emptyEl) emptyEl.hidden = visible !== 0;
 
-  function sort() {
-    const mode = sortSelect.value;
-    const sorted = rows.slice().sort((a, b) => {
-      const pa = parseFloat(a.dataset.price) || 0;
-      const pb = parseFloat(b.dataset.price) || 0;
-      const sa = parseFloat(a.dataset.stars) || 0;
-      const sb = parseFloat(b.dataset.stars) || 0;
+    const sort = sortSelect.value;
+    syncSortTabs(sort);
+    const sorted = blocks().sort((a, b) => {
+      const pa = parseFloat(a.dataset.price || '0');
+      const pb = parseFloat(b.dataset.price || '0');
+      const sa = parseFloat(a.dataset.stars || '0');
+      const sb = parseFloat(b.dataset.stars || '0');
+      const ga = parseFloat(a.dataset.guestRating || '0') || 0;
+      const gb = parseFloat(b.dataset.guestRating || '0') || 0;
       const na = a.dataset.name || '';
       const nb = b.dataset.name || '';
-      if (mode === 'price-desc') return pb - pa;
-      if (mode === 'stars-desc') return sb - sa;
-      if (mode === 'name-asc') return na.localeCompare(nb);
+      if (sort === 'recommended') {
+        if (gb !== ga) return gb - ga;
+        if (sb !== sa) return sb - sa;
+        return pa - pb;
+      }
+      if (sort === 'price-desc') return pb - pa;
+      if (sort === 'stars-desc') return sb - sa;
+      if (sort === 'name-asc') return na.localeCompare(nb);
       return pa - pb;
     });
-    sorted.forEach(row => list.appendChild(row));
+    sorted.forEach(block => list.insertBefore(block, emptyEl || null));
   }
 
-  [nameInput, minInput, maxInput, refundable].forEach(el => el && el.addEventListener('input', apply));
-  document.querySelectorAll('input[name="stars"]').forEach(el => el.addEventListener('change', apply));
-  sortSelect.addEventListener('change', () => { sort(); apply(); });
-  document.getElementById('reset-filters').addEventListener('click', () => {
-    nameInput.value = '';
-    minInput.value = '{{ price_min }}';
-    maxInput.value = '{{ price_max }}';
-    refundable.checked = false;
-    document.querySelectorAll('input[name="stars"]').forEach(el => el.checked = false);
-    sortSelect.value = 'price-asc';
-    sort(); apply();
+  function resetFilters() {
+    if (nameFilter) nameFilter.value = '';
+    if (addressFilter) addressFilter.value = '';
+    if (roomFilter) roomFilter.value = '';
+    priceMin.value = '{{ price_min }}';
+    priceMax.value = '{{ price_max }}';
+    document.querySelectorAll('#filters input[type="checkbox"]').forEach(el => { el.checked = false; });
+    sortSelect.value = 'recommended';
+    apply();
+  }
+
+  [nameFilter, addressFilter, roomFilter, priceMin, priceMax, sortSelect].forEach(el => {
+    if (el) el.addEventListener('input', apply);
+    if (el) el.addEventListener('change', apply);
   });
+  document.querySelectorAll('#filters input[type="checkbox"]').forEach(el => el.addEventListener('change', apply));
+  if (resetBtn) resetBtn.addEventListener('click', resetFilters);
+  if (resetBtnFoot) resetBtnFoot.addEventListener('click', resetFilters);
+
+  sortTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      const val = tab.dataset.sort || 'recommended';
+      sortSelect.value = val;
+      apply();
+    });
+  });
+
+  apply();
+
+  function showToast(msg) {
+    if (!toast) return;
+    if (msg) toast.textContent = msg;
+    toast.hidden = false;
+    toast.classList.add('is-show');
+    setTimeout(function () { toast.classList.remove('is-show'); toast.hidden = true; }, 1800);
+  }
+
+  function loadQuotes() {
+    try { return JSON.parse(localStorage.getItem(QUOTE_KEY) || '[]'); }
+    catch (e) { return []; }
+  }
+
+  function saveQuotes(items) {
+    localStorage.setItem(QUOTE_KEY, JSON.stringify(items.slice(0, 40)));
+  }
+
+  function quoteKeyForBlock(block) {
+    return block.dataset.offerId || (block.dataset.hotelId + '|' + (block.dataset.roomName || ''));
+  }
+
+  function syncQuoteChecks() {
+    const items = loadQuotes();
+    const ids = {};
+    items.forEach(function (x) {
+      if (x.offer_id) ids[x.offer_id] = true;
+      if (x._key) ids[x._key] = true;
+    });
+    blocks().forEach(function (block) {
+      const check = block.querySelector('.tbo-quote-check');
+      if (!check) return;
+      const offer = block.dataset.offerId || '';
+      const key = quoteKeyForBlock(block);
+      check.checked = !!(ids[offer] || ids[key]);
+    });
+  }
+
+  function quoteFeaturedRoom(block, checked) {
+    const item = {
+      offer_id: block.dataset.offerId || '',
+      _key: quoteKeyForBlock(block),
+      hotel: block.dataset.hotelName || '',
+      hotel_id: block.dataset.hotelId || '',
+      room: block.dataset.roomName || '',
+      board: block.dataset.boardLabel || block.dataset.board || '',
+      amount: block.dataset.price || '',
+      currency: block.dataset.currency || '',
+      checkin: checkin,
+      checkout: checkout,
+      added_at: new Date().toISOString(),
+    };
+    let items = loadQuotes();
+    items = items.filter(function (x) {
+      if (item.offer_id && x.offer_id === item.offer_id) return false;
+      if (x._key && x._key === item._key) return false;
+      return true;
+    });
+    if (checked) items.unshift(item);
+    saveQuotes(items);
+    if (checked) showToast('Added to quote');
+  }
+
+  list.addEventListener('change', function (e) {
+    const check = e.target.closest('.tbo-quote-check');
+    if (!check) return;
+    const block = check.closest('.tbo-hotel-block');
+    if (!block) return;
+    quoteFeaturedRoom(block, check.checked);
+  });
+  syncQuoteChecks();
 })();
 </script>
 {% endif %}

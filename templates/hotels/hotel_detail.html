@@ -1,54 +1,61 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}{{ hotel.name|default:hotel_id }} | {{ SITE_NAME }}{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/rates-table.css' %}?v=20260726a">
+{% endblock %}
+{% block body_class %}hotel-detail-body{% endblock %}
 {% block content %}
-<section class="page hotel-page">
+<section class="page hotel-page ms-hotel-page">
   <div class="hotel-hero" {% if main_photo %}style="background-image:url('{{ main_photo }}')"{% endif %}>
     <div class="hotel-hero-copy">
       <p class="eyebrow">{{ hotel.city }}{% if hotel.country %}, {{ hotel.country }}{% endif %}</p>
       <h1>{{ hotel.name|default:hotel_id }}</h1>
       {% if hotel.starRating %}<p class="meta">{{ hotel.starRating }} star</p>{% endif %}
       {% if hotel.address %}<p class="meta">{{ hotel.address }}</p>{% endif %}
+      <p class="meta">{{ checkin }} → {{ checkout }} · {{ nights }} night{{ nights|pluralize }}</p>
     </div>
   </div>
 
-  <div class="split">
-    <div class="prose">
-      {% if hotel.hotelDescription %}
-        {{ hotel.hotelDescription|safe }}
-      {% else %}
-        <p>Live rates for {{ checkin }} → {{ checkout }}.</p>
-      {% endif %}
-    </div>
+  {% if sandbox %}
+  <div class="sandbox-banner ms-hotel-sandbox">Sandbox mode: test data only, no real transactions.</div>
+  {% endif %}
 
-    <div class="rates-panel">
-      <h2>Available rooms</h2>
-      {% if not rooms %}
-        <p class="empty-inline">No rates for these dates.</p>
+  {% include "hotels/_rates_table.html" %}
+
+  <div class="ms-hotel-info-grid">
+    <section class="ms-hotel-panel" id="ms-amenities">
+      <h2>Amenities &amp; Info</h2>
+      {% if hotel.hotelDescription %}
+        <div class="prose-lite">{{ hotel.hotelDescription|safe }}</div>
       {% else %}
-        {% for room in rooms %}
-        <article class="room-block">
-          {% if room.image %}<img class="room-img" src="{{ room.image }}" alt="{{ room.name }}">{% endif %}
-          <h3>{{ room.name }}</h3>
-          <ul class="offer-list">
-            {% for offer in room.offers %}
-            <li>
-              <div>
-                <strong>{{ offer.currency }} {{ offer.amount }}</strong>
-                <span>{{ offer.board }}{% if offer.refundable %} · {{ offer.refundable }}{% endif %}</span>
-              </div>
-              {% if offer.offer_id %}
-              <a class="btn btn-primary btn-sm"
-                 href="{% url 'checkout' %}?offer_id={{ offer.offer_id }}&hotel_id={{ hotel_id }}&hotel_name={{ hotel.name|urlencode }}&checkin={{ checkin }}&checkout={{ checkout }}&adults={{ adults }}">
-                Book
-              </a>
-              {% endif %}
-            </li>
-            {% endfor %}
-          </ul>
-        </article>
-        {% endfor %}
+        <p class="ms-muted">Live rates for {{ checkin }} → {{ checkout }}.</p>
       {% endif %}
-    </div>
+      {% if hotel.hotelFacilities %}
+      <ul class="ms-amenity-list">
+        {% for fac in hotel.hotelFacilities|slice:":24" %}
+        <li>{{ fac.name|default:fac }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </section>
+
+    <section class="ms-hotel-panel" id="ms-photos">
+      <h2>Photos</h2>
+      {% if gallery %}
+      <div class="ms-photo-grid">
+        {% for url in gallery %}
+        <a href="{{ url }}" target="_blank" rel="noopener" class="ms-photo-thumb" style="background-image:url('{{ url }}')"></a>
+        {% endfor %}
+      </div>
+      {% elif main_photo %}
+      <div class="ms-photo-grid">
+        <div class="ms-photo-thumb" style="background-image:url('{{ main_photo }}')"></div>
+      </div>
+      {% else %}
+      <p class="ms-muted">No photos available.</p>
+      {% endif %}
+    </section>
   </div>
 </section>
 {% endblock %}

@@ -1,0 +1,219 @@
+{% load static %}
+<h1 class="bk-wizard-title">Book in 3 Simple Steps</h1>
+
+<nav class="bk-step-tabs" aria-label="Booking steps">
+  <div class="bk-step-tab{% if step == 1 %} is-active{% elif step > 1 %} is-done{% endif %}">Pax Information</div>
+  <div class="bk-step-tab{% if step == 2 %} is-active{% elif step > 2 %} is-done{% endif %}">Review Booking</div>
+  <div class="bk-step-tab{% if step == 3 %} is-active{% endif %}">Payment</div>
+</nav>
+
+<div class="bk-wizard-grid">
+  <div class="bk-main-panel">
+    {% if step == 1 %}
+    <form method="post" action="{% url 'booking_wizard' booking.pk %}">
+      {% csrf_token %}
+      <input type="hidden" name="step" value="1">
+
+      <p class="bk-room-head">Room 1</p>
+      <p class="bk-section-title">Pax Details</p>
+      <table class="bk-pax-table" aria-label="Guest details">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>First Name <span aria-hidden="true">*</span></th>
+            <th>Last Name <span aria-hidden="true">*</span></th>
+            <th>Lead Guest</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <select name="title" aria-label="Title">
+                <option value="Mr">Mr</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Ms">Ms</option>
+                <option value="Dr">Dr</option>
+              </select>
+            </td>
+            <td><input name="first_name" value="{{ guest_defaults.first_name|default:'' }}" required autocomplete="given-name"></td>
+            <td><input name="last_name" value="{{ guest_defaults.last_name|default:'' }}" required autocomplete="family-name"></td>
+            <td><input type="radio" name="lead_guest" value="1" checked aria-label="Lead guest"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="bk-field">
+        <label for="email">Email <span aria-hidden="true">*</span></label>
+        <input id="email" name="email" type="email" value="{{ guest_defaults.email|default:'' }}" required autocomplete="email">
+      </div>
+      <div class="bk-field">
+        <label for="phone">Phone</label>
+        <input id="phone" name="phone" type="tel" value="{{ guest_defaults.phone|default:'' }}" autocomplete="tel">
+      </div>
+      <div class="bk-field">
+        <label for="special_requests">Special Requests (optional)</label>
+        <textarea id="special_requests" name="special_requests" placeholder="Late check-in, adjoining rooms, etc.">{{ rate.special_requests|default:'' }}</textarea>
+      </div>
+
+      <div class="bk-cancel-block">
+        <div class="bk-cancel-head" role="button" tabindex="0" aria-expanded="true" id="bk-cancel-toggle">
+          Cancellation Policy
+          <span aria-hidden="true">−</span>
+        </div>
+        <div class="bk-cancel-body" id="bk-cancel-body">
+          {% if cancel_policies %}
+          <table class="bk-cancel-table">
+            <thead>
+              <tr>
+                <th>From</th>
+                <th>Type</th>
+                <th>Charge</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for p in cancel_policies %}
+              <tr>
+                <td>{{ p.cancel_time|default:"—" }}{% if p.timezone %} ({{ p.timezone }}){% endif %}</td>
+                <td>{{ p.type|default:"Policy" }}</td>
+                <td>{% if p.amount != None %}{{ p.currency|default:currency }} {{ p.amount }}{% else %}See terms{% endif %}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <p class="bk-remarks">{{ refundable_label|default:"See rate policy for cancellation terms." }}</p>
+          {% endif %}
+          {% if hotel_remarks %}
+          <p class="bk-remarks"><strong>Hotel remarks:</strong> {{ hotel_remarks }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="bk-actions">
+        <button type="submit" name="action" value="back" class="bk-btn bk-btn-back">← Back</button>
+        <button type="submit" name="action" value="next" class="bk-btn bk-btn-primary">Book →</button>
+      </div>
+    </form>
+
+    {% elif step == 2 %}
+    <p class="bk-room-head">Review your booking</p>
+    <ul class="bk-review-list">
+      <li><span>Hotel</span><strong>{{ hotel_name }}</strong></li>
+      <li><span>Room</span><strong>{{ room_name }}</strong></li>
+      <li><span>Board</span><strong>{{ board }}{% if board_type %} ({{ board_type }}){% endif %}</strong></li>
+      <li><span>Check-in</span><strong>{{ checkin_display }}</strong></li>
+      <li><span>Check-out</span><strong>{{ checkout_display }}</strong></li>
+      <li><span>Guest</span><strong>{{ booking.guest_full_name }}</strong></li>
+      <li><span>Email</span><strong>{{ booking.guest_email }}</strong></li>
+      {% if booking.guest_phone %}<li><span>Phone</span><strong>{{ booking.guest_phone }}</strong></li>{% endif %}
+      <li><span>Policy</span><strong class="{% if is_refundable %}ok{% else %}warn{% endif %}">{{ refundable_label }}</strong></li>
+      <li><span>Total</span><strong>{{ currency }} {{ amount }}</strong></li>
+    </ul>
+    {% if rate.special_requests %}
+    <p class="bk-remarks"><strong>Special requests:</strong> {{ rate.special_requests }}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'booking_wizard' booking.pk %}">
+      {% csrf_token %}
+      <input type="hidden" name="step" value="2">
+      <div class="bk-actions">
+        <button type="submit" name="action" value="back" class="bk-btn bk-btn-back">← Back</button>
+        <button type="submit" name="action" value="next" class="bk-btn bk-btn-primary">Continue to Payment →</button>
+      </div>
+    </form>
+
+    {% elif step == 3 %}
+    {% if is_partner %}
+    <p class="bk-room-head">Pay from partner credit</p>
+    {% if partner_credit %}
+    <div class="bk-credit-box">
+      <div class="bk-credit-row"><span>Credit limit</span><strong>{{ partner_credit.currency }} {{ partner_credit.limit }}</strong></div>
+      <div class="bk-credit-row ok"><span>Available credit</span><strong>{{ partner_credit.currency }} {{ partner_credit.available }}</strong></div>
+      <div class="bk-credit-row"><span>Used credit</span><strong>{{ partner_credit.currency }} {{ partner_credit.used }}</strong></div>
+      <div class="bk-credit-row charge"><span>Booking charge</span><strong>{{ currency }} {{ amount }}</strong></div>
+    </div>
+    {% endif %}
+    {% if credit_ok %}
+    <p class="bk-payment-hint">Confirming will charge your partner credit account and book through LiteAPI. In sandbox, a demo voucher is issued if API credit is unavailable.</p>
+    <form method="post" action="{% url 'partner_credit_pay' booking.pk %}">
+      {% csrf_token %}
+      <div class="bk-actions">
+        <a href="{% url 'booking_wizard' booking.pk %}?step=2" class="bk-btn bk-btn-back">← Back</a>
+        <button type="submit" class="bk-btn bk-btn-primary">Confirm &amp; charge credit →</button>
+      </div>
+    </form>
+    {% else %}
+    <p class="bk-credit-error">{{ credit_message|default:"Insufficient credit for this booking." }}</p>
+    <div class="bk-actions">
+      <a href="{% url 'booking_wizard' booking.pk %}?step=2" class="bk-btn bk-btn-back">← Back</a>
+    </div>
+    {% endif %}
+    {% else %}
+    <p class="bk-room-head">Secure payment</p>
+    <p class="bk-payment-hint">Sandbox test card: <code>4242 4242 4242 4242</code>, any future expiry, any CVC.</p>
+    <div class="bk-payment-wrap">
+      <div id="liteapi-payment"></div>
+    </div>
+    <form method="post" action="{% url 'booking_wizard' booking.pk %}">
+      {% csrf_token %}
+      <input type="hidden" name="step" value="3">
+      <div class="bk-actions">
+        <a href="{% url 'booking_wizard' booking.pk %}?step=2" class="bk-btn bk-btn-back">← Back</a>
+      </div>
+    </form>
+    {% endif %}
+    {% endif %}
+  </div>
+
+  <aside class="bk-side-panel">
+    <div class="bk-hotel-card">
+      <div class="bk-hotel-photo" {% if hotel_photo %}style="background-image:url('{{ hotel_photo }}')"{% endif %}>
+        {% if not hotel_photo %}No image{% endif %}
+      </div>
+      <div>
+        <h2 class="bk-hotel-name">{{ hotel_name }}</h2>
+        {% if hotel_stars %}
+        <div class="bk-hotel-stars" aria-label="{{ hotel_stars }} stars">
+          {% for i in "12345" %}<span>{% if forloop.counter <= hotel_stars %}★{% else %}☆{% endif %}</span>{% endfor %}
+        </div>
+        {% endif %}
+        {% if hotel_address %}<p class="bk-hotel-address">{{ hotel_address }}</p>{% endif %}
+      </div>
+    </div>
+
+    <dl class="bk-stay-grid">
+      <div><dt>Rooms</dt><dd>{{ rooms_count }}</dd></div>
+      <div><dt>Check In</dt><dd>{{ checkin_display }}</dd></div>
+      <div><dt>Check Out</dt><dd>{{ checkout_display }}</dd></div>
+    </dl>
+
+    <div class="bk-room-line">
+      Room 1: {{ room_name }} with {{ board }}{% if board_type %} ({{ board_type }}){% endif %}
+    </div>
+    <p class="bk-refund-tag {% if is_refundable %}ok{% else %}warn{% endif %}">
+      {{ refundable_label }}{% if not is_refundable %} (Penalty applicable as of date){% endif %}
+    </p>
+    <p class="bk-remarks">Pax: {{ occupancy_label }}</p>
+
+    <div class="bk-fare-summary">
+      <h3>Fare Summary</h3>
+      <div class="bk-fare-row"><span>Room 1</span><span>{{ currency }} {{ amount }}</span></div>
+      <div class="bk-fare-total"><span>Total Amount</span><span>{{ currency }} {{ amount }}</span></div>
+      <p class="bk-fare-note">(Including all taxes &amp; fees)</p>
+    </div>
+  </aside>
+</div>
+
+<script>
+(function () {
+  var toggle = document.getElementById('bk-cancel-toggle');
+  var body = document.getElementById('bk-cancel-body');
+  if (!toggle || !body) return;
+  toggle.addEventListener('click', function () {
+    var open = body.hidden;
+    body.hidden = !open;
+    toggle.querySelector('span').textContent = open ? '−' : '+';
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+})();
+</script>

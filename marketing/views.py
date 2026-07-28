@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_GET, require_http_methods
 
 from . import catalog, content
+from .legal_content import PRIVACY_POLICY
 from .models import ContactMessage
 
 
@@ -86,6 +87,15 @@ def testimonials(request):
         request,
         "marketing/testimonials.html",
         _ctx(testimonials=catalog.get_testimonials()),
+    )
+
+
+@require_GET
+def privacy_policy(request):
+    return render(
+        request,
+        "marketing/privacy_policy.html",
+        _ctx(privacy=PRIVACY_POLICY),
     )
 
 

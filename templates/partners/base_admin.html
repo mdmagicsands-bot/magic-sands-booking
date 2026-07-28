@@ -12,7 +12,7 @@
 </head>
 <body class="partner-admin">
   <aside class="pa-sidebar">
-    <a class="pa-brand" href="{% url 'partner_dashboard' %}">
+    <a class="pa-brand" href="{% url 'booking_admin_dashboard' %}">
       <span class="pl-mark">MS</span>
       <span>
         <strong>Magic Sands</strong>
@@ -37,7 +37,7 @@
         </div>
       </details>
       {% empty %}
-      <a href="{% url 'partner_dashboard' %}">Dashboard</a>
+      <a href="{% url 'booking_admin_dashboard' %}">Dashboard</a>
       <a href="{% url 'partner_bookings' %}">Bookings</a>
       <a href="{% url 'partner_requests' %}">Partner requests</a>
       {% endfor %}

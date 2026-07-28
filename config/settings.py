@@ -120,7 +120,7 @@ DEFAULT_GUEST_NATIONALITY = os.getenv("DEFAULT_GUEST_NATIONALITY", "OM")
 
 SITE_NAME = "Magic Sands Booking"
 LOGIN_URL = "admin_login"
-LOGIN_REDIRECT_URL = "partner_dashboard"
+LOGIN_REDIRECT_URL = "admin_hub"
 LOGOUT_REDIRECT_URL = "admin_login"
 
 # Public URLs

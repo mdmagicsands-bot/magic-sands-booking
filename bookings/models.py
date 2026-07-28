@@ -37,6 +37,8 @@ class Booking(models.Model):
 
     amount = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     currency = models.CharField(max_length=8, blank=True)
+    payment_method = models.CharField(max_length=16, blank=True, default="")
+    credit_charged = models.BooleanField(default=False)
     status = models.CharField(
         max_length=32, choices=Status.choices, default=Status.PENDING_PAYMENT
     )

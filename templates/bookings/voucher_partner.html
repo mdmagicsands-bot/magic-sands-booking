@@ -1,0 +1,17 @@
+{% extends "guests/base_guest.html" %}
+{% load static %}
+{% block title %}Hotel voucher {{ voucher.booking_id }} | Magic Sands Partner{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/booking-wizard.css' %}?v=20260728b">
+<link rel="stylesheet" href="{% static 'css/booking-voucher.css' %}?v=20260728b">
+{% endblock %}
+{% block content %}
+<section class="bk-voucher-page">
+  {% include "bookings/_voucher_body.html" %}
+  <div class="bk-voucher-actions">
+    <button type="button" class="bk-btn bk-btn-back" onclick="window.print()">Print voucher</button>
+    <a class="bk-btn bk-btn-primary" href="{% url 'guest_bookings' %}">My bookings</a>
+    <a class="bk-btn bk-btn-back" href="{% url 'guest_search' %}">New search</a>
+  </div>
+</section>
+{% endblock %}

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=1280">
-  <title>Partner Login | Magic Sands</title>
+  <title>Partner Login | Magic Sands DMC — Booking Platform</title>
   <meta name="description" content="Magic Sands Partner Portal — B2B login for travel partners.">
   <link rel="icon" href="https://www.magicsandsdmc.com/assets/images/favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
 <body class="partner-login-page">
   <header class="pl-top">
     <a class="pl-brand" href="{% url 'home' %}">
-      <img src="https://www.magicsandsdmc.com/assets/images/logo.png" alt="Magic Sands" width="140" height="44">
+      <img src="{% static 'img/ms-logo-cyan.png' %}" alt="Magic Sands DMC" width="140" height="44">
     </a>
     <nav class="pl-top-nav" aria-label="Primary">
       <a href="{% url 'home' %}">Home</a>
@@ -30,9 +30,9 @@
     <div class="pl-hero-veil" aria-hidden="true"></div>
     <div class="pl-hero-inner">
       <div class="pl-copy">
-        <p class="pl-brand-signal">Magic Sands</p>
-        <h1>Partner Portal</h1>
-        <p>Become an official travel partner and enjoy dedicated B2B rates, priority quotations, and personalized support across Arabia.</p>
+        <p class="pl-brand-signal">Magic Sands DMC</p>
+        <h1>Booking Platform</h1>
+        <p>Official partner portal for live hotel rates, credit booking, and instant vouchers across Arabia.</p>
         <ul class="pl-benefits">
           <li>Dedicated B2B rates</li>
           <li>Instant quotations</li>
@@ -43,7 +43,11 @@
 
       <div class="pl-panel" id="login">
         <h2>Partner login</h2>
-        <p class="pl-panel-sub">Sign in with your agency email</p>
+        <p class="pl-panel-sub">Demo access to test Nuitee hotel search — not a live partner account</p>
+
+        <div class="pl-alert pl-alert-info">
+          Test demo: <strong>{{ demo_email }}</strong> / <strong>{{ demo_password }}</strong>
+        </div>
 
         {% if messages %}
           {% for message in messages %}
@@ -51,20 +55,26 @@
           {% endfor %}
         {% endif %}
 
-        <form class="pl-form" method="post" action="{% url 'partner_login' %}">
+        <p class="pl-form">
+          <a class="pl-btn" href="{% url 'partner_login' %}?demo=1">Continue with demo login</a>
+        </p>
+
+        <p class="pl-panel-sub" style="margin:1rem 0 0.6rem;text-align:center">or sign in manually</p>
+
+        <form class="pl-form" method="post" action="{% url 'partner_login' %}" autocomplete="off">
           {% csrf_token %}
           <label class="pl-label">
             Email address
             <span class="pl-field">
               <span class="pl-icon" aria-hidden="true">@</span>
-              <input type="email" name="email" required autocomplete="username" placeholder="you@agency.com">
+              <input type="email" name="email" required autocomplete="off" value="{{ demo_email }}" placeholder="you@agency.com">
             </span>
           </label>
           <label class="pl-label">
             Password
             <span class="pl-field">
               <span class="pl-icon" aria-hidden="true">✱</span>
-              <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+              <input type="password" name="password" required autocomplete="off" value="{{ demo_password }}" placeholder="••••••••">
             </span>
           </label>
           <div class="pl-row">
@@ -77,7 +87,7 @@
         </form>
 
         <p class="pl-register">
-          Not a registered partner?
+          Want a real partner account later?
           <a href="{% url 'partner_register' %}">Register as a partner</a>
         </p>
       </div>

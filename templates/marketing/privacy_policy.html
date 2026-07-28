@@ -1,0 +1,14 @@
+{% extends "marketing/base.html" %}
+{% load static %}
+{% block title %}Privacy Policy | {{ brand_full }}{% endblock %}
+{% block meta_description %}Magic Sands DMC privacy policy for our website and booking platform.{% endblock %}
+{% block body_class %}page-privacy{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/legal-pages.css' %}">
+{% endblock %}
+{% block content %}
+{% include "legal/_privacy_policy_body.html" %}
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/legal-pages.js' %}" defer></script>
+{% endblock %}

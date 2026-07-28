@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 from typing import Any
 
@@ -9,6 +10,111 @@ import requests
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
+
+# Nuitee rates API: each occupancy entry = one room (adults + child ages).
+MAX_ROOMS = 4
+MAX_ADULTS_PER_ROOM = 9
+MAX_CHILDREN_PER_ROOM = 4
+MIN_CHILD_AGE = 1
+MAX_CHILD_AGE = 18
+
+
+def normalize_occupancies(
+    occupancies: list[dict[str, Any]] | None = None,
+    *,
+    adults: int = 2,
+    children: list[int] | None = None,
+) -> list[dict[str, Any]]:
+    """
+    Build LiteAPI `occupancies` payload.
+
+    Each item: {"adults": int, "children": [age, ...]} — one room per item.
+    """
+    if not occupancies:
+        room: dict[str, Any] = {
+            "adults": max(1, min(MAX_ADULTS_PER_ROOM, int(adults or 2)))
+        }
+        ages = [int(a) for a in (children or []) if MIN_CHILD_AGE <= int(a) <= MAX_CHILD_AGE]
+        if ages:
+            room["children"] = ages[:MAX_CHILDREN_PER_ROOM]
+        return [room]
+
+    cleaned: list[dict[str, Any]] = []
+    for raw in occupancies[:MAX_ROOMS]:
+        try:
+            room_adults = int(raw.get("adults") or 1)
+        except (TypeError, ValueError):
+            room_adults = 1
+        room_adults = max(1, min(MAX_ADULTS_PER_ROOM, room_adults))
+        ages: list[int] = []
+        for age in raw.get("children") or []:
+            try:
+                age_i = int(age)
+            except (TypeError, ValueError):
+                continue
+            if MIN_CHILD_AGE <= age_i <= MAX_CHILD_AGE:
+                ages.append(age_i)
+            if len(ages) >= MAX_CHILDREN_PER_ROOM:
+                break
+        room = {"adults": room_adults}
+        if ages:
+            room["children"] = ages
+        cleaned.append(room)
+    return cleaned or [{"adults": 2}]
+
+
+def parse_occupancies_from_request(data) -> list[dict[str, Any]]:
+    """Parse occupancies from form GET/POST (JSON field or legacy adults/rooms)."""
+    raw = (data.get("occupancies") or "").strip()
+    if raw:
+        try:
+            parsed = json.loads(raw)
+            if isinstance(parsed, list):
+                return normalize_occupancies(parsed)
+        except (json.JSONDecodeError, TypeError, ValueError):
+            pass
+
+    try:
+        adults = int(data.get("adults") or 2)
+    except (TypeError, ValueError):
+        adults = 2
+    try:
+        rooms = int(data.get("rooms") or 1)
+    except (TypeError, ValueError):
+        rooms = 1
+    rooms = max(1, min(MAX_ROOMS, rooms))
+    adults = max(1, min(MAX_ADULTS_PER_ROOM * rooms, adults))
+
+    # Spread adults across rooms for legacy room-count forms.
+    base, rem = divmod(adults, rooms)
+    child_ages: list[int] = []
+    for age in data.getlist("child_ages") if hasattr(data, "getlist") else []:
+        try:
+            age_i = int(age)
+        except (TypeError, ValueError):
+            continue
+        if MIN_CHILD_AGE <= age_i <= MAX_CHILD_AGE:
+            child_ages.append(age_i)
+
+    occ: list[dict[str, Any]] = []
+    for i in range(rooms):
+        room_adults = base + (1 if i < rem else 0)
+        room: dict[str, Any] = {"adults": max(1, room_adults)}
+        if i == 0 and child_ages:
+            room["children"] = child_ages[:MAX_CHILDREN_PER_ROOM]
+        occ.append(room)
+    return normalize_occupancies(occ)
+
+
+def occupancy_totals(occupancies: list[dict[str, Any]]) -> dict[str, int]:
+    adults = sum(int(o.get("adults") or 0) for o in occupancies)
+    children = sum(len(o.get("children") or []) for o in occupancies)
+    return {
+        "rooms": len(occupancies),
+        "adults": adults,
+        "children": children,
+        "guests": adults + children,
+    }
 
 
 class LiteAPIError(Exception):
@@ -90,6 +196,29 @@ class LiteAPIClient:
         )
         return payload.get("data") or {}
 
+    def get_reviews(
+        self,
+        hotel_id: str,
+        *,
+        limit: int = 40,
+        get_sentiment: bool = True,
+        timeout: int = 20,
+    ) -> dict[str, Any]:
+        """Guest reviews + optional AI sentiment for a hotel (`GET /data/reviews`)."""
+        params: dict[str, Any] = {
+            "hotelId": hotel_id,
+            "limit": max(1, min(int(limit), 200)),
+            "timeout": min(timeout, 30),
+        }
+        if get_sentiment:
+            params["getSentiment"] = "true"
+        return self._request(
+            "GET",
+            f"{self.api_base}/data/reviews",
+            params=params,
+            timeout=timeout,
+        )
+
     def list_hotels(
         self,
         *,
@@ -101,6 +230,7 @@ class LiteAPIClient:
         hotel_ids: list[str] | None = None,
         limit: int = 50,
         offset: int = 0,
+        timeout: int = 60,
     ) -> dict[str, Any]:
         """Browse static hotel inventory (Nuitee /data/hotels)."""
         params: dict[str, Any] = {
@@ -138,7 +268,7 @@ class LiteAPIClient:
             "GET",
             f"{self.api_base}/data/hotels",
             params=params,
-            timeout=60,
+            timeout=timeout,
         )
 
     def search_rates(
@@ -148,8 +278,10 @@ class LiteAPIClient:
         checkout: str,
         adults: int = 2,
         children: list[int] | None = None,
+        occupancies: list[dict[str, Any]] | None = None,
         place_id: str | None = None,
         hotel_ids: list[str] | None = None,
+        hotel_name: str | None = None,
         city_name: str | None = None,
         country_code: str | None = None,
         ai_search: str | None = None,
@@ -159,12 +291,10 @@ class LiteAPIClient:
         include_hotel_data: bool = True,
         limit: int | None = 50,
     ) -> dict[str, Any]:
-        occupancy: dict[str, Any] = {"adults": adults}
-        if children:
-            occupancy["children"] = children
-
         body: dict[str, Any] = {
-            "occupancies": [occupancy],
+            "occupancies": normalize_occupancies(
+                occupancies, adults=adults, children=children
+            ),
             "currency": currency or settings.DEFAULT_CURRENCY,
             "guestNationality": guest_nationality or settings.DEFAULT_GUEST_NATIONALITY,
             "checkin": checkin,
@@ -177,12 +307,18 @@ class LiteAPIClient:
         if limit is not None:
             body["limit"] = limit
 
-        # Prefer city/country (most reliable in sandbox), then hotel IDs, AI, placeId.
-        if city_name and country_code:
+        # Prefer exact hotel IDs, then hotel name, city/country, AI, placeId.
+        if hotel_ids:
+            body["hotelIds"] = hotel_ids
+        elif hotel_name:
+            body["hotelName"] = hotel_name
+            if country_code:
+                body["countryCode"] = country_code
+            if city_name:
+                body["cityName"] = city_name
+        elif city_name and country_code:
             body["cityName"] = city_name
             body["countryCode"] = country_code
-        elif hotel_ids:
-            body["hotelIds"] = hotel_ids
         elif ai_search:
             body["aiSearch"] = ai_search
         elif place_id:
@@ -191,7 +327,7 @@ class LiteAPIClient:
             body["cityName"] = city_name
         else:
             raise LiteAPIError(
-                "Provide city_name+country_code, hotel_ids, ai_search, or place_id."
+                "Provide hotel_ids, hotel_name, city_name+country_code, ai_search, or place_id."
             )
 
         return self._request(
@@ -201,11 +337,11 @@ class LiteAPIClient:
             timeout=90,
         )
 
-    def prebook(self, offer_id: str) -> dict[str, Any]:
+    def prebook(self, offer_id: str, *, use_payment_sdk: bool = True) -> dict[str, Any]:
         payload = self._request(
             "POST",
             f"{self.book_base}/rates/prebook",
-            json={"usePaymentSdk": True, "offerId": offer_id},
+            json={"usePaymentSdk": use_payment_sdk, "offerId": offer_id},
             timeout=90,
         )
         return payload.get("data") or payload
@@ -234,6 +370,26 @@ class LiteAPIClient:
         )
         return payload.get("data") or payload
 
+    def book_on_credit(
+        self,
+        *,
+        prebook_id: str,
+        holder: dict[str, str],
+        guests: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        payload = self._request(
+            "POST",
+            f"{self.book_base}/rates/book",
+            json={
+                "prebookId": prebook_id,
+                "holder": holder,
+                "payment": {"method": "CREDIT"},
+                "guests": guests,
+            },
+            timeout=90,
+        )
+        return payload.get("data") or payload
+
     def get_booking(self, booking_id: str) -> dict[str, Any]:
         payload = self._request(
             "GET",
@@ -248,9 +404,11 @@ COUNTRY_NAME_TO_CODE = {
     "uae": "AE",
     "oman": "OM",
     "saudi arabia": "SA",
+    "ksa": "SA",
     "qatar": "QA",
     "bahrain": "BH",
     "kuwait": "KW",
+    "egypt": "EG",
     "united kingdom": "GB",
     "uk": "GB",
     "united states": "US",
@@ -260,7 +418,6 @@ COUNTRY_NAME_TO_CODE = {
     "spain": "ES",
     "germany": "DE",
     "turkey": "TR",
-    "egypt": "EG",
     "india": "IN",
     "thailand": "TH",
     "singapore": "SG",
@@ -270,6 +427,10 @@ COUNTRY_NAME_TO_CODE = {
     "georgia": "GE",
     "azerbaijan": "AZ",
 }
+
+# Inventory search markets: GCC + Egypt only (for now).
+SEARCH_MARKET_COUNTRY_CODES = frozenset({"OM", "AE", "SA", "QA", "BH", "KW", "EG"})
+SEARCH_MARKET_COUNTRY_ORDER = ("OM", "AE", "SA", "QA", "BH", "KW", "EG")
 
 # Guest nationality options for hotel search (ISO-2 → label).
 NATIONALITY_CHOICES = [
@@ -334,7 +495,33 @@ def country_code_from_address(address: str | None) -> str | None:
     parts = [p.strip().lower() for p in address.split(",") if p.strip()]
     if parts and parts[-1] in COUNTRY_NAME_TO_CODE:
         return COUNTRY_NAME_TO_CODE[parts[-1]]
+    # Bare ISO-2 at end (e.g. "Nizwa, OM")
+    if parts and len(parts[-1]) == 2:
+        return parts[-1].upper()
     return None
+
+
+def is_search_market_country(code: str | None) -> bool:
+    return bool(code) and code.strip().upper()[:2] in SEARCH_MARKET_COUNTRY_CODES
+
+
+def hotel_country_code(hotel: dict | None) -> str | None:
+    """Best-effort country code from a LiteAPI hotel / meta object."""
+    if not hotel:
+        return None
+    for key in ("countryCode", "country_code", "country"):
+        raw = hotel.get(key)
+        if not raw:
+            continue
+        text = str(raw).strip()
+        if len(text) == 2:
+            return text.upper()
+        mapped = COUNTRY_NAME_TO_CODE.get(text.lower())
+        if mapped:
+            return mapped
+    address = hotel.get("address") or hotel.get("formattedAddress") or ""
+    city = hotel.get("city") or hotel.get("cityName") or hotel.get("city_name") or ""
+    return country_code_from_address(", ".join(x for x in [address, city] if x))
 
 
 def get_client() -> LiteAPIClient:
@@ -434,3 +621,110 @@ def first_offer_id(rate_block: dict) -> str | None:
             if rate.get("offerId"):
                 return rate["offerId"]
     return None
+
+
+def _safe_float(value: Any) -> float | None:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def build_rate_rows(rate_block: dict, hotel: dict | None = None) -> list[dict[str, Any]]:
+    """
+    Flatten LiteAPI hotel rates into table rows:
+    Room Details | Board Basis | Price (+ breakup / cancellation payloads).
+    """
+    hotel = hotel or {}
+    room_meta: dict[str, dict[str, Any]] = {}
+    for room_info in hotel.get("rooms") or []:
+        key = str(room_info.get("id") or "")
+        if not key:
+            continue
+        photos = room_info.get("photos") or []
+        room_meta[key] = {
+            "name": room_info.get("roomName") or "",
+            "image": (photos[0].get("url") if photos else None),
+        }
+
+    rows: list[dict[str, Any]] = []
+    for rt in rate_block.get("roomTypes") or []:
+        offer_id = rt.get("offerId") or first_offer_id({"roomTypes": [rt]})
+        offer_total = rt.get("offerRetailRate") or {}
+        for rate in rt.get("rates") or []:
+            mapped_id = str(rate.get("mappedRoomId") or "")
+            meta = room_meta.get(mapped_id) or {}
+            retail = rate.get("retailRate") or {}
+            totals = retail.get("total") or [{}]
+            amount = totals[0].get("amount")
+            currency = totals[0].get("currency")
+            if amount is None and offer_total.get("amount") is not None:
+                amount = offer_total.get("amount")
+                currency = offer_total.get("currency") or currency
+
+            cancel = rate.get("cancellationPolicies") or {}
+            tag = (cancel.get("refundableTag") or "").upper()
+            taxes_raw = retail.get("taxesAndFees") or []
+            taxes = []
+            for tax in taxes_raw:
+                taxes.append(
+                    {
+                        "description": tax.get("description") or tax.get("included") or "Fee",
+                        "amount": tax.get("amount"),
+                        "currency": tax.get("currency") or currency,
+                        "included": bool(tax.get("included")),
+                    }
+                )
+
+            cancel_policies = []
+            for info in cancel.get("cancelPolicyInfos") or []:
+                cancel_policies.append(
+                    {
+                        "cancel_time": info.get("cancelTime") or info.get("cancel_time") or "",
+                        "amount": info.get("amount"),
+                        "currency": info.get("currency") or currency,
+                        "type": info.get("type") or "",
+                        "timezone": info.get("timezone") or "",
+                    }
+                )
+
+            room_name = (
+                meta.get("name")
+                or rate.get("name")
+                or rt.get("name")
+                or "Room"
+            )
+            board = rate.get("boardName") or rate.get("boardType") or "Room Only"
+            amount_f = _safe_float(amount)
+            rows.append(
+                {
+                    "offer_id": offer_id or rate.get("offerId"),
+                    "room_key": mapped_id or room_name,
+                    "room_name": room_name,
+                    "image": meta.get("image"),
+                    "board": board,
+                    "board_type": rate.get("boardType") or "",
+                    "occupancy_number": rate.get("occupancyNumber") or 1,
+                    "amount": amount,
+                    "amount_value": amount_f if amount_f is not None else 0.0,
+                    "currency": currency or "",
+                    "refundable": tag,
+                    "is_refundable": tag == "RFN",
+                    "refundable_label": (
+                        "Refundable" if tag == "RFN"
+                        else "Non-Refundable" if tag == "NRFN"
+                        else (tag or "See policy")
+                    ),
+                    "available": True,
+                    "taxes": taxes,
+                    "cancel_policies": cancel_policies,
+                    "hotel_remarks": cancel.get("hotelRemarks") or rate.get("remarks") or "",
+                    "max_occupancy": rate.get("maxOccupancy") or rate.get("adultCount") or "",
+                    "suggested_selling": (retail.get("suggestedSellingPrice") or {}).get("amount")
+                    if isinstance(retail.get("suggestedSellingPrice"), dict)
+                    else retail.get("suggestedSellingPrice"),
+                }
+            )
+
+    rows.sort(key=lambda r: (r.get("amount_value") or 0.0, r.get("room_name") or ""))
+    return rows

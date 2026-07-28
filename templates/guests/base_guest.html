@@ -3,67 +3,169 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1280">
-  <title>{% block title %}Guest portal | Magic Sands{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Magic Sands DMC — Booking Platform{% endblock %}</title>
+  <link rel="icon" href="https://www.magicsandsdmc.com/assets/images/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/site.css' %}">
-  <link rel="stylesheet" href="{% static 'css/guest-portal.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/guest-portal.css' %}?v=20260728k">
   {% block extra_head %}{% endblock %}
 </head>
-<body class="guest-portal">
-  <div class="gp-shell">
-    <aside class="gp-sidebar">
-      <a class="gp-brand" href="{% url 'guest_dashboard' %}">
-        <span class="gp-mark">MS</span>
-        <span>
-          <strong>Magic Sands</strong>
-          <small>Guest booking</small>
+<body class="guest-portal{% block body_class %}{% endblock %}">
+  <header class="pp-header">
+    <div class="pp-header-top">
+      <a class="pp-brand" href="{% url 'guest_search' %}">
+        <img src="{% static 'img/ms-logo-cyan.png' %}" alt="Magic Sands DMC" class="pp-logo">
+        <span class="pp-brand-text">
+          <strong>Magic Sands DMC</strong>
+          <small>Booking Platform</small>
         </span>
       </a>
 
-      <nav class="gp-nav" aria-label="Guest portal">
-        {% for group in guest_menu_groups %}
-        <div class="gp-nav-group">
-          <p class="gp-nav-group-label">{{ group.label }}</p>
-          <div class="gp-nav-items">
-            {% for item in group.items %}
-            <a href="{{ item.href }}" class="{% if item.active %}active{% endif %}">{{ item.label }}</a>
-            {% endfor %}
+      <div class="pp-account">
+        <span class="pp-credit">Cr. Limit: <b>{{ partner_credit.limit }}({{ partner_credit.currency }})</b></span>
+        <span class="pp-credit pp-credit-ok">Avl Cr: <b>{{ partner_credit.available }}</b></span>
+        <span class="pp-credit pp-credit-used">Used Cr: <b>{{ partner_credit.used }}</b></span>
+        <span class="pp-user-meta">{{ partner_display_name }}{% if partner_location %}, {{ partner_location }}{% endif %}</span>
+        <form method="post" action="{% url 'guest_logout' %}" class="pp-logout">
+          {% csrf_token %}
+          <button type="submit" title="Logout">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Logout
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <nav class="pp-nav" aria-label="Partner portal">
+      <div class="pp-nav-links">
+        {% for item in guest_nav_items %}
+          {% if item.children %}
+          <div class="pp-nav-dropdown{% if item.active %} active{% endif %}">
+            <button type="button" class="pp-nav-link pp-nav-toggle" aria-expanded="false">
+              {{ item.label }}
+              <svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+            <div class="pp-nav-menu">
+              {% for child in item.children %}
+              <a href="{{ child.href }}" class="{% if child.active %}active{% endif %}">{{ child.label }}</a>
+              {% endfor %}
+            </div>
           </div>
-        </div>
-        {% endfor %}
-      </nav>
-
-      <form method="post" action="{% url 'guest_logout' %}" class="gp-logout">
-        {% csrf_token %}
-        <button type="submit">Sign out</button>
-      </form>
-    </aside>
-
-    <div class="gp-main">
-      <header class="gp-top">
-        <div>
-          <p class="gp-eyebrow">{% block eyebrow %}Guest portal{% endblock %}</p>
-          <h1>{% block heading %}Dashboard{% endblock %}</h1>
-        </div>
-        <div class="gp-user">
-          {{ request.user.get_full_name|default:request.user.get_username }}
-        </div>
-      </header>
-
-      {% if messages %}
-      <div class="gp-messages">
-        {% for message in messages %}
-        <div class="gp-flash gp-flash-{{ message.tags }}">{{ message }}</div>
+          {% elif item.placeholder %}
+          <span class="pp-nav-link is-placeholder" title="Coming soon">{{ item.label }}</span>
+          {% else %}
+          <a href="{{ item.href }}" class="pp-nav-link{% if item.active %} active{% endif %}">{{ item.label }}</a>
+          {% endif %}
         {% endfor %}
       </div>
-      {% endif %}
+      <button type="button" class="pp-bell" aria-label="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M18 8A6 6 0 1 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="pp-bell-badge">0</span>
+      </button>
+    </nav>
+  </header>
 
-      {% block content %}{% endblock %}
-    </div>
+  {% if messages %}
+  <div class="pp-messages">
+    {% for message in messages %}
+    <div class="pp-flash pp-flash-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
   </div>
+  {% endif %}
+
+  <main class="pp-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="pp-footer">
+    <div class="pp-footer-inner">
+      <div class="pp-footer-bar">
+        <div class="pp-footer-payments" aria-label="Payments accepted">
+          <span class="pp-footer-payments-label">Payments Accepted:</span>
+          <ul class="pp-pay-icons">
+            <li title="Wallet / Credit">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="2" y="6" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M2 10h20" stroke="currentColor" stroke-width="1.6"/>
+                <circle cx="17" cy="14" r="1.2" fill="currentColor"/>
+              </svg>
+              <span class="pp-pay-name">Wallet</span>
+            </li>
+            <li title="American Express">
+              <svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true">
+                <rect width="36" height="24" rx="3" fill="#006FCF"/>
+                <text x="18" y="15" text-anchor="middle" fill="#fff" font-size="7" font-weight="700" font-family="Arial,sans-serif">AMEX</text>
+              </svg>
+              <span class="pp-pay-name">Amex</span>
+            </li>
+            <li title="Visa">
+              <svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true">
+                <rect width="36" height="24" rx="3" fill="#1A1F71"/>
+                <text x="18" y="16" text-anchor="middle" fill="#fff" font-size="9" font-weight="800" font-style="italic" font-family="Arial,sans-serif">VISA</text>
+              </svg>
+              <span class="pp-pay-name">Visa</span>
+            </li>
+            <li title="Mastercard">
+              <svg width="36" height="24" viewBox="0 0 36 24" aria-hidden="true">
+                <rect width="36" height="24" rx="3" fill="#f8fafc"/>
+                <circle cx="14" cy="12" r="7" fill="#EB001B"/>
+                <circle cx="22" cy="12" r="7" fill="#F79E1B" fill-opacity="0.95"/>
+              </svg>
+              <span class="pp-pay-name">Mastercard</span>
+            </li>
+          </ul>
+        </div>
+
+        <nav class="pp-footer-nav" aria-label="Footer">
+          <a href="{{ marketing_site_links.home }}" target="_blank" rel="noopener noreferrer">Home</a>
+          <span class="pp-footer-sep" aria-hidden="true">|</span>
+          <a href="{{ marketing_site_links.about }}" target="_blank" rel="noopener noreferrer">About Us</a>
+          <span class="pp-footer-sep" aria-hidden="true">|</span>
+          <a href="{{ marketing_site_links.privacy }}" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+          <span class="pp-footer-sep" aria-hidden="true">|</span>
+          <a href="{{ marketing_site_links.terms }}" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>
+          <span class="pp-footer-sep" aria-hidden="true">|</span>
+          <a href="{{ marketing_site_links.contact }}" target="_blank" rel="noopener noreferrer">Contact Us</a>
+        </nav>
+      </div>
+
+      <p class="pp-footer-copy">© Copyright Magic Sands Technology Pvt ltd (India)</p>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    document.querySelectorAll('.pp-nav-toggle').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var wrap = btn.closest('.pp-nav-dropdown');
+        var open = wrap.classList.contains('open');
+        document.querySelectorAll('.pp-nav-dropdown.open').forEach(function (el) {
+          el.classList.remove('open');
+          el.querySelector('.pp-nav-toggle').setAttribute('aria-expanded', 'false');
+        });
+        if (!open) {
+          wrap.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+    document.addEventListener('click', function () {
+      document.querySelectorAll('.pp-nav-dropdown.open').forEach(function (el) {
+        el.classList.remove('open');
+        el.querySelector('.pp-nav-toggle').setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+  </script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

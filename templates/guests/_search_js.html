@@ -8,8 +8,22 @@
   const checkin = document.getElementById('checkin');
   const checkout = document.getElementById('checkout');
   const form = document.getElementById('guest-search-form');
-  if (!input || !form) return;
+  if (!input || !form || !box) return;
   let timer = null;
+  let suggestSeq = 0;
+  let suggestLocked = false;
+  let suggestAbort = null;
+
+  function closeSuggestions() {
+    clearTimeout(timer);
+    suggestSeq += 1;
+    if (suggestAbort) {
+      try { suggestAbort.abort(); } catch (e) { /* ignore */ }
+      suggestAbort = null;
+    }
+    box.hidden = true;
+    box.innerHTML = '';
+  }
 
   function syncCheckoutMin() {
     if (!checkin.value) return;
@@ -23,15 +37,23 @@
   syncCheckoutMin();
 
   input.addEventListener('input', () => {
+    suggestLocked = false;
     placeId.value = '';
     countryCode.value = '';
     clearTimeout(timer);
     const q = input.value.trim();
-    if (q.length < 2) { box.hidden = true; return; }
+    if (q.length < 2) { closeSuggestions(); return; }
+    const seq = ++suggestSeq;
     timer = setTimeout(() => {
-      fetch(`{% url 'places_autocomplete' %}?q=${encodeURIComponent(q)}`)
+      if (suggestAbort) {
+        try { suggestAbort.abort(); } catch (e) { /* ignore */ }
+      }
+      suggestAbort = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      fetch(`{% url 'places_autocomplete' %}?q=${encodeURIComponent(q)}`,
+        suggestAbort ? { signal: suggestAbort.signal } : undefined)
         .then(r => r.json())
         .then(data => {
+          if (seq !== suggestSeq || suggestLocked) return;
           const results = data.results || [];
           if (!results.length) { box.hidden = true; box.innerHTML = ''; return; }
           box.innerHTML = results.map(p =>
@@ -39,21 +61,32 @@
           ).join('');
           box.hidden = false;
           box.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('mousedown', (e) => {
+              e.preventDefault();
+              suggestLocked = true;
+              closeSuggestions();
               input.value = btn.dataset.name || '';
               placeId.value = btn.dataset.id || '';
               countryCode.value = btn.dataset.cc || '';
               if (vibe) vibe.value = '';
-              box.hidden = true;
+              input.blur();
             });
           });
         })
-        .catch(() => { box.hidden = true; });
-    }, 250);
+        .catch((err) => {
+          if (err && err.name === 'AbortError') return;
+          if (seq !== suggestSeq || suggestLocked) return;
+          box.hidden = true;
+        });
+    }, 400);
   });
 
   document.addEventListener('click', (e) => {
-    if (!box.contains(e.target) && e.target !== input) box.hidden = true;
+    if (!box.contains(e.target) && e.target !== input) closeSuggestions();
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSuggestions();
   });
 
   form.addEventListener('submit', (e) => {

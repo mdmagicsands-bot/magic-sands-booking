@@ -13,11 +13,12 @@
 - `/` marketing home
 - `/about/` `/services/` `/destinations/` `/testimonials/` `/contact/`
 - `/hotels/` hotel search (LiteAPI)
-- `/partner-login/` `/partner-register/`
-- `/admin/login/` → website admin login
-- `/admin/` → hub (Marketing website **or** Booking system)
+- `/partner-login/` `/partner-register/` → partner portal login/register (non-staff)
+- `/partner/` → partner front-end (Nuitee hotel search + user dashboard)
+- `/admin/login/` → website admin login (staff only)
+- `/admin/` → hub (Marketing website **or** Booking system admin)
 - `/admin/marketing/` → marketing CMS
-- `/admin/booking/` → booking dashboard
+- `/admin/booking/` → booking system admin dashboard
 - `/admin/bookings/` `/admin/partners/`
 
 ## Cutover later

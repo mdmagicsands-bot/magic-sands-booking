@@ -1,0 +1,86 @@
+{% if voucher.is_demo %}
+<div class="bk-voucher-demo-banner">Sandbox demo voucher — API credit line unavailable; booking confirmed locally for walkthrough.</div>
+{% endif %}
+
+<article class="bk-voucher">
+  <header class="bk-voucher-head">
+    <div>
+      <p class="bk-voucher-eyebrow">Hotel booking voucher</p>
+      <h1>{{ voucher.hotel_name }}</h1>
+      {% if voucher.hotel_address %}<p class="bk-voucher-address">{{ voucher.hotel_address }}</p>{% endif %}
+    </div>
+    <div class="bk-voucher-refs">
+      <div><span>Booking ID</span><strong>{{ voucher.booking_id }}</strong></div>
+      <div><span>Hotel confirmation</span><strong>{{ voucher.hotel_confirmation_code|default:"—" }}</strong></div>
+      {% if voucher.supplier_booking_id %}
+      <div><span>Supplier ref</span><strong>{{ voucher.supplier_booking_id }}</strong></div>
+      {% endif %}
+      <div><span>Status</span><strong class="ok">{{ voucher.status }}</strong></div>
+    </div>
+  </header>
+
+  <div class="bk-voucher-grid">
+    <section class="bk-voucher-panel">
+      <h2>Stay details</h2>
+      <dl class="bk-voucher-kv">
+        <div><dt>Check-in</dt><dd>{{ voucher.checkin }}</dd></div>
+        <div><dt>Check-out</dt><dd>{{ voucher.checkout }}</dd></div>
+        <div><dt>Lead guest</dt><dd>{{ voucher.holder_name }}</dd></div>
+        <div><dt>Email</dt><dd>{{ voucher.holder_email }}</dd></div>
+        <div><dt>Payment</dt><dd>{% if voucher.payment_method == "credit" %}Partner credit{% else %}Card (LiteAPI){% endif %}</dd></div>
+      </dl>
+    </section>
+
+    <section class="bk-voucher-panel">
+      <h2>Rooms &amp; rates</h2>
+      {% for room in voucher.rooms %}
+      <div class="bk-voucher-room">
+        <p class="bk-voucher-room-title">Room {{ room.number }}: {{ room.name }}</p>
+        <p class="bk-voucher-room-meta">{{ room.board }} · {{ room.adults }} adult{{ room.adults|pluralize }}{% if room.children %}, {{ room.children }} child{{ room.children|pluralize }}{% endif %}</p>
+        <p class="bk-voucher-room-price">{{ room.amount }}</p>
+      </div>
+      {% endfor %}
+      <p class="bk-voucher-total">Total: <strong>{{ voucher.total }}</strong></p>
+      <p class="bk-voucher-policy {% if voucher.refundable_tag == 'RFN' %}ok{% else %}warn{% endif %}">{{ voucher.refundable_label }}</p>
+    </section>
+  </div>
+
+  {% if voucher.special_requests %}
+  <section class="bk-voucher-panel full">
+    <h2>Special requests</h2>
+    <p>{{ voucher.special_requests }}</p>
+  </section>
+  {% endif %}
+
+  <section class="bk-voucher-panel full">
+    <h2>Cancellation policy</h2>
+    {% if voucher.cancel_rows %}
+    <table class="bk-voucher-table">
+      <thead>
+        <tr><th>From</th><th>To</th><th>Charge</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        {% for row in voucher.cancel_rows %}
+        <tr>
+          <td>{{ row.from }}</td>
+          <td>{{ row.to }}</td>
+          <td>{% if row.amount != None %}{{ row.currency }} {{ row.amount }}{% else %}—{% endif %}</td>
+          <td>{{ row.type|default:"—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>{{ voucher.refundable_label }}</p>
+    {% endif %}
+    {% if voucher.hotel_remarks %}
+    <p class="bk-voucher-remarks"><strong>Hotel remarks:</strong> {{ voucher.hotel_remarks }}</p>
+    {% endif %}
+  </section>
+
+  <section class="bk-voucher-panel full bk-voucher-api">
+    <h2>API confirmation payload</h2>
+    <p class="bk-voucher-api-note">Fields returned by LiteAPI <code>/rates/book</code> (stored in <code>raw_book</code>).</p>
+    <pre class="bk-voucher-json">{{ voucher.raw_book_json }}</pre>
+  </section>
+</article>

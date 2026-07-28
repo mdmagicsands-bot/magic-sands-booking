@@ -1,0 +1,141 @@
+<div
+  class="tbo-hotel-block"
+  data-name="{{ card.name|lower }}"
+  data-address="{{ card.address|default:card.city|default:''|lower }}"
+  data-room="{{ card.room_name|default:''|lower }}"
+  data-price="{{ card.price|default:0 }}"
+  data-stars="{{ card.stars|default:0 }}"
+  data-refundable="{{ card.refundable }}"
+  data-is-refundable="{% if card.is_refundable %}1{% else %}0{% endif %}"
+  data-is-non-refundable="{% if card.is_non_refundable %}1{% else %}0{% endif %}"
+  data-free-cancellation="{% if card.free_cancellation %}1{% else %}0{% endif %}"
+  data-board="{{ card.board_code|default:'' }}"
+  data-board-label="{{ card.board|default:'' }}"
+  data-room-name="{{ card.room_name|default:'' }}"
+  data-offer-id="{{ card.offer_id|default:'' }}"
+  data-currency="{{ card.currency|default:'USD' }}"
+  data-property="{{ card.property_type|default:'hotel' }}"
+  data-amenities="{{ card.amenities|join:',' }}"
+  data-guest-rating="{{ card.review_score|default:'' }}"
+  data-availability="{{ card.availability|default:'instant' }}"
+  data-promotions="{{ card.promotions|join:',' }}"
+  data-supplier="{{ card.supplier|default:'api' }}"
+  data-hotel-id="{{ card.hotel_id }}"
+  data-hotel-name="{{ card.name|escape }}"
+  data-lat="{{ card.lat|default:'' }}"
+  data-lng="{{ card.lng|default:'' }}"
+>
+  <article class="tbo-hotel-card">
+    <a
+      class="tbo-photo-link"
+      href="{% url 'guest_hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}&amp;nationality={{ nationality }}&amp;occupancies={{ occupancies_json|urlencode }}"
+      aria-label="Open {{ card.name }} details"
+    >
+      <span class="tbo-photo" {% if card.photo %}style="background-image:url('{{ card.photo }}')"{% endif %}></span>
+      {% if card.extra_photos %}
+      <span class="tbo-photo-badge">+{{ card.extra_photos }}</span>
+      {% endif %}
+    </a>
+
+    <div class="tbo-main">
+      <div class="tbo-title-row">
+        <h3>
+          <a href="{% url 'guest_hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}&amp;nationality={{ nationality }}&amp;occupancies={{ occupancies_json|urlencode }}">
+            {{ card.name }}
+          </a>
+        </h3>
+        {% if card.stars %}
+        <span class="tbo-stars" aria-label="{{ card.stars }} star rating">
+          {% for i in "12345" %}
+            <span class="{% if forloop.counter <= card.stars %}on{% endif %}">★</span>
+          {% endfor %}
+        </span>
+        {% endif %}
+      </div>
+
+      {% if card.review_display %}
+      <div class="tbo-score-row">
+        <span class="tbo-score-badge">{{ card.review_display }}/100</span>
+        {% if card.guest_rating_label %}<span class="tbo-score-label">{{ card.guest_rating_label }}</span>{% endif %}
+        {% if card.review_count %}<span class="tbo-score-count">{{ card.review_count }} reviews</span>{% endif %}
+      </div>
+      {% endif %}
+
+      {% if card.address or card.city or card.lat and card.lng %}
+      <p class="tbo-location">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.8"/>
+        </svg>
+        <span>{{ card.address|default:card.city }}{% if card.distance_km %} · {{ card.distance_km }} km away{% endif %}</span>
+        {% if card.lat and card.lng %}
+        <a
+          class="tbo-map-link"
+          href="https://www.google.com/maps?q={{ card.lat }},{{ card.lng }}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >View on map</a>
+        {% endif %}
+      </p>
+      {% endif %}
+
+      <div class="tbo-featured-room"
+           data-occupancy="{{ adults_rooms_label|default:occupancy_label }}"
+           data-cancel="{% if card.free_cancellation %}Free cancellation{% elif card.is_refundable %}Refundable{% elif card.is_non_refundable %}Non refundable{% else %}{{ card.refundable|default:'' }}{% endif %}"
+           data-meal="{{ card.board|default:card.board_code|default:'' }}">
+        <p class="tbo-featured-label">Featured room</p>
+        <h4 class="tbo-featured-name">{{ card.room_name|default:"Best available room" }}</h4>
+        <ul class="tbo-featured-attrs">
+          <li>{{ adults_rooms_label|default:occupancy_label }}</li>
+          {% if card.free_cancellation %}
+          <li class="ok">Free cancellation</li>
+          {% elif card.is_refundable %}
+          <li class="ok">Refundable</li>
+          {% elif card.is_non_refundable %}
+          <li>Non refundable</li>
+          {% endif %}
+          {% if card.board or card.board_code %}
+          <li>{{ card.board|default:card.board_code }}</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="tbo-deal">
+      <label class="tbo-quote-toggle">
+        <input type="checkbox" class="tbo-quote-check" aria-label="Add featured room to quote">
+        <span>Quote / Compare</span>
+      </label>
+      <p class="price-label">From</p>
+      {% if card.price %}
+      <p class="price">
+        <span class="currency">{{ card.currency|default:"USD" }}</span>
+        <strong>{{ card.price|floatformat:2 }}</strong>
+      </p>
+      <p class="price-note">{{ nights }} night{{ nights|pluralize }} total</p>
+      {% else %}
+      <p class="price"><strong>On request</strong></p>
+      {% endif %}
+      {% if card.offer_id %}
+      <a
+        class="tbo-book-btn"
+        href="{% url 'checkout' %}?offer_id={{ card.offer_id|urlencode }}&amp;hotel_id={{ card.hotel_id|urlencode }}&amp;hotel_name={{ card.name|urlencode }}&amp;checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}"
+      >Book this room</a>
+      {% else %}
+      <a
+        class="tbo-book-btn tbo-book-fallback"
+        href="{% url 'guest_hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}&amp;nationality={{ nationality }}&amp;occupancies={{ occupancies_json|urlencode }}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >View rooms</a>
+      {% endif %}
+    </div>
+
+    <a
+      class="tbo-view-more-bar"
+      href="{% url 'guest_hotel_detail' card.hotel_id %}?checkin={{ checkin }}&amp;checkout={{ checkout }}&amp;adults={{ adults }}&amp;nationality={{ nationality }}&amp;occupancies={{ occupancies_json|urlencode }}"
+      target="_blank"
+      rel="noopener noreferrer"
+    >View more rooms <span aria-hidden="true">→</span></a>
+  </article>
+</div>

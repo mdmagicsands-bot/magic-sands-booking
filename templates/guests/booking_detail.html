@@ -1,10 +1,8 @@
 {% extends "guests/base_guest.html" %}
 {% block title %}Booking detail | Magic Sands{% endblock %}
-{% block eyebrow %}Trips{% endblock %}
-{% block heading %}Booking details{% endblock %}
 {% block content %}
-<section class="gp-card">
-  <div class="gp-card-head">
+<section class="pp-card">
+  <div class="pp-card-head">
     <h2>{{ booking.hotel_name|default:booking.hotel_id|default:"Booking" }}</h2>
     <span class="gp-status gp-status-{{ booking.status }}">{{ booking.get_status_display }}</span>
   </div>

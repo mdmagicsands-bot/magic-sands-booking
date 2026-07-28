@@ -25,6 +25,10 @@
       <h1>Admin sign in</h1>
       <p class="admin-login-sub">Sign in to manage the marketing website or the booking system.</p>
 
+      <div class="pl-alert pl-alert-info">
+        Demo admin: <strong>admin@magicsandsdmc.com</strong> / <strong>admin123</strong>
+      </div>
+
       {% if messages %}
         {% for message in messages %}
         <div class="pl-alert pl-alert-{{ message.tags }}">{{ message }}</div>
@@ -33,14 +37,18 @@
 
       <label class="admin-field">
         Username or email
-        <input type="text" name="username" required autocomplete="username" autofocus placeholder="admin">
+        <input type="text" name="username" required autocomplete="username" autofocus placeholder="admin@magicsandsdmc.com">
       </label>
       <label class="admin-field">
         Password
         <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
       </label>
       <button type="submit" class="admin-login-btn">Continue</button>
-      <p class="admin-login-foot"><a href="{% url 'home' %}">← Back to website</a></p>
+      <p class="admin-login-foot">
+        <a href="{% url 'home' %}">← Back to website</a>
+        ·
+        <a href="{% url 'partner_login' %}">Partner login</a>
+      </p>
     </form>
   </main>
 </body>

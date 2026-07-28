@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Book {{ hotel_name|default:"stay" }} | {{ SITE_NAME }}{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/booking-wizard.css' %}?v=20260728a">
+{% endblock %}
+{% block content %}
+<section class="page bk-wizard-page">
+  {% include "bookings/_wizard_content.html" %}
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{% if step == 3 %}
+<script src="https://payment-wrapper.liteapi.travel/dist/liteAPIPayment.js?v=a1"></script>
+<script>
+  var liteAPIConfig = {
+    publicKey: "{{ public_key }}",
+    secretKey: "{{ secret_key }}",
+    returnUrl: "{{ return_url|escapejs }}",
+    targetElement: "#liteapi-payment",
+    appearance: { theme: "flat" },
+    options: { business: { name: "Magic Sands Booking" } }
+  };
+  var liteAPIPayment = new LiteAPIPayment(liteAPIConfig);
+  liteAPIPayment.handlePayment();
+</script>
+{% endif %}
+{% endblock %}

@@ -35,17 +35,17 @@ a:hover { color: var(--navy); }
 
 /* —— Partner login / register (Magic Sands) —— */
 .partner-login-page {
-  --pl-sea: #1b6b74;
-  --pl-sea-deep: #0f4d54;
-  --pl-ink: #12262b;
-  --pl-muted: #5a6b71;
-  --pl-line: rgba(18, 38, 43, 0.12);
+  --pl-cyan: #16aad8;
+  --pl-cyan-deep: #1296c0;
+  --pl-ink: #0f172a;
+  --pl-muted: #64748b;
+  --pl-line: rgba(15, 23, 42, 0.1);
   --pl-display: "Baskervville", Georgia, serif;
   --pl-sans: "Manrope", "Segoe UI", sans-serif;
   margin: 0;
   font-family: var(--pl-sans);
   color: var(--pl-ink);
-  background: #f7f8f6;
+  background: #f8fafc;
 }
 .partner-login-page a { text-decoration: none; }
 
@@ -59,7 +59,7 @@ a:hover { color: var(--navy); }
   gap: 1rem;
   padding: 0.95rem clamp(1rem, 3vw, 2rem);
 }
-.pl-brand img { height: 42px; width: auto; display: block; filter: brightness(0) invert(1); }
+.pl-brand img { height: 42px; width: auto; display: block; }
 .pl-top-nav {
   display: none;
   align-items: center;
@@ -75,7 +75,7 @@ a:hover { color: var(--navy); }
   padding: 0.45rem 0.85rem;
   color: #fff !important;
 }
-.pl-top-cta:hover { background: #fff; color: var(--pl-sea-deep) !important; }
+.pl-top-cta:hover { background: #fff; color: var(--pl-cyan-deep) !important; }
 @media (min-width: 860px) {
   .pl-top-nav { display: flex; }
 }
@@ -168,7 +168,7 @@ a:hover { color: var(--navy); }
 .pl-panel-brand {
   margin: 0;
   font-family: var(--pl-display);
-  color: var(--pl-sea-deep);
+  color: var(--pl-cyan-deep);
 }
 .pl-panel h2 { font-size: 1.7rem; font-weight: 400; }
 .pl-panel-brand { font-size: 1.35rem; margin-bottom: 0.25rem; }
@@ -222,7 +222,7 @@ a:hover { color: var(--navy); }
 .pl-label > input:focus,
 .pl-label > textarea:focus {
   outline: 2px solid rgba(27, 107, 116, 0.18);
-  border-color: var(--pl-sea);
+  border-color: var(--pl-cyan);
 }
 .pl-icon { opacity: 0.45; font-size: 0.9rem; font-weight: 700; }
 .pl-row {
@@ -239,19 +239,24 @@ a:hover { color: var(--navy); }
   color: var(--pl-muted);
   font-weight: 500;
 }
-.pl-forgot { color: var(--pl-sea-deep); font-weight: 700; }
+.pl-forgot { color: var(--pl-cyan-deep); font-weight: 700; }
 .pl-btn {
   appearance: none;
   border: 0;
   cursor: pointer;
-  background: var(--pl-sea-deep);
+  background: var(--pl-cyan-deep);
   color: #fff;
   padding: 0.9rem 1rem;
   font: inherit;
   font-weight: 700;
   width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
 }
-.pl-btn:hover { background: var(--pl-sea); }
+.pl-btn:hover { background: var(--pl-cyan); }
 .pl-btn.small { width: auto; display: inline-flex; padding: 0.6rem 1rem; font-size: 0.88rem; }
 .pl-register {
   text-align: center;
@@ -259,7 +264,7 @@ a:hover { color: var(--navy); }
   font-size: 0.9rem;
   margin: 1rem 0 0;
 }
-.pl-register a { color: var(--pl-sea-deep); font-weight: 700; }
+.pl-register a { color: var(--pl-cyan-deep); font-weight: 700; }
 
 .pl-alert {
   padding: 0.7rem 0.85rem;
@@ -269,7 +274,7 @@ a:hover { color: var(--navy); }
 }
 .pl-alert-error { background: #fef2f2; color: var(--danger); }
 .pl-alert-success { background: #ecfdf5; color: var(--ok); }
-.pl-alert-info { background: #eef6f6; color: var(--pl-sea-deep); }
+.pl-alert-info { background: #eef6f6; color: var(--pl-cyan-deep); }
 
 .pl-features {
   width: min(1100px, 100%);
@@ -304,7 +309,7 @@ a:hover { color: var(--navy); }
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.12em;
-  color: var(--pl-sea);
+  color: var(--pl-cyan);
 }
 .pl-feature-grid h3 {
   margin: 0 0 0.4rem;

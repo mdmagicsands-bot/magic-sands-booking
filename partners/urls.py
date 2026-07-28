@@ -21,13 +21,14 @@ urlpatterns = [
         views.gateway_partner_register,
         name="gateway_partner_register",
     ),
-    # On-app pages
+    # Partner front-end login (non-staff → Nuitee booking portal under /partner/)
     path("partner-login/", views.partner_login, name="partner_login"),
     path("partner-register/", views.gateway_partner_register, name="partner_register"),
+    # Website / booking admin (staff only)
     path("admin/login/", views.admin_login, name="admin_login"),
     path("admin/logout/", views.partner_logout, name="partner_logout"),
     path("admin/", views.admin_hub, name="admin_hub"),
-    path("admin/booking/", views.dashboard, name="partner_dashboard"),
+    path("admin/booking/", views.dashboard, name="booking_admin_dashboard"),
     path("admin/search/", nuitee_admin.live_hotel_search, name="admin_live_search"),
     path(
         "admin/inventory/nuitee/",

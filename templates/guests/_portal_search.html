@@ -1,0 +1,260 @@
+<style>
+/* Room Information — self-contained so cached CSS cannot leave it open */
+.pp-field-rooms { position: relative; }
+.pp-room-trigger {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-right: 0.75rem !important;
+  width: 100%;
+}
+.pp-room-trigger .pp-caret { flex-shrink: 0; color: #6b7a90; }
+.pp-room-trigger[aria-expanded="true"] .pp-caret { transform: rotate(180deg); }
+.ms-room-pop {
+  display: none !important;
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  z-index: 60;
+  width: min(280px, 92vw);
+  background: #fff;
+  border: 1px solid #d9e2ec;
+  border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(15, 77, 84, 0.14);
+  padding: 0.75rem;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+.ms-room-pop.is-open { display: grid !important; }
+.ms-room-list { display: grid; gap: 0.45rem; }
+.ms-room-card {
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.ms-room-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: #0f4d54;
+}
+.ms-room-remove {
+  border: 0; background: transparent; color: #d64545;
+  font: inherit; font-size: 0.72rem; font-weight: 700; cursor: pointer;
+}
+.ms-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.84rem; font-weight: 700;
+}
+.ms-step { display: inline-flex; align-items: center; gap: 0.4rem; }
+.ms-step b { min-width: 1.1rem; text-align: center; }
+.ms-step button {
+  width: 1.45rem; height: 1.45rem; border-radius: 5px;
+  border: 1px solid #d9e2ec; background: #fff; color: #0f4d54;
+  font-weight: 700; cursor: pointer; line-height: 1;
+}
+.ms-ages { display: grid; gap: 0.3rem; }
+.ms-age-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.74rem; font-weight: 600; color: #6b7a90;
+}
+.ms-age {
+  width: 72px; border: 1px solid #d9e2ec; border-radius: 6px;
+  padding: 0.25rem 0.35rem; font: inherit; font-weight: 700;
+}
+.ms-room-add {
+  border: 0; background: transparent; color: #1b6b74;
+  font: inherit; font-weight: 700; font-size: 0.8rem;
+  padding: 0.2rem 0; cursor: pointer; text-align: left;
+}
+.ms-room-done {
+  border: 0; border-radius: 8px; background: #1b6b74; color: #fff;
+  font: inherit; font-weight: 700; padding: 0.55rem; cursor: pointer;
+}
+</style>
+
+<section class="pp-search-hero" id="pp-search-hero">
+  <div class="pp-search-shell">
+    <div class="pp-search-tabs" role="tablist">
+      <button type="button" class="pp-tab active" data-tab="accommodation" role="tab" aria-selected="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
+        Accommodation
+      </button>
+      <button type="button" class="pp-tab" data-tab="tour" role="tab" aria-selected="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3c2 3 6 5 6 9a6 6 0 1 1-12 0c0-4 4-6 6-9z" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M8 20h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        Tour &amp; Excursion
+      </button>
+      <button type="button" class="pp-tab" data-tab="transfer" role="tab" aria-selected="false">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 13h18l-1.5-5.5A2 2 0 0 0 17.6 6H6.4a2 2 0 0 0-1.9 1.5L3 13zM5 17h2M17 17h2M7 13v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1M19 16v1a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+        Transfer
+      </button>
+    </div>
+
+    <div class="pp-tab-panel" data-panel="accommodation">
+      <form class="pp-search-form" method="get" action="{% url 'guest_search_results' %}" id="guest-search-form" autocomplete="off">
+        <input type="hidden" name="place_id" id="place_id" value="{{ place_id }}">
+        <input type="hidden" name="hotel_id" id="hotel_id" value="{{ hotel_id|default:'' }}">
+        <input type="hidden" name="country_code" id="country_code" value="{{ country_code }}">
+        <input type="hidden" name="adults" id="adults" value="{{ adults|default:'2' }}">
+        <input type="hidden" name="rooms" id="rooms" value="{{ rooms|default:'1' }}">
+        <input type="hidden" name="occupancies" id="occupancies" value="{% if occupancies_json %}{{ occupancies_json }}{% else %}[{&quot;adults&quot;:2}]{% endif %}">
+        <input id="nights" name="nights" type="hidden" value="{{ nights|default:'1' }}">
+        <input type="hidden" name="currency" value="USD">
+
+        <div class="pp-search-bar">
+          <label class="pp-bar-field pp-bar-dest">
+            <span class="pp-bar-label">Where</span>
+            <div class="pp-bar-control">
+              <svg class="pp-field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11z" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              <input id="destination" name="destination" type="text" value="{{ destination }}" placeholder="City or hotel in GCC & Egypt" required>
+              <svg class="pp-field-icon-end" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 6h16v12H4zM8 6V4h8v2M9 12h6M9 15h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div id="place-suggestions" class="gp-suggestions" hidden></div>
+          </label>
+
+          <label class="pp-bar-field pp-bar-dates">
+            <span class="pp-bar-label">Dates</span>
+            <div class="pp-bar-control pp-dates">
+              <svg class="pp-field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+              <button type="button" class="pp-date-display" id="checkin-display" aria-label="Check-in date"></button>
+              <span class="pp-date-sep">—</span>
+              <button type="button" class="pp-date-display" id="checkout-display" aria-label="Check-out date"></button>
+              <input id="checkin" name="checkin" type="date" value="{{ checkin }}" min="{{ min_date }}" required class="pp-date-native" tabindex="-1" aria-hidden="true">
+              <input id="checkout" name="checkout" type="date" value="{{ checkout }}" min="{{ min_date }}" required class="pp-date-native" tabindex="-1" aria-hidden="true">
+            </div>
+          </label>
+
+          <div class="pp-bar-field pp-bar-rooms pp-field-rooms">
+            <span class="pp-bar-label">Rooms &amp; guests</span>
+            <div class="pp-bar-control">
+              <svg class="pp-field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M3 19c0-3 2.5-5 6-5s6 2 6 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="17" cy="9" r="2.2" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M21 19c0-2.2-1.6-3.8-4-4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              </svg>
+              <button type="button" class="pp-select-btn pp-room-trigger" id="ms-room-btn" aria-haspopup="dialog" aria-expanded="false">
+                <span id="ms-room-label">{{ occupancy_label|default:"1 room (2 adults, 0 children)" }}</span>
+                <svg class="pp-caret" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+            <div id="ms-room-pop" class="ms-room-pop"
+                 data-max-rooms="{{ max_rooms|default:4 }}"
+                 data-max-adults="{{ max_adults_per_room|default:9 }}"
+                 data-max-children="{{ max_children_per_room|default:4 }}"
+                 data-min-age="{{ min_child_age|default:1 }}"
+                 data-max-age="{{ max_child_age|default:18 }}">
+              <div id="ms-room-list" class="ms-room-list"></div>
+              <button type="button" class="ms-room-add" id="ms-room-add">+ Add room</button>
+              <button type="button" class="ms-room-done" id="ms-room-done">Done</button>
+            </div>
+          </div>
+
+          <button class="pp-search-btn" type="submit">Search</button>
+        </div>
+        <p class="pp-search-scope">GCC countries &amp; Egypt — Hotels</p>
+
+        <div class="pp-search-secondary">
+          <div class="pp-nat-block">
+            <label class="pp-nat-field" for="nationality">
+              <span>Guest Nationality</span>
+              <div class="pp-nat-select-wrap">
+                <select name="nationality" id="nationality" aria-label="Guest nationality">
+                  {% include "guests/_nationality_options.html" %}
+                </select>
+              </div>
+            </label>
+            <div class="pp-currency-fixed">
+              <span>Currency</span>
+              <div class="pp-currency-frozen" aria-label="Currency fixed to US dollars">
+                <span class="pp-currency-value">USD</span>
+                <span class="pp-currency-badge">Fixed</span>
+              </div>
+            </div>
+            <div class="pp-nat-recent" id="nat-recent">
+              <span class="pp-nat-recent-label">Recently Used</span>
+              <div class="pp-nat-chips" id="nat-chips"></div>
+            </div>
+          </div>
+
+          <div class="pp-smart-search" id="pp-smart-search">
+            <div class="pp-smart-copy">
+              <strong>Try Smart Search</strong>
+              <span>Type or paste a trip idea</span>
+            </div>
+            <div class="pp-smart-input-wrap">
+              <input type="text" id="smart-search-input" placeholder="Travelling to Dubai from June 3 to 8, in a 5-star hotel…" autocomplete="off">
+              <button type="button" class="pp-smart-go" id="smart-search-go" aria-label="Apply smart search">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/>
+                  <path d="m20 20-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M11 8.2v5.6M8.2 11h5.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pp-search-extras">
+          <span class="pp-extras-label">Star rating</span>
+          <div class="pp-stars" id="star-rating">
+            {% for s in "54321" %}
+            <label class="pp-star-chip">
+              <input type="checkbox" name="stars" value="{{ s }}" {% if s in selected_stars %}checked{% endif %}>
+              <span>{{ s }}★</span>
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="pp-tab-panel" data-panel="tour" hidden>
+      <div class="pp-coming-soon">
+        <h3>Tour &amp; Excursion</h3>
+        <p>Live tour search is coming soon. Use Accommodation to book hotels today.</p>
+      </div>
+    </div>
+
+    <div class="pp-tab-panel" data-panel="transfer" hidden>
+      <div class="pp-coming-soon">
+        <h3>Transfer</h3>
+        <p>Airport and city transfers will appear here in a later release.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if show_recent != False %}
+<section class="pp-recent" id="recent-searches-section">
+  <div class="pp-recent-head">
+    <h2>Recent Searches</h2>
+  </div>
+  <div class="pp-recent-row">
+    <div class="pp-recent-track" id="recent-searches"></div>
+    <div class="pp-recent-nav">
+      <button type="button" class="pp-recent-arrow" id="recent-prev" aria-label="Previous searches">‹</button>
+      <button type="button" class="pp-recent-arrow" id="recent-next" aria-label="Next searches">›</button>
+    </div>
+  </div>
+</section>
+{% endif %}

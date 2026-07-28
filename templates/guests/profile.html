@@ -1,9 +1,8 @@
 {% extends "guests/base_guest.html" %}
 {% block title %}Profile | Magic Sands{% endblock %}
-{% block eyebrow %}Account{% endblock %}
-{% block heading %}Profile{% endblock %}
 {% block content %}
-<section class="gp-card">
+<section class="pp-card">
+  <h2 class="pp-page-title">Profile</h2>
   <p class="gp-muted" style="margin-top:0">Signed in as <strong>{{ request.user.email }}</strong></p>
   <form method="post" action="">
     {% csrf_token %}

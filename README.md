@@ -56,21 +56,23 @@ Partner admin: http://127.0.0.1:8001/admin/login/
 
 DMC enterprise admin (separate repo): http://127.0.0.1:8000/admin/
 
-## Partner portal
+## Logins (separate)
 
-- Login: http://127.0.0.1:8001/admin/login/ (simple admin login)
-- Marketing partner login: http://127.0.0.1:8001/partner-login/
-- Admin dashboard: http://127.0.0.1:8001/admin/
-- Bookings: http://127.0.0.1:8001/admin/bookings/
-- Django system admin (models): http://127.0.0.1:8001/django-admin/
+| Role | URL | Demo credentials | Lands on |
+|------|-----|------------------|----------|
+| **Website admin** | http://127.0.0.1:8001/admin/login/ | `admin@magicsandsdmc.com` / `admin123` | Admin hub → marketing or booking admin |
+| **Partner portal** | http://127.0.0.1:8001/partner-login/ | `demo@magicsandsdmc.com` / `Demo123` | Nuitee hotel search + partner dashboard (`/partner/`) |
 
-Create a staff account once:
+Seed both demo users:
 
 ```powershell
-python manage.py createsuperuser
+python manage.py seed_portal_users
 ```
 
-Use that email + password on the partner login page (`is_staff` required).
+- Admin hub: http://127.0.0.1:8001/admin/
+- Booking admin: http://127.0.0.1:8001/admin/booking/
+- Partner dashboard: http://127.0.0.1:8001/partner/
+- Django system admin (models): http://127.0.0.1:8001/django-admin/
 
 ## Payments (sandbox)
 

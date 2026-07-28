@@ -1,0 +1,75 @@
+<section class="legal-page" data-legal-page>
+  <header class="legal-page-head">
+    <div class="legal-page-head-inner">
+      <p class="legal-page-kicker">Legal</p>
+      <h1>{{ privacy.title }}</h1>
+      <p class="legal-page-meta">Effective date: {{ privacy.effective_date }}</p>
+      <p class="legal-page-intro">{{ privacy.intro }}</p>
+    </div>
+  </header>
+
+  <div class="legal-page-shell">
+    <div class="legal-tabs" role="tablist" aria-label="Privacy policy type">
+      {% for panel in privacy.panels %}
+      <button
+        type="button"
+        class="legal-tab{% if forloop.first %} is-active{% endif %}"
+        role="tab"
+        id="legal-tab-{{ panel.id }}"
+        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+        aria-controls="legal-panel-{{ panel.id }}"
+        data-legal-tab="{{ panel.id }}"
+      >
+        <span class="legal-tab-icon" aria-hidden="true">
+          {% if panel.id == "website" %}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 8h18" stroke="currentColor" stroke-width="1.8"/></svg>
+          {% else %}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="7" y="2" width="10" height="20" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          {% endif %}
+        </span>
+        {{ panel.label }}
+      </button>
+      {% endfor %}
+    </div>
+
+    {% for panel in privacy.panels %}
+    <div
+      class="legal-panel{% if forloop.first %} is-active{% endif %}"
+      role="tabpanel"
+      id="legal-panel-{{ panel.id }}"
+      aria-labelledby="legal-tab-{{ panel.id }}"
+      data-legal-panel="{{ panel.id }}"
+      {% if not forloop.first %}hidden{% endif %}
+    >
+      <div class="legal-accordion">
+        {% for section in panel.sections %}
+        <article class="legal-section{% if section.open %} is-open{% endif %}" data-legal-section>
+          <h2>
+            <button
+              type="button"
+              class="legal-section-toggle"
+              aria-expanded="{% if section.open %}true{% else %}false{% endif %}"
+              aria-controls="legal-section-body-{{ section.id }}"
+            >
+              <span>{{ section.title }}</span>
+              <svg class="legal-section-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </h2>
+          <div
+            class="legal-section-body"
+            id="legal-section-body-{{ section.id }}"
+            {% if not section.open %}hidden{% endif %}
+          >
+            {% for paragraph in section.paragraphs %}
+            <p>{{ paragraph|safe }}</p>
+            {% endfor %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

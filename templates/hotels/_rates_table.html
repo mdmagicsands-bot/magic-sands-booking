@@ -1,0 +1,446 @@
+{% load static %}
+<section class="ms-rates" id="ms-rates" data-hotel-name="{{ hotel.name|default:hotel_id }}">
+  <div
+    class="ms-rates-filterbar"
+    id="ms-rates-filterbar"
+    data-min="{{ rate_price_min|default:0 }}"
+    data-max="{{ rate_price_max|default:0 }}"
+  >
+    <div class="ms-fb-section ms-fb-filter">
+      <p class="ms-fb-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Filter By
+      </p>
+      <div class="ms-fb-pills">
+        <label class="ms-fb-pill">
+          <select id="ms-filter-cancel" aria-label="Cancellation Policy">
+            <option value="">Cancellation Policy</option>
+            <option value="refundable">Refundable</option>
+            <option value="nonrefundable">Non-Refundable</option>
+          </select>
+        </label>
+        <label class="ms-fb-pill">
+          <select id="ms-filter-board" aria-label="Meal Preference">
+            <option value="">Meal Preference</option>
+            {% for board in board_options %}
+            <option value="{{ board|lower }}">{{ board }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="ms-fb-section ms-fb-search">
+      <p class="ms-fb-label">Search By Room Name</p>
+      <label class="ms-fb-searchbox">
+        <input type="search" id="ms-filter-room-q" placeholder="eg. junior suite" aria-label="Search by room name">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </label>
+    </div>
+
+    <div class="ms-fb-section ms-fb-price">
+      <p class="ms-fb-label">
+        Price Range
+        <span class="ms-fb-hint">(Drag the slider to choose your min/max room price)</span>
+      </p>
+      <div class="ms-fb-price-row">
+        <label class="ms-fb-price-input">
+          <span>Min:</span>
+          <input type="text" inputmode="numeric" id="ms-filter-min" value="{{ rate_price_min|default:0 }}" aria-label="Minimum price">
+        </label>
+        <div class="ms-fb-slider">
+          <div class="ms-fb-track">
+            <div class="ms-fb-range" id="ms-fb-range"></div>
+          </div>
+          <input type="range" id="ms-filter-min-range" min="{{ rate_price_min|default:0 }}" max="{{ rate_price_max|default:0 }}" value="{{ rate_price_min|default:0 }}" step="1" aria-label="Minimum price slider">
+          <input type="range" id="ms-filter-max-range" min="{{ rate_price_min|default:0 }}" max="{{ rate_price_max|default:0 }}" value="{{ rate_price_max|default:0 }}" step="1" aria-label="Maximum price slider">
+        </div>
+        <label class="ms-fb-price-input">
+          <span>Max:</span>
+          <input type="text" inputmode="numeric" id="ms-filter-max" value="{{ rate_price_max|default:0 }}" aria-label="Maximum price">
+        </label>
+      </div>
+    </div>
+  </div>
+
+  {% if not rate_rows %}
+  <div class="ms-rates-empty">No rates available for these dates. Try different dates or occupancy.</div>
+  {% else %}
+  <div class="ms-rates-table-wrap">
+    <div class="ms-rates-head">
+      <span>Room Details</span>
+      <span>Board Basis</span>
+      <span>Price</span>
+    </div>
+    <div class="ms-rates-body" id="ms-rates-body">
+      {% for row in rate_rows %}
+      <article
+        class="ms-rate-row"
+        data-room="{{ row.room_name|lower }}"
+        data-board="{{ row.board|lower }}"
+        data-refundable="{% if row.is_refundable %}1{% else %}0{% endif %}"
+        data-offer="{{ row.offer_id }}"
+        data-amount="{{ row.amount }}"
+        data-amount-value="{{ row.amount_value }}"
+        data-currency="{{ row.currency }}"
+        data-taxes="{{ row.taxes_json|escape }}"
+        data-cancel="{{ row.cancel_json|escape }}"
+        data-breakup="{{ row.breakup_json|escape }}"
+        data-remarks="{{ row.hotel_remarks|default:''|escape }}"
+      >
+        <div class="ms-rate-details">
+          <h3>{{ row.room_name }}</h3>
+          {% if row.available %}<p class="ms-rate-avail">Available</p>{% endif %}
+          <div class="ms-rate-actions">
+            <button type="button" class="ms-link-btn" data-action="breakup">Rate Breakup</button>
+            <button type="button" class="ms-link-btn" data-action="cancel">Cancellation Policy</button>
+            <button type="button" class="ms-quote-btn" data-action="quote">Add to Quote</button>
+          </div>
+        </div>
+        <div class="ms-rate-board">
+          <div class="ms-board-chip">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 11h16v8H4zM6 11V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+            <span>{{ row.board|default:"Room Only" }}</span>
+            {% if row.board_type %}<small title="Board code">{{ row.board_type }}</small>{% endif %}
+          </div>
+        </div>
+        <div class="ms-rate-price">
+          {% if row.amount %}
+          <p class="ms-price-value">{{ row.currency }} {{ row.amount }}</p>
+          {% else %}
+          <p class="ms-price-value">On request</p>
+          {% endif %}
+          {% if row.offer_id %}
+          <button
+            type="button"
+            class="ms-book-btn js-book-now"
+            data-offer-id="{{ row.offer_id }}"
+            data-hotel-id="{{ hotel_id }}"
+            data-hotel-name="{{ hotel.name|default:hotel_id }}"
+            data-checkin="{{ checkin }}"
+            data-checkout="{{ checkout }}"
+            data-adults="{{ adults }}"
+            data-nationality="{{ nationality|default:'' }}"
+            data-portal="{{ book_portal|default:'public' }}"
+            data-room-name="{{ row.room_name }}"
+            data-board="{{ row.board|default:'Room Only' }}"
+            data-board-type="{{ row.board_type|default:'' }}"
+            data-refundable-label="{{ row.refundable_label }}"
+            data-is-refundable="{% if row.is_refundable %}1{% else %}0{% endif %}"
+            data-currency="{{ row.currency|default:'USD' }}"
+            data-hotel-photo="{{ main_photo|default:'' }}"
+            data-hotel-stars="{{ hotel_stars|default:0 }}"
+            data-hotel-address="{{ hotel.address|default:'' }}"
+            data-occupancy-label="{{ occupancy_summary|default:'' }}"
+            data-rooms-count="{{ rooms_count|default:1 }}"
+            data-nights="{{ nights|default:1 }}"
+            data-hotel-remarks="{{ row.hotel_remarks|default:'' }}"
+            data-cancel="{{ row.cancel_json|escape }}"
+          >
+            Book Now <span aria-hidden="true">›</span>
+          </button>
+          {% endif %}
+          <p class="ms-policy {% if row.is_refundable %}ok{% else %}warn{% endif %}">{{ row.refundable_label }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <div class="ms-rates-empty" id="ms-rates-no-match" hidden>No rooms match these filters.</div>
+  </div>
+  {% endif %}
+</section>
+
+<dialog class="ms-rates-dialog" id="ms-rates-dialog">
+  <form method="dialog" class="ms-rates-dialog-card">
+    <header>
+      <h3 id="ms-dialog-title">Details</h3>
+      <button type="submit" class="ms-dialog-close" aria-label="Close">×</button>
+    </header>
+    <div class="ms-dialog-body" id="ms-dialog-body"></div>
+  </form>
+</dialog>
+
+<div class="ms-toast" id="ms-quote-toast" hidden>Added to quote</div>
+
+<div
+  class="ms-book-overlay"
+  id="ms-book-overlay"
+  hidden
+  data-prebook-url="{% url 'prebook_check' %}"
+  data-csrf="{{ csrf_token }}"
+  aria-live="polite"
+  aria-busy="true"
+>
+  <div class="ms-book-overlay-card">
+    <div class="ms-book-spinner" aria-hidden="true"></div>
+    <p class="ms-book-overlay-msg">Please wait checking availability…</p>
+  </div>
+</div>
+
+<script src="{% static 'js/book-now.js' %}?v=20260728a"></script>
+<script>
+(function () {
+  const body = document.getElementById('ms-rates-body');
+  if (!body) return;
+  const rows = Array.from(body.querySelectorAll('.ms-rate-row'));
+  const cancelSel = document.getElementById('ms-filter-cancel');
+  const boardSel = document.getElementById('ms-filter-board');
+  const roomQ = document.getElementById('ms-filter-room-q');
+  const minInput = document.getElementById('ms-filter-min');
+  const maxInput = document.getElementById('ms-filter-max');
+  const minRange = document.getElementById('ms-filter-min-range');
+  const maxRange = document.getElementById('ms-filter-max-range');
+  const rangeFill = document.getElementById('ms-fb-range');
+  const visibleEl = document.getElementById('ms-rates-visible');
+  const emptyEl = document.getElementById('ms-rates-no-match');
+  const dialog = document.getElementById('ms-rates-dialog');
+  const dialogTitle = document.getElementById('ms-dialog-title');
+  const dialogBody = document.getElementById('ms-dialog-body');
+  const toast = document.getElementById('ms-quote-toast');
+  const hotelName = (document.getElementById('ms-rates') || {}).dataset.hotelName || '';
+  const bar = document.getElementById('ms-rates-filterbar');
+  const floor = Number((bar && bar.dataset.min) || 0);
+  const ceiling = Number((bar && bar.dataset.max) || 0);
+  const QUOTE_KEY = 'ms_partner_quotes';
+
+  function fmtPrice(n) {
+    const v = Math.round(Number(n) || 0);
+    return v.toLocaleString('en-US');
+  }
+  function parsePrice(raw) {
+    const n = Number(String(raw || '').replace(/[^0-9.]/g, ''));
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function syncRangeFill() {
+    if (!rangeFill || !minRange || !maxRange || ceiling <= floor) {
+      if (rangeFill) { rangeFill.style.left = '0%'; rangeFill.style.width = '100%'; }
+      return;
+    }
+    const a = Number(minRange.value);
+    const b = Number(maxRange.value);
+    const left = ((a - floor) / (ceiling - floor)) * 100;
+    const right = ((b - floor) / (ceiling - floor)) * 100;
+    rangeFill.style.left = left + '%';
+    rangeFill.style.width = Math.max(0, right - left) + '%';
+  }
+
+  function applyFilters() {
+    const cancel = (cancelSel && cancelSel.value) || '';
+    const board = (boardSel && boardSel.value || '').toLowerCase();
+    const q = (roomQ && roomQ.value || '').trim().toLowerCase();
+    const minP = parsePrice(minInput && minInput.value);
+    const maxP = parsePrice(maxInput && maxInput.value);
+    let visible = 0;
+    rows.forEach(function (row) {
+      const rName = row.dataset.room || '';
+      const rBoard = row.dataset.board || '';
+      const refundable = row.dataset.refundable === '1';
+      const amount = parsePrice(row.dataset.amountValue || row.dataset.amount || 0);
+      let ok = true;
+      if (cancel === 'refundable' && !refundable) ok = false;
+      if (cancel === 'nonrefundable' && refundable) ok = false;
+      if (ok && board && rBoard !== board) ok = false;
+      if (ok && q && !rName.includes(q)) ok = false;
+      if (ok && amount < minP) ok = false;
+      if (ok && maxP > 0 && amount > maxP) ok = false;
+      row.hidden = !ok;
+      if (ok) visible += 1;
+    });
+    if (visibleEl) visibleEl.textContent = String(visible);
+    if (emptyEl) emptyEl.hidden = visible !== 0;
+  }
+
+  function bindPrice(fromRange) {
+    let minV = fromRange ? Number(minRange.value) : parsePrice(minInput.value);
+    let maxV = fromRange ? Number(maxRange.value) : parsePrice(maxInput.value);
+    if (Number.isNaN(minV)) minV = floor;
+    if (Number.isNaN(maxV)) maxV = ceiling;
+    if (minV > maxV) {
+      if (fromRange) {
+        if (document.activeElement === minRange) maxV = minV;
+        else minV = maxV;
+      } else {
+        maxV = minV;
+      }
+    }
+    minV = Math.max(floor, Math.min(ceiling || minV, minV));
+    maxV = Math.max(floor, Math.min(ceiling || maxV, maxV));
+    minInput.value = fmtPrice(minV);
+    maxInput.value = fmtPrice(maxV);
+    minRange.value = String(Math.round(minV));
+    maxRange.value = String(Math.round(maxV));
+    syncRangeFill();
+    applyFilters();
+  }
+
+  // Initial comma formatting for hotel min/max
+  if (minInput) minInput.value = fmtPrice(floor);
+  if (maxInput) maxInput.value = fmtPrice(ceiling);
+
+  [cancelSel, boardSel, roomQ].forEach(function (el) {
+    if (!el) return;
+    el.addEventListener('input', applyFilters);
+    el.addEventListener('change', applyFilters);
+  });
+  if (minInput) {
+    minInput.addEventListener('change', function () { bindPrice(false); });
+    minInput.addEventListener('blur', function () { bindPrice(false); });
+  }
+  if (maxInput) {
+    maxInput.addEventListener('change', function () { bindPrice(false); });
+    maxInput.addEventListener('blur', function () { bindPrice(false); });
+  }
+  if (minRange) minRange.addEventListener('input', function () { bindPrice(true); });
+  if (maxRange) maxRange.addEventListener('input', function () { bindPrice(true); });
+  syncRangeFill();
+
+  function parseJsonAttr(raw) {
+    try { return JSON.parse(raw || '[]'); }
+    catch (e) { return []; }
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function fmtMoney(amount) {
+    const n = Number(amount);
+    if (!Number.isFinite(n)) return '—';
+    return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function openDialog(title, html, wide) {
+    if (!dialog || !dialogBody || !dialogTitle) return;
+    dialogTitle.textContent = title;
+    dialogBody.innerHTML = html;
+    dialog.classList.toggle('is-wide', !!wide);
+    if (typeof dialog.showModal === 'function') dialog.showModal();
+    else dialog.setAttribute('open', 'open');
+  }
+
+  function breakupHtml(row) {
+    const data = parseJsonAttr(row.dataset.breakup);
+    if (!data || !data.room_name) {
+      return '<p class="ms-muted">Rate breakup is not available for this offer.</p>';
+    }
+    const currency = data.currency || row.dataset.currency || '';
+    const amount = data.amount != null ? data.amount : row.dataset.amount;
+    const refundClass = data.is_refundable ? 'ok' : 'warn';
+    const nightly = Array.isArray(data.nightly_fares) ? data.nightly_fares : [];
+    const taxes = Array.isArray(data.taxes) ? data.taxes : parseJsonAttr(row.dataset.taxes);
+    const roomNo = data.occupancy_number || 1;
+
+    let html = '<div class="ms-breakup-modal">';
+    html += '<p class="ms-breakup-headline">';
+    html += '<strong>' + escapeHtml(data.room_name) + '</strong>';
+    html += ' <span class="ms-breakup-sep">|</span> ';
+    html += '<strong>' + escapeHtml(currency) + ' ' + fmtMoney(amount) + '</strong>';
+    html += ' <span class="ms-breakup-policy ' + refundClass + '">' + escapeHtml(data.refundable_label || 'See policy') + '</span>';
+    html += '</p>';
+    html += '<p class="ms-breakup-board"><strong>Board Basis:</strong> ' + escapeHtml(data.board_basis || data.board || 'Room Only') + '</p>';
+    html += '<p class="ms-breakup-room-title">Room ' + escapeHtml(roomNo) + ': <span>' + escapeHtml(data.room_name) + '</span></p>';
+    html += '<p class="ms-breakup-section-label">Fare Summary</p>';
+    html += '<div class="ms-breakup-fare-grid">';
+
+    html += '<table class="ms-breakup-table ms-breakup-table-total">';
+    html += '<thead><tr><th>Category</th><th>Fare (' + escapeHtml(currency) + ')</th></tr></thead><tbody>';
+    html += '<tr><td>Total Fare</td><td class="num">' + fmtMoney(amount) + '</td></tr>';
+    taxes.forEach(function (tax) {
+      const label = (tax.description || 'Fee') + (tax.included ? ' (included)' : ' (pay at property)');
+      html += '<tr><td>' + escapeHtml(label) + '</td><td class="num">' + fmtMoney(tax.amount) + '</td></tr>';
+    });
+    html += '</tbody></table>';
+
+    if (nightly.length) {
+      html += '<table class="ms-breakup-table ms-breakup-table-nights">';
+      html += '<thead><tr>';
+      nightly.forEach(function (night) {
+        html += '<th>' + escapeHtml(night.date_label || night.date || '') + '</th>';
+      });
+      html += '</tr></thead><tbody><tr>';
+      nightly.forEach(function (night) {
+        html += '<td class="num ok">' + fmtMoney(night.amount) + '</td>';
+      });
+      html += '</tr></tbody></table>';
+    } else {
+      html += '<p class="ms-muted ms-breakup-no-nights">Per-night pricing was not returned by the supplier for this rate.</p>';
+    }
+    html += '</div>';
+    html += '<p class="ms-breakup-footnote">The total room price might vary from night wise/room breakup due to individual round off/currency conversion.</p>';
+    html += '</div>';
+    return html;
+  }
+
+  function cancelHtml(row) {
+    const policies = parseJsonAttr(row.dataset.cancel);
+    const remarks = row.dataset.remarks || '';
+    let html = '';
+    if (!policies.length) {
+      html += '<p class="ms-muted">No detailed cancellation timeline returned. See the refundable tag on the rate.</p>';
+    } else {
+      html += '<ul class="ms-breakup-list">';
+      policies.forEach(function (p) {
+        html += '<li><span>' + (p.type || 'Policy') +
+          (p.cancel_time ? ' · before ' + p.cancel_time : '') +
+          (p.timezone ? ' (' + p.timezone + ')' : '') +
+          '</span><strong>' +
+          (p.amount != null ? ((p.currency || '') + ' ' + p.amount) : 'See terms') +
+          '</strong></li>';
+      });
+      html += '</ul>';
+    }
+    if (remarks) html += '<p class="ms-remarks">' + remarks + '</p>';
+    return html;
+  }
+
+  function addQuote(row) {
+    const item = {
+      offer_id: row.dataset.offer || '',
+      hotel: hotelName,
+      room: (row.querySelector('h3') || {}).textContent || '',
+      board: (row.dataset.board || ''),
+      amount: row.dataset.amount || '',
+      currency: row.dataset.currency || '',
+      checkin: '{{ checkin }}',
+      checkout: '{{ checkout }}',
+      added_at: new Date().toISOString(),
+    };
+    let list = [];
+    try { list = JSON.parse(localStorage.getItem(QUOTE_KEY) || '[]'); } catch (e) { list = []; }
+    list = list.filter(function (x) { return x.offer_id !== item.offer_id; });
+    list.unshift(item);
+    localStorage.setItem(QUOTE_KEY, JSON.stringify(list.slice(0, 40)));
+    if (toast) {
+      toast.hidden = false;
+      toast.classList.add('is-show');
+      setTimeout(function () {
+        toast.classList.remove('is-show');
+        toast.hidden = true;
+      }, 1800);
+    }
+  }
+
+  body.addEventListener('click', function (e) {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    const row = btn.closest('.ms-rate-row');
+    if (!row) return;
+    const action = btn.dataset.action;
+    if (action === 'breakup') openDialog('Rate Breakup', breakupHtml(row), true);
+    if (action === 'cancel') openDialog('Cancellation Policy', cancelHtml(row));
+    if (action === 'quote') addQuote(row);
+  });
+})();
+</script>

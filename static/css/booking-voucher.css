@@ -1,0 +1,211 @@
+/* Hotel booking voucher */
+.bk-voucher-page {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 2.5rem;
+}
+
+.bk-voucher-demo-banner {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  color: #92400e;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.bk-voucher {
+  background: #fff;
+  border: 1px solid #d5e0e3;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(15, 77, 84, 0.06);
+  overflow: hidden;
+}
+
+.bk-voucher-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.35rem;
+  background: linear-gradient(135deg, #0a0a0a 0%, #0095cc 100%);
+  color: #fff;
+}
+.bk-voucher-eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.bk-voucher-head h1 {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+}
+.bk-voucher-address {
+  margin: 0.35rem 0 0;
+  font-size: 0.86rem;
+  opacity: 0.9;
+}
+.bk-voucher-refs {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 220px;
+  font-size: 0.82rem;
+}
+.bk-voucher-refs span {
+  display: block;
+  opacity: 0.8;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.bk-voucher-refs strong {
+  font-size: 0.92rem;
+  word-break: break-all;
+}
+.bk-voucher-refs .ok { color: #86efac; }
+
+.bk-voucher-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1.15rem 1.35rem 0;
+}
+@media (min-width: 760px) {
+  .bk-voucher-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.bk-voucher-panel {
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+.bk-voucher-panel.full {
+  margin: 1rem 1.35rem 0;
+}
+.bk-voucher-panel h2 {
+  margin: 0 0 0.65rem;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.bk-voucher-kv {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+}
+.bk-voucher-kv dt {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.bk-voucher-kv dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.bk-voucher-room {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+.bk-voucher-room:last-of-type { border-bottom: 0; }
+.bk-voucher-room-title {
+  margin: 0;
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 0.9rem;
+}
+.bk-voucher-room-meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+.bk-voucher-room-price {
+  margin: 0.25rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.bk-voucher-total {
+  margin: 0.75rem 0 0;
+  padding-top: 0.65rem;
+  border-top: 1px dashed #cbd5e1;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+.bk-voucher-policy {
+  margin: 0.35rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.bk-voucher-policy.ok { color: #0f7a45; }
+.bk-voucher-policy.warn { color: #b42318; }
+
+.bk-voucher-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+.bk-voucher-table th,
+.bk-voucher-table td {
+  padding: 0.45rem 0.5rem;
+  border: 1px solid #e2e8f0;
+  text-align: left;
+}
+.bk-voucher-table th {
+  background: #fff;
+  font-weight: 700;
+  color: #334155;
+}
+
+.bk-voucher-remarks {
+  margin: 0.65rem 0 0;
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.bk-voucher-api {
+  margin-bottom: 1.25rem;
+  background: #fff;
+}
+.bk-voucher-api-note {
+  margin: 0 0 0.65rem;
+  font-size: 0.82rem;
+  color: #64748b;
+}
+.bk-voucher-json {
+  margin: 0;
+  padding: 0.85rem;
+  background: #0f172a;
+  color: #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.74rem;
+  line-height: 1.45;
+  overflow: auto;
+  max-height: 320px;
+}
+
+.bk-voucher-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.25rem;
+}
+
+@media print {
+  .pp-header, .pp-nav, .bk-voucher-actions, .bk-voucher-demo-banner, .bk-voucher-api { display: none !important; }
+  .bk-voucher-page { padding: 0; max-width: none; }
+  .bk-voucher { box-shadow: none; border: 1px solid #999; }
+}

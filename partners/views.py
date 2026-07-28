@@ -31,6 +31,54 @@ def _authenticate_staff(request, username_or_email: str, password: str):
     return None
 
 
+def _authenticate_partner(request, email: str, password: str):
+    """Non-staff partner accounts for the Nuitee booking portal."""
+    from django.contrib.auth import get_user_model
+
+    User = get_user_model()
+    email = (email or "").strip().lower()
+    user = authenticate(request, username=email, password=password)
+    if user is None:
+        match = User.objects.filter(email__iexact=email).first()
+        if match:
+            user = authenticate(request, username=match.username, password=password)
+    if user is not None and user.is_active and not user.is_staff:
+        return user
+    return None
+
+
+def _is_partner_user(user) -> bool:
+    return user.is_authenticated and user.is_active and not user.is_staff
+
+
+DEMO_PARTNER_EMAIL = "demo@magicsandsdmc.com"
+DEMO_PARTNER_PASSWORD = "Demo123"
+
+
+def _ensure_demo_partner():
+    """Keep a local demo portal user available for testing (not a real partner)."""
+    from django.contrib.auth import get_user_model
+
+    from guests.models import GuestProfile
+
+    User = get_user_model()
+    user, _ = User.objects.update_or_create(
+        username=DEMO_PARTNER_EMAIL,
+        defaults={
+            "email": DEMO_PARTNER_EMAIL,
+            "is_staff": False,
+            "is_superuser": False,
+            "is_active": True,
+            "first_name": "Demo",
+            "last_name": "Partner",
+        },
+    )
+    user.set_password(DEMO_PARTNER_PASSWORD)
+    user.save()
+    GuestProfile.objects.get_or_create(user=user)
+    return user
+
+
 def _marketing_url(path: str = "/") -> str:
     base = (getattr(settings, "MARKETING_SITE_URL", "") or "https://www.magicsandsdmc.com").rstrip(
         "/"
@@ -42,23 +90,63 @@ def _marketing_url(path: str = "/") -> str:
 
 @require_http_methods(["GET", "POST"])
 def partner_login(request):
-    """On-Railway fallback partner login (same branding as Hostinger page)."""
-    if request.user.is_authenticated and request.user.is_staff:
-        return redirect("admin_hub")
+    """Demo / partner front-end login → Magic Sands search portal (/partner/search/)."""
+    if settings.DEBUG:
+        _ensure_demo_partner()
+
+    if _is_partner_user(request.user):
+        return redirect("guest_search")
+
+    # One-click demo (GET) — avoids stale CSRF from admin sessions / cached forms.
+    if request.method == "GET" and request.GET.get("demo") == "1":
+        if request.user.is_authenticated:
+            logout(request)
+        user = _authenticate_partner(request, DEMO_PARTNER_EMAIL, DEMO_PARTNER_PASSWORD)
+        if user is None and settings.DEBUG:
+            _ensure_demo_partner()
+            user = _authenticate_partner(request, DEMO_PARTNER_EMAIL, DEMO_PARTNER_PASSWORD)
+        if user:
+            login(request, user)
+            return redirect("guest_search")
+        messages.error(request, "Demo login is unavailable. Run: python manage.py seed_portal_users")
+        return redirect("partner_login")
+
+    # Staff sessions must not trap the partner login page.
+    # Do this only on GET after demo handling, and re-render so CSRF matches the new session.
+    if request.method == "GET" and request.user.is_authenticated and request.user.is_staff:
+        logout(request)
+        messages.info(
+            request,
+            "Signed out of admin. Use the demo login below to test the booking portal.",
+        )
+        return redirect("partner_login")
 
     if request.method == "POST":
         email = (request.POST.get("email") or "").strip()
         password = request.POST.get("password") or ""
         remember = request.POST.get("remember") == "on"
-        user = _authenticate_staff(request, email, password)
+        user = _authenticate_partner(request, email, password)
         if user:
             login(request, user)
             if not remember:
                 request.session.set_expiry(0)
-            return redirect(request.GET.get("next") or "admin_hub")
-        messages.error(request, "Invalid email or password, or account is not a partner.")
+            return redirect(request.GET.get("next") or "guest_search")
+        if _authenticate_staff(request, email, password):
+            messages.error(
+                request,
+                "That account is website admin. Use Admin login instead.",
+            )
+        else:
+            messages.error(request, "Invalid email or password. Use Continue with demo login.")
 
-    return render(request, "partners/login.html")
+    return render(
+        request,
+        "partners/login.html",
+        {
+            "demo_email": DEMO_PARTNER_EMAIL,
+            "demo_password": DEMO_PARTNER_PASSWORD,
+        },
+    )
 
 
 @csrf_exempt
@@ -66,17 +154,17 @@ def partner_login(request):
 def gateway_partner_login(request):
     """
     Receives login POSTs from Hostinger (magicsandsdmc.com/partner-login/).
-    Authenticates on Railway and redirects into /admin/.
+    Authenticates a partner account and redirects into /partner/search/.
     """
     email = (request.POST.get("email") or request.POST.get("username") or "").strip()
     password = request.POST.get("password") or ""
     remember = request.POST.get("remember") in ("on", "1", "true", "True")
-    user = _authenticate_staff(request, email, password)
+    user = _authenticate_partner(request, email, password)
     if user:
         login(request, user)
         if not remember:
             request.session.set_expiry(0)
-        return redirect("admin_hub")
+        return redirect("guest_search")
 
     # Send user back to Hostinger login with an error flag
     return redirect(_marketing_url("/partner-login/?error=1"))
@@ -203,6 +291,10 @@ def admin_login(request):
     if request.user.is_authenticated and request.user.is_staff:
         return redirect("admin_hub")
 
+    # Partner sessions should not open the admin login by accident.
+    if _is_partner_user(request.user):
+        logout(request)
+
     if request.method == "POST":
         username = (request.POST.get("username") or "").strip()
         password = request.POST.get("password") or ""
@@ -211,7 +303,15 @@ def admin_login(request):
             login(request, user)
             request.session.set_expiry(0)
             return redirect(request.GET.get("next") or "admin_hub")
-        messages.error(request, "Invalid username or password.")
+        # Helpful hint if they used the partner demo on the admin form.
+        partner_try = _authenticate_partner(request, username, password)
+        if partner_try:
+            messages.error(
+                request,
+                "That account is a partner login. Use Partner login for the hotel booking portal.",
+            )
+        else:
+            messages.error(request, "Invalid username or password.")
 
     return render(request, "partners/admin_login.html")
 
@@ -443,7 +543,7 @@ def admin_module_page(request, module_key: str):
 
     page = MODULE_PAGES.get(module_key)
     if not page:
-        return redirect("partner_dashboard")
+        return redirect("booking_admin_dashboard")
     return render(
         request,
         "partners/module.html",

@@ -23,7 +23,7 @@
       {% if user.is_authenticated and not user.is_staff %}
       <a href="{% url 'guest_dashboard' %}" class="btn btn-login">My dashboard</a>
       {% else %}
-      <a href="{% url 'guest_login' %}" class="btn btn-login">Guest login</a>
+      <a href="{% url 'partner_login' %}" class="btn btn-login">Partner login</a>
       {% endif %}
     </nav>
   </header>
