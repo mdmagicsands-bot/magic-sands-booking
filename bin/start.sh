@@ -4,6 +4,7 @@ set -euo pipefail
 echo "=== Magic Sands Booking startup ==="
 echo "PORT=${PORT:-unset}"
 echo "RAILWAY_ENVIRONMENT=${RAILWAY_ENVIRONMENT_NAME:-local}"
+echo "SITE_PROFILE=${SITE_PROFILE:-auto}"
 
 echo "Running database migrations..."
 python manage.py migrate --noinput

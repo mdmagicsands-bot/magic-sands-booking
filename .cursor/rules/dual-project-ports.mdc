@@ -1,0 +1,21 @@
+---
+description: Keep magic-sands-booking and voucher-system running side by side
+alwaysApply: true
+---
+
+# Dual local projects (do not block each other)
+
+Two separate Django apps may run at the same time:
+
+| Project | Folder | Port | Role |
+|---------|--------|------|------|
+| **magic-sands-booking** | `C:\Users\Win11\Projects\magic-sands-booking` | **8001** | Marketing site (Railway); booking stack local / separate Railway later |
+| **voucher-system** | `C:\Users\Win11\Projects\voucher-system` | **8000** | DMC enterprise admin / vouchers |
+
+## Rules
+
+- Work only in the project folder that matches the task.
+- Start booking with `.\bin\dev.ps1` or `runserver 127.0.0.1:8001` — never steal port 8000.
+- Never kill, stop, or rebind processes on the other project's port.
+- When restarting this app, only free **8001** (this project). Leave **8000** alone.
+- Do not run booking on 8000 or voucher-system on 8001.

@@ -1,0 +1,31 @@
+---
+description: Deploy only marketing from magic-sands-booking to Railway
+alwaysApply: true
+---
+
+# Marketing-only Railway deploy (magic-sands-booking)
+
+This repo deploys to Railway in **marketing-only** mode by default (`SITE_PROFILE=marketing`).
+
+## What goes to Railway (this repo)
+
+- Public marketing pages (`/`, `/about/`, `/contact/`, etc.)
+- Partner registration (`/partner-register/`)
+- Marketing CMS (`/admin/marketing/`)
+
+## What does NOT go to this Railway service
+
+- Hotel search / checkout (`/hotels/`, `/book/`) → separate booking Git + Railway
+- Partner login / portal (`/partner-login/`, `/partner/`) → booking service
+- Enterprise admin / vouchers → **voucher-system** repo → `portal.magicsandsdmc.com`
+
+## After finishing marketing work
+
+1. **Commit** relevant changes in `magic-sands-booking` (not voucher-system).
+2. **Push** to `origin/main` on **magic-sands-marketingsite** so the marketing Railway redeploys.
+3. Do **not** push booking-only changes to the marketing Railway — those belong in the future booking repo.
+4. Set `PUBLIC_BOOKING_URL` on Railway to the booking domain when that service exists.
+
+Local dev on port **8001** runs the full stack unless `SITE_PROFILE=marketing`.
+
+See `DEPLOY.md` and `ARCHITECTURE.md` in this repo.

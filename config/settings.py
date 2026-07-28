@@ -10,6 +10,8 @@ import sys
 import dj_database_url
 from dotenv import load_dotenv
 
+from config.site_profile import resolve_site_profile
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
@@ -57,6 +59,9 @@ else:
     ALLOWED_HOSTS = _raw_hosts
 
 ON_RAILWAY = bool(os.getenv("RAILWAY_ENVIRONMENT_NAME") or os.getenv("RAILWAY_SERVICE_ID"))
+SITE_PROFILE = resolve_site_profile(on_railway=ON_RAILWAY)
+MARKETING_ONLY = SITE_PROFILE == "marketing"
+
 if ON_RAILWAY:
     for env_name in ("RAILWAY_PUBLIC_DOMAIN", "RAILWAY_PRIVATE_DOMAIN"):
         railway_host = os.getenv(env_name, "").strip()
@@ -195,10 +200,12 @@ LOGIN_REDIRECT_URL = "admin_hub"
 LOGOUT_REDIRECT_URL = "admin_login"
 
 MARKETING_SITE_URL = os.getenv("MARKETING_SITE_URL", "https://www.magicsandsdmc.com").rstrip("/")
-PUBLIC_BOOKING_URL = os.getenv(
-    "PUBLIC_BOOKING_URL",
-    "http://127.0.0.1:8001" if DEBUG else MARKETING_SITE_URL,
-).rstrip("/")
+_default_booking_url = (
+    "http://127.0.0.1:8001"
+    if DEBUG
+    else os.getenv("BOOKING_SITE_URL", "https://book.magicsandsdmc.com")
+)
+PUBLIC_BOOKING_URL = os.getenv("PUBLIC_BOOKING_URL", _default_booking_url).rstrip("/")
 
 EMAIL_BACKEND = os.getenv(
     "EMAIL_BACKEND",

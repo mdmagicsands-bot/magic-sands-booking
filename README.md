@@ -25,8 +25,9 @@ Phone on same Wi‑Fi: see [REMOTE.md](REMOTE.md) or run `.\scripts\run-lan.ps1`
 - Partner login: http://127.0.0.1:8001/partner-login/
 - Admin: http://127.0.0.1:8001/admin/login/
 
-Later: deploy this Django app to Railway — see **[DEPLOY.md](DEPLOY.md)** for step-by-step
-setup (new Railway project, Postgres, env vars, then Hostinger DNS for `www.magicsandsdmc.com`).
+Later: deploy **marketing only** to Railway from this repo — see **[DEPLOY.md](DEPLOY.md)**.
+Hotel booking will use a **separate Git repo and Railway service**; locally, the full stack
+still runs on port **8001**.
 
 ## Setup
 
