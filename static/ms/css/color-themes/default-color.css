@@ -1,0 +1,13 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+:root {
+	
+	/* #ff650c in decimal RGB */
+	 --theme-color: #01bce7;
+	 	 --theme-color2: #01bce7;
+    --main-color: #01bce7;
+	--main-color-rgb:255,101,12;
+	
+}

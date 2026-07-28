@@ -1,41 +1,34 @@
 {% extends "marketing/base.html" %}
+{% load static %}
 {% block title %}{{ destination.name }} | {{ brand_full }}{% endblock %}
-{% block meta_description %}{{ destination.summary }}{% endblock %}
-{% block body_class %}page-destination{% endblock %}
+
 {% block content %}
-<section class="mk-page-hero mk-page-hero-photo" style="--hero-image:url('{{ destination.banner }}'); --accent: {{ destination.accent }}">
-  <div class="mk-page-hero-inner">
-    <p class="mk-brand-signal">{{ brand }}</p>
-    <h1>{{ destination.name }}</h1>
-    <p class="mk-lede">{{ destination.summary }}</p>
-    <div class="mk-cta-row">
-      <a class="mk-btn mk-btn-light" href="{% url 'book_home' %}?destination={{ destination.short }}">Search hotels</a>
-      <a class="mk-btn mk-btn-line" href="{% url 'contact' %}">Plan with us</a>
+<div class="Destii-innersec1">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-auto wow fadeInUp">
+        <div class="Destii-innersec1-content">
+          <div class="sec-title title-anim centered"><h2 class="sec-title_heading sec-colorr">{{ destination.name }}</h2></div>
+          <p>{{ destination.teaser }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="wow fadeInUp">
+      <img src="{{ destination.detail_image|default:destination.image }}" alt="{{ destination.name }}" width="100%">
     </div>
   </div>
-</section>
+</div>
 
-<section class="mk-prose" data-reveal>
-  <p class="mk-lead">{{ destination.teaser }}</p>
-  <p>
-    Our DMC teams arrange hotels, transfers, guided experiences, and bespoke itineraries in {{ destination.name }}.
-    Agencies and partners receive dedicated support, priority quotations, and reliable confirmations.
-  </p>
-  <p><a class="mk-link" href="{% url 'destinations' %}">← All destinations</a></p>
-</section>
-
-<section class="mk-services" data-reveal>
-  <div class="mk-section-intro">
-    <p class="mk-kicker">Related services</p>
-    <h2>How we support your programme</h2>
+<div class="Destii-innersec2">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 wow fadeInUp">
+        <div class="Destii-innersec2-content text-center">
+          <p>{{ destination.summary }}</p>
+          <p><a href="{% url 'destinations' %}">← All destinations</a> · <a href="{% url 'contact' %}">Plan with us</a></p>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="mk-service-rail">
-    {% for s in services %}
-    <a class="mk-service-panel" href="{% url 'services' %}#{{ s.slug }}">
-      <img src="{{ s.image }}" alt="{{ s.title }}" loading="lazy">
-      <span>{{ s.title }}</span>
-    </a>
-    {% endfor %}
-  </div>
-</section>
+</div>
 {% endblock %}

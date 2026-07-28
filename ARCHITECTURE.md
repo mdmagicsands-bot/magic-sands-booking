@@ -23,7 +23,9 @@
 
 ## Cutover later
 
-1. Deploy to Railway
+See **[DEPLOY.md](DEPLOY.md)** for Railway project creation, env vars, and Hostinger DNS.
+
+1. Deploy to Railway (this repo)
 2. Add custom domain `magicsandsdmc.com` / `www`
 3. Update Hostinger DNS to Railway
 4. Cancel Hostinger hosting when DNS is stable

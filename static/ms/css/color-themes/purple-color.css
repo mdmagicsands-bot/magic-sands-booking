@@ -1,0 +1,20 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+:root {
+
+	/* #bb54e1 in decimal RGB */
+	--main-color: rgb(187,84,225);
+	--main-color-rgb: 187,84,225;
+	
+}
+
+.project-three_pattern,
+.choose-block_one-icon,
+.slider-three_title span:before,
+.marketing-one .animation_mode .marketing-one_icon,
+.price-block_one-list li:before,
+.feature-block_three-icon{
+	filter: grayscale(100%);
+}

@@ -1,0 +1,36 @@
+{% load static %}
+<script src="{% static 'ms/js/jquery.js' %}"></script>
+<script src="{% static 'ms/js/popper.min.js' %}"></script>
+<script src="{% static 'ms/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'ms/js/appear.js' %}"></script>
+<script src="{% static 'ms/js/parallax.min.js' %}"></script>
+<script src="{% static 'ms/js/tilt.jquery.min.js' %}"></script>
+<script src="{% static 'ms/js/jquery.paroller.min.js' %}"></script>
+<script src="{% static 'ms/js/wow.js' %}"></script>
+<script src="{% static 'ms/js/swiper.min.js' %}"></script>
+<script src="{% static 'ms/js/backtotop.js' %}"></script>
+<script src="{% static 'ms/js/odometer.js' %}"></script>
+<script src="{% static 'ms/js/parallax-scroll.js' %}"></script>
+<script src="{% static 'ms/js/gsap.min.js' %}"></script>
+<script src="{% static 'ms/js/SplitText.min.js' %}"></script>
+<script src="{% static 'ms/js/ScrollTrigger.min.js' %}"></script>
+<script src="{% static 'ms/js/ScrollToPlugin.min.js' %}"></script>
+<script src="{% static 'ms/js/ScrollSmoother.min.js' %}"></script>
+<script src="{% static 'ms/js/jquery.marquee.min.js' %}"></script>
+<script src="{% static 'ms/js/validate.js' %}"></script>
+<script src="{% static 'ms/js/typeit.js' %}"></script>
+<script src="{% static 'ms/js/magnific-popup.min.js' %}"></script>
+<script src="{% static 'ms/js/nav-tool.js' %}"></script>
+<script src="{% static 'ms/js/jquery-ui.js' %}"></script>
+<script src="{% static 'ms/js/element-in-view.js' %}"></script>
+<script src="{% static 'ms/js/color-settings.js' %}"></script>
+<script src="{% static 'ms/js/script.js' %}"></script>
+<script>
+  $(window).on('scroll', function() {
+    if ($(this).scrollTop() > 400) {
+      $(".fixedRit").addClass("fixedRit-sticky");
+    } else {
+      $(".fixedRit").removeClass("fixedRit-sticky");
+    }
+  });
+</script>

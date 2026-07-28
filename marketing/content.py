@@ -1,5 +1,15 @@
 """Marketing site copy and media sourced from Magic Sands DMC (magicsandsdmc.com)."""
 
+from .assets import ms
+from .live_content import (
+    HERO_SLIDES,
+    HOME_SERVICES,
+    LIVE_TESTIMONIALS,
+    MEET_US,
+    PARTNER_LOGOS,
+    VIDEO,
+)
+
 TAGLINE = "YOUR GUIDE TO ARABIA"
 BRAND = "Magic Sands"
 BRAND_FULL = "Magic Sands DMC"
@@ -17,24 +27,14 @@ def marketing_page_url(path: str = "/") -> str:
 
 
 MEDIA = {
-    "logo": f"{SITE_URL}/assets/images/logo.png",
-    "favicon": f"{SITE_URL}/assets/images/favicon.png",
-    "footer_logo": f"{SITE_URL}/assets/images/footer-logo.png",
-    "about_primary": f"{SITE_URL}/uploads/pages/about_2.jpg",
-    "about_secondary": f"{SITE_URL}/uploads/pages/more/about_3.jpg",
+    "logo": ms("images/logo.png"),
+    "favicon": ms("images/favicon.png"),
+    "footer_logo": ms("images/footer-logo.png"),
+    "about_primary": ms("images/about-2.jpg"),
+    "about_secondary": ms("images/about-3.jpg"),
 }
 
-HERO_BANNERS = [
-    f"{SITE_URL}/uploads/banner/1757569372_banner1.jpg",
-    f"{SITE_URL}/uploads/banner/banner2.jpg",
-    f"{SITE_URL}/uploads/banner/banner3.jpg",
-    f"{SITE_URL}/uploads/banner/banner4.jpg",
-    f"{SITE_URL}/uploads/banner/banner5.jpg",
-    f"{SITE_URL}/uploads/banner/banner6.jpg",
-    f"{SITE_URL}/uploads/banner/banner7.jpg",
-    f"{SITE_URL}/uploads/banner/banner8.jpg",
-]
-
+HERO_BANNERS = [slide["image"] for slide in HERO_SLIDES]
 HERO = {
     "brand": BRAND,
     "title": "Elevating the extraordinary",
@@ -173,76 +173,87 @@ WHY_CHOOSE = [
     {
         "title": "Best rate guarantee",
         "text": "Lowest prices with the best quality and experience.",
-        "icon": f"{SITE_URL}/uploads/pages/facility1.svg",
+        "icon": ms("uploads/pages/facility1.svg"),
     },
     {
         "title": "Diverse destinations",
         "text": "Looking for a unique destination? We have the best across Arabia and beyond.",
-        "icon": f"{SITE_URL}/uploads/pages/facility2.svg",
+        "icon": ms("uploads/pages/facility2.svg"),
     },
     {
         "title": "Free fast booking",
         "text": "Customers can easily book the best tour packages and hotel stays.",
-        "icon": f"{SITE_URL}/uploads/pages/facility3.svg",
+        "icon": ms("uploads/pages/facility3.svg"),
     },
     {
         "title": "Client support 24/7",
         "text": "We provide 24/7 support to our clients and travel partners.",
-        "icon": f"{SITE_URL}/uploads/pages/facility4.svg",
+        "icon": ms("uploads/pages/facility4.svg"),
     },
     {
         "title": "Various adventures",
         "text": "From desert dunes to mountain wadis and coastal escapes — tailored to you.",
-        "icon": f"{SITE_URL}/uploads/pages/facility5.svg",
+        "icon": ms("uploads/pages/facility5.svg"),
     },
     {
         "title": "Best travel guides",
         "text": "Local experts who bring culture, landscape, and hospitality to life.",
-        "icon": f"{SITE_URL}/uploads/pages/facility6.svg",
+        "icon": ms("uploads/pages/facility6.svg"),
     },
 ]
 
 OFFICES = [
     {
-        "label": "Head Office — Oman",
-        "address": "507, 5th floor, Business Center Alkhuwair, Muscat, Sultanate of Oman",
+        "label": "Head Office",
+        "address": "507, 5th floor, Business center Alkhuwair, Muscat Sultanate of Oman",
         "phone": "+968 9548 1989",
-        "email": "oman@magicsandsdmc.com",
+        "email": "info@magicsandsdmc.com",
+        "variant": "head",
     },
     {
-        "label": "Branch Office — Oman",
-        "address": "Shop #4, 1/2210, Block 415, Al Wafa Street, Amerat, Muscat, Sultanate of Oman",
+        "label": "Branch Office (Oman)",
+        "address": "Shop #4, 1/2210, Block 415, Al Wafa street, Amerat, Muscat Sultanate of Oman",
         "phone": "+968 9677 2959",
         "email": "oman@magicsandsdmc.com",
+        "variant": "branch",
     },
     {
-        "label": "Branch Office — UAE",
-        "address": "Building A1, Dubai Digital Park, Dubai Silicon Oasis, Dubai, United Arab Emirates",
+        "label": "Branch Office (UAE)",
+        "address": "Building A1, Dubai Digital Park, Dubai Silicon Oasis Dubai, United Arab Emirates",
         "phone": "+971 55 756 1989",
         "email": "uae@magicsandsdmc.com",
+        "variant": "branch",
     },
     {
-        "label": "Branch Office — Egypt",
-        "address": "Office Number 07, 2nd floor, 11 Moshtuhur Street, Cairo Downtown, Egypt",
-        "phone": "+20 111 888 5718",
-        "email": "oman@magicsandsdmc.com",
+        "label": "Branch Office (Egypt)",
+        "address": "Office Number 07, 2 floor, 11 moshtuhur street Cairo downtown, Egypt",
+        "phone": "+20111 888 5718",
+        "email": "egypt@magicsandsdmc.com",
+        "variant": "branch",
     },
     {
-        "label": "Branch Office — India",
-        "address": (
-            "2nd floor, Hasco Towers, Malampuzha Rd, Chunnambuthara Olavakode, "
-            "Palakkad, Kerala 678002, India"
-        ),
+        "label": "Branch Office (India)",
+        "address": "2nd floor, Hasco Towers, Malampuzha Rd, Chunnambuthara Olavakode, Palakkad, Kerala 678002, India",
         "phone": "+91 6238 784 955",
-        "email": "oman@magicsandsdmc.com",
+        "email": "India@magicsandsdmc.com",
+        "variant": "branch",
     },
     {
-        "label": "Sales Office — Italy",
-        "address": "Ms. Elena Negri, Sales Manager – Italian Market, Milan, Italy",
-        "phone": "+39 366 874 4702",
-        "email": "oman@magicsandsdmc.com",
+        "label": "Sales Office (Italy)",
+        "address": "Ms. Elena Negri Sales Manager – Italian Market Milan, Italy",
+        "phone": "+39 366 8744702",
+        "email": "italy@magicsandsdmc.com",
+        "variant": "branch",
     },
 ]
+
+CONTACT_BANNER = ms("images/c-banner.jpg")
+CONTACT_MAP_EMBED = (
+    "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d914.0616178525753!"
+    "2d58.43982400000001!3d23.595492!3m2!1i1024!2i768!4f13.1!3m3!1m2!"
+    "1s0x3e91ff17d0672637%3A0x6b9b8607d7da0c98!2sBusiness%20Center%20Al%20Khuwair!"
+    "5e0!3m2!1sen!2sin!4v1758959959875!5m2!1sen!2sin"
+)
 
 SOCIAL = [
     {"label": "Facebook", "url": "https://www.facebook.com/share/15nCuowwfs/"},
@@ -262,8 +273,8 @@ DESTINATIONS = [
             "and timeless wonder."
         ),
         "teaser": "Experience a dazzling fusion of modern luxury, desert landscapes, and cultural treasures.",
-        "image": f"{SITE_URL}/uploads/destination/d1.jpg",
-        "banner": f"{SITE_URL}/uploads/banner/banner2.jpg",
+        "image": ms("uploads/destination/d1.jpg"),
+        "banner": ms("uploads/banner/banner2.jpg"),
         "accent": "#0f766e",
     },
     {
@@ -276,8 +287,8 @@ DESTINATIONS = [
             "traditions and serene luxury create memories etched in eternity."
         ),
         "teaser": "Majestic deserts, rugged mountains, pristine beaches, and timeless cultural heritage.",
-        "image": f"{SITE_URL}/uploads/destination/d2.jpg",
-        "banner": f"{SITE_URL}/uploads/banner/banner3.jpg",
+        "image": ms("uploads/destination/d2.jpg"),
+        "banner": ms("uploads/banner/banner3.jpg"),
         "accent": "#b45309",
     },
     {
@@ -290,8 +301,8 @@ DESTINATIONS = [
             "a journey of discovery, luxury, and timeless wonder."
         ),
         "teaser": "Discover ancient heritage, vast deserts, modern cities, and sacred cultural treasures.",
-        "image": f"{SITE_URL}/uploads/destination/d3.jpg",
-        "banner": f"{SITE_URL}/uploads/banner/banner4.jpg",
+        "image": ms("uploads/destination/d3.jpg"),
+        "banner": ms("uploads/banner/banner4.jpg"),
         "accent": "#166534",
     },
     {
@@ -304,8 +315,8 @@ DESTINATIONS = [
             "every moment unfolds a story of elegance, culture, and unforgettable discovery."
         ),
         "teaser": "Modern skyline, rich culture, desert adventures, and world-class experiences.",
-        "image": f"{SITE_URL}/uploads/destination/d4.jpg",
-        "banner": f"{SITE_URL}/uploads/banner/banner5.jpg",
+        "image": ms("uploads/destination/d4.jpg"),
+        "banner": ms("uploads/banner/banner5.jpg"),
         "accent": "#9f1239",
     },
     {
@@ -318,8 +329,8 @@ DESTINATIONS = [
             "after the sands and seas fade from view."
         ),
         "teaser": "Historic forts, vibrant culture, islands, and modern experiences by the sea.",
-        "image": f"{SITE_URL}/uploads/destination/d5.jpg",
-        "banner": f"{SITE_URL}/uploads/banner/banner6.jpg",
+        "image": ms("uploads/destination/d5.jpg"),
+        "banner": ms("uploads/banner/banner6.jpg"),
         "accent": "#a16207",
     },
     {
@@ -332,8 +343,8 @@ DESTINATIONS = [
             "intertwine seamlessly."
         ),
         "teaser": "Cultural heritage, deserts, islands, and unforgettable Gulf experiences.",
-        "image": f"{SITE_URL}/uploads/destination/d6.jpg",
-        "banner": f"{SITE_URL}/uploads/banner/banner7.jpg",
+        "image": ms("uploads/destination/d6.jpg"),
+        "banner": ms("uploads/banner/banner7.jpg"),
         "accent": "#1d4ed8",
     },
     {
@@ -346,8 +357,8 @@ DESTINATIONS = [
             "wonder and rich heritage."
         ),
         "teaser": "Timeless deserts and rose-red cities, where history and wonder awaken the soul.",
-        "image": f"{SITE_URL}/uploads/destination/d8.jpg",
-        "banner": f"{SITE_URL}/uploads/banner/banner8.jpg",
+        "image": ms("uploads/destination/d8.jpg"),
+        "banner": ms("uploads/banner/banner8.jpg"),
         "accent": "#be123c",
     },
     {
@@ -360,8 +371,8 @@ DESTINATIONS = [
             "promises adventure, wonder, and unforgettable experiences."
         ),
         "teaser": "Sail the Nile, explore ancient pyramids, and awaken your spirit amidst timeless wonders.",
-        "image": f"{SITE_URL}/uploads/destination/d7.jpg",
-        "banner": f"{SITE_URL}/uploads/banner/1757569372_banner1.jpg",
+        "image": ms("uploads/destination/d7.jpg"),
+        "banner": ms("uploads/banner/1757569372_banner1.jpg"),
         "accent": "#ca8a04",
     },
 ]
@@ -374,7 +385,7 @@ SERVICES = [
             "Step into a realm of refined luxury with Magic Sands. Our bespoke travel experiences "
             "are crafted to surpass every expectation — from thrilling adventures to serene escapes."
         ),
-        "image": f"{SITE_URL}/uploads/service/s3.jpg",
+        "image": ms("uploads/service/s3.jpg"),
     },
     {
         "slug": "lifestyle",
@@ -383,7 +394,7 @@ SERVICES = [
             "Take your lifestyle to the next level with personalized experiences that are uniquely "
             "yours. We curate events, culture, and unforgettable moments that let you live life your way."
         ),
-        "image": f"{SITE_URL}/uploads/service/s4.jpg",
+        "image": ms("uploads/service/s4.jpg"),
     },
     {
         "slug": "mice",
@@ -392,7 +403,7 @@ SERVICES = [
             "We design and manage corporate meetings, conferences, and incentive programs with "
             "precision and creativity — inspiring, results-driven events customized to your goals."
         ),
-        "image": f"{SITE_URL}/uploads/service/s5.jpg",
+        "image": ms("uploads/service/s5.jpg"),
     },
     {
         "slug": "wellness",
@@ -401,7 +412,7 @@ SERVICES = [
             "With Magic Sands, luxury becomes an experience beyond imagination. From thrilling "
             "adventures to tranquil retreats, we craft unforgettable moments designed just for you."
         ),
-        "image": f"{SITE_URL}/uploads/service/s6.jpg",
+        "image": ms("uploads/service/s6.jpg"),
     },
     {
         "slug": "concierge",
@@ -410,7 +421,7 @@ SERVICES = [
             "Experience the art of effortless living with our concierge service. From securing "
             "coveted dining spots to orchestrating private events, we perfect every detail."
         ),
-        "image": f"{SITE_URL}/uploads/service/s1_1.jpg",
+        "image": ms("uploads/service/s1.jpg"),
     },
     {
         "slug": "csr-sustainability",
@@ -419,111 +430,10 @@ SERVICES = [
             "We create experiences that are not only extraordinary but also sustainable — "
             "supporting local communities and minimizing environmental impact."
         ),
-        "image": f"{SITE_URL}/uploads/service/s2.jpg",
+        "image": ms("uploads/service/s2.jpg"),
     },
 ]
 
-PARTNERS = [
-    f"{SITE_URL}/uploads/partner/p1.jpg",
-    f"{SITE_URL}/uploads/partner/p2.jpg",
-    f"{SITE_URL}/uploads/partner/p3.jpg",
-    f"{SITE_URL}/uploads/partner/p4.png",
-    f"{SITE_URL}/uploads/partner/p5.jpg",
-    f"{SITE_URL}/uploads/partner/p6.jpg",
-]
+PARTNERS = [p["image"] for p in PARTNER_LOGOS]
 
-TESTIMONIALS = [
-    {
-        "quote": (
-            "Amazing trip in Oman from Muscat City, different wadis, desert, Jebel Akhdar and "
-            "finally to Al Bandar. Magic Sands organised everything to be comfortable on our trip."
-        ),
-        "name": "Nouaim Hadri",
-        "role": "7–14 May 2026",
-    },
-    {
-        "quote": (
-            "The trip was truly perfect. Everything went exactly as planned. There were 11 of us, "
-            "and every single person was genuinely happy. Thank you, friends at Magic Sands."
-        ),
-        "name": "Antonio Losi",
-        "role": "26 Dec 2025 – 4 Jan 2026",
-    },
-    {
-        "quote": (
-            "We had an amazing experience in Oman. Our guide, Osama, was impeccable. His knowledge "
-            "and connection with local people made our trip unique."
-        ),
-        "name": "Riccardo Pasquotti",
-        "role": "6–11 Dec 2025",
-    },
-    {
-        "quote": (
-            "Everything was perfect — transfers and assistance. When we needed to change a hotel "
-            "room they helped immediately. Punctual and professional."
-        ),
-        "name": "Simon Beltrami",
-        "role": "21–29 Nov 2025",
-    },
-    {
-        "quote": (
-            "We had such a great time in Oman! Hossam was an absolute star — fun, knowledgeable, "
-            "and constantly going the extra mile to make sure everyone was happy and safe."
-        ),
-        "name": "Alessia Gasco",
-        "role": "11–17 Nov 2025",
-    },
-    {
-        "quote": (
-            "Very good experience! Fantastic tour with Magic Sands — a special thank you to the "
-            "great guide Osama. I would like to come back to Oman and contact Magic Sands again."
-        ),
-        "name": "Elena Verga",
-        "role": "12–21 Apr 2025",
-    },
-    {
-        "quote": (
-            "Una guida eccezionale e un viaggio indimenticabile! Ossama conosce ogni aspetto "
-            "dell’Oman — dalla cultura alla natura, dalla storia alla vita della gente locale."
-        ),
-        "name": "Lisa Colucci",
-        "role": "5–12 Sep 2025",
-    },
-    {
-        "quote": (
-            "Abdullah è stato molto gentile, sempre disponibile, molto bravo a guidare e a "
-            "risolvere gli imprevisti durante il viaggio."
-        ),
-        "name": "Marusca Cantaluppi",
-        "role": "6–13 Feb 2026",
-    },
-    {
-        "quote": (
-            "Everything was fine! Abdullah was a perfect driver and a very good guide for all "
-            "aspects of Omani treasures."
-        ),
-        "name": "Lorenzo Rossi",
-        "role": "7–13 Feb 2026",
-    },
-    {
-        "quote": "Great trip. Sahid has been an excellent guide.",
-        "name": "Oscar Cicchetti",
-        "role": "7–11 Feb 2026",
-    },
-    {
-        "quote": (
-            "Tour di Muscat bellissimo. La nostra guida Ossama (e autista) il migliore! "
-            "Preparatissimo, gentile e sempre disponibile."
-        ),
-        "name": "Chaimaa Labe",
-        "role": "18 Aug 2025",
-    },
-    {
-        "quote": (
-            "During a long stopover in Muscat we did a guided tour. Osama drove us around the city, "
-            "we saw beautiful places, and he explained the history and traditions. Highly recommend."
-        ),
-        "name": "Laita Fiorese",
-        "role": "11 Aug 2025",
-    },
-]
+TESTIMONIALS = LIVE_TESTIMONIALS

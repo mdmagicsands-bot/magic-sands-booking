@@ -1,28 +1,27 @@
 {% extends "marketing/base.html" %}
+{% load static %}
 {% block title %}Destinations | {{ brand_full }}{% endblock %}
-{% block meta_description %}Explore UAE, Oman, Saudi Arabia, Qatar, Bahrain, Kuwait, Jordan, and Egypt with {{ brand_full }}.{% endblock %}
-{% block body_class %}page-destinations{% endblock %}
-{% block content %}
-<section class="mk-page-hero mk-page-hero-photo" style="--hero-image:url('{{ destinations.1.banner }}')">
-  <div class="mk-page-hero-inner">
-    <p class="mk-brand-signal">{{ brand }}</p>
-    <h1>Destinations</h1>
-    <p class="mk-lede">Eight destinations across Arabia — each programme shaped around culture, landscape, and luxury.</p>
-  </div>
-</section>
 
-<section class="mk-destinations mk-destinations-page" data-reveal>
-  <div class="mk-dest-mosaic mk-dest-mosaic-large">
-    {% for d in destinations %}
-    <a class="mk-dest-panel" href="{% url 'destination_detail' d.slug %}" style="--accent: {{ d.accent }}">
-      <img src="{{ d.image }}" alt="{{ d.name }}" loading="lazy">
-      <span class="mk-dest-copy">
-        <strong>{{ d.name }}</strong>
-        <em>{{ d.teaser }}</em>
-        <span class="mk-link-inline">Explore</span>
-      </span>
-    </a>
-    {% endfor %}
+{% block content %}
+<div class="Desti-innersec destimations-three">
+  <div class="container">
+    <div class="sec-title title-anim centered"><h2 class="sec-title_heading sec-colorr">Destinations</h2></div>
+    <div class="row justify-content-center">
+      {% for d in destinations %}
+      <div class="col-lg-4 col-md-6 d-flex wow fadeInUp">
+        <a href="{% url 'destination_detail' d.slug %}" class="single-offer-box">
+          <div class="single-offer-thumb">
+            <img src="{{ d.card_image|default:d.image }}" alt="{{ d.name }}">
+          </div>
+          <div class="offer-bottom-title">
+            <h4>{{ d.name }}</h4>
+            <p>{{ d.teaser }}</p>
+            <span>Read More <i class="fas fa-long-arrow-right"></i></span>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
   </div>
-</section>
+</div>
 {% endblock %}

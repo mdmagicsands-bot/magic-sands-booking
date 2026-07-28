@@ -1,0 +1,95 @@
+/* Contact page — match live magicsandsdmc.com/contact */
+
+body .inner-pagesconatct-sec {
+  padding: 48px 0 80px;
+}
+
+.inner-pagesconatct-sec .sec-title {
+  margin-bottom: 5px;
+}
+
+.inner-pagesconatct-sec .sec-title_heading.text-white {
+  text-align: center;
+  color: #fff !important;
+}
+
+.inner-pagesconatct-sec .contact-lede {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.contact-office-card.Infacility-single {
+  background: #01bce7;
+  border: unset !important;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  border-radius: 20px;
+  text-align: left;
+  padding: 25px 20px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.contact-office-card.Infacility-single.is-head {
+  background: #253a67;
+}
+
+.contact-office-card .text {
+  text-align: left;
+  padding: 10px;
+}
+
+.contact-office-card .text h4 {
+  color: #fff !important;
+  padding-bottom: 5px !important;
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.contact-office-card .text p,
+.contact-office-card .text a {
+  color: #fff !important;
+  padding-bottom: 5px !important;
+  margin-bottom: 0;
+}
+
+.contact-office-card .office-address {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.contact-office-card .fa-location-dot:before,
+.contact-office-card .fa-map-marker-alt:before,
+.contact-office-card .fa-phone:before,
+.contact-office-card .fa-envelope:before {
+  color: #fff;
+  padding-right: 10px;
+}
+
+.mapsecs-inn {
+  padding: 60px 0;
+}
+
+.contact-three_form-outer {
+  padding: 30px 0 60px;
+}
+
+.contact-sent {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1.25rem;
+  background: #ecfdf5;
+  color: #0f172a;
+  border-radius: 8px;
+}
+
+@media (max-width: 767px) {
+  body .inner-pagesconatct-sec {
+    padding: 32px 0 56px;
+  }
+
+  .mapsecs-inn {
+    padding: 30px 0 0;
+  }
+}

@@ -1,37 +1,28 @@
 {% extends "marketing/base.html" %}
+{% load static %}
 {% block title %}Services | {{ brand_full }}{% endblock %}
-{% block meta_description %}Travel & leisure, lifestyle, MICE, wellness, concierge, and CSR services from {{ brand_full }}.{% endblock %}
-{% block body_class %}page-services{% endblock %}
+
 {% block content %}
-<section class="mk-page-hero mk-page-hero-photo" style="--hero-image:url('{{ services.0.image }}')">
-  <div class="mk-page-hero-inner">
-    <p class="mk-brand-signal">{{ brand }}</p>
-    <h1>Our services</h1>
-    <p class="mk-lede">The art of what we do — refined journeys, events, and hospitality across Arabia.</p>
+<div class="service-main-img">
+  <div class="container">
+    <div class="sec-title title-anim centered"><h2 class="sec-title_heading sec-colorr">Our Services</h2></div>
   </div>
-</section>
+  <img src="{% static 'ms/uploads/service/s3.jpg' %}" alt="Magic Sands services" width="100%">
+</div>
 
-<section class="mk-service-stack">
-  {% for s in services %}
-  <article class="mk-service-feature" id="{{ s.slug }}" data-reveal>
-    <div class="mk-service-feature-media">
-      <img src="{{ s.image }}" alt="{{ s.title }}" loading="lazy">
+<div class="Service-innersec3">
+  <div class="container">
+    {% for s in services %}
+    <div class="row align-items-center mb-5 wow fadeInUp" id="{{ s.slug }}">
+      <div class="col-lg-6{% if forloop.counter|divisibleby:2 %} order-lg-2{% endif %}">
+        <img src="{{ s.image }}" alt="{{ s.title }}" width="100%">
+      </div>
+      <div class="col-lg-6{% if forloop.counter|divisibleby:2 %} order-lg-1{% endif %}">
+        <div class="sec-title title-anim"><h2 class="sec-title_heading">{{ s.title }}</h2></div>
+        <p>{{ s.text }}</p>
+      </div>
     </div>
-    <div class="mk-service-feature-copy">
-      <p class="mk-kicker">Service</p>
-      <h2>{{ s.title }}</h2>
-      <p>{{ s.text }}</p>
-    </div>
-  </article>
-  {% endfor %}
-</section>
-
-<section class="mk-closing" data-reveal>
-  <h2>Need a quotation?</h2>
-  <p>Partners can log in for B2B rates, or contact our desks directly.</p>
-  <div class="mk-cta-row">
-    <a class="mk-btn mk-btn-dark" href="{% url 'partner_login' %}">Partner login</a>
-    <a class="mk-btn mk-btn-outline" href="{% url 'contact' %}">Contact us</a>
+    {% endfor %}
   </div>
-</section>
+</div>
 {% endblock %}

@@ -1,87 +1,77 @@
 {% extends "marketing/base.html" %}
+{% load static %}
 {% block title %}About Us | {{ brand_full }}{% endblock %}
-{% block meta_description %}{{ about_page.intro }}{% endblock %}
-{% block body_class %}page-about{% endblock %}
+
 {% block content %}
-<section class="mk-page-hero mk-page-hero-photo" style="--hero-image:url('{{ media.about_primary }}')">
-  <div class="mk-page-hero-inner">
-    <p class="mk-brand-signal">{{ brand }}</p>
-    <h1>About us</h1>
-    <p class="mk-lede">{{ about_page.intro_title }}</p>
+<div class="About-innersec1">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-auto wow fadeInUp">
+        <div class="About-innersec1-content">
+          <div class="sec-title title-anim centered"><h2 class="sec-title_heading sec-colorr">About Us</h2></div>
+          <h3>{{ about_page.intro_title }}</h3>
+          <p>{{ about_page.intro }}</p>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
+  <div class="wow fadeInUp"><img src="{% static 'ms/uploads/pages/abouts_1.jpg' %}" alt="Magic Sands" width="100%"></div>
+</div>
 
-<section class="mk-prose" data-reveal>
-  <p class="mk-lead">{{ about_page.intro }}</p>
-  <p>{{ about_page.expertise }}</p>
-  <p>{{ about_page.story }}</p>
-</section>
-
-<section class="mk-split" data-reveal>
-  <div>
-    <p class="mk-kicker">Boutique travel</p>
-    <h2>{{ about_page.boutique_title }}</h2>
-    <p>{{ about_page.boutique }}</p>
+<div class="About-innersec2">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-auto wow fadeInUp">
+        <div class="About-innersec2-content"><p>{{ about_page.expertise|safe }}</p></div>
+      </div>
+    </div>
   </div>
-  <figure>
-    <img src="{{ media.about_secondary }}" alt="Boutique Magic Sands experience" loading="lazy">
-  </figure>
-</section>
+</div>
 
-<section class="mk-prose mk-prose-alt" data-reveal>
-  <p class="mk-kicker">Why choose Magic Sands</p>
-  <h2>Stories as unique as the traveler</h2>
-  <p>{{ about_page.why }}</p>
-  <p>{{ about_page.why_detail }}</p>
-</section>
-
-<section class="mk-diff" data-reveal>
-  <div class="mk-section-intro">
-    <p class="mk-kicker">What makes us different</p>
-    <h2>How we work with you</h2>
+<div class="About-innersec3">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 wow fadeInUp">
+        <p>{{ about_page.story }}</p>
+        <h4>{{ about_page.boutique_title }}</h4>
+        <p>{{ about_page.boutique }}</p>
+      </div>
+      <div class="col-lg-6 wow fadeInUp">
+        <img src="{{ media.about_secondary }}" alt="Magic Sands boutique travel" width="100%">
+      </div>
+    </div>
   </div>
-  <ul class="mk-diff-list">
-    {% for item in differentiators %}
-    <li>
-      <h3>{{ item.title }}</h3>
-      <p>{{ item.text }}</p>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
+</div>
 
-<section class="mk-mission" data-reveal>
-  <div>
-    <p class="mk-kicker">Our motto</p>
-    <h2>{{ about_page.motto }}</h2>
+<div class="About-innersec4">
+  <div class="container">
+    <div class="sec-title title-anim centered"><h2 class="sec-title_heading">{{ about_page.why_title }}</h2></div>
+    <p class="text-center">{{ about_page.why }}</p>
+    <p class="text-center">{{ about_page.why_detail }}</p>
+    <div class="row g-4">
+      {% for item in differentiators %}
+      <div class="col-md-6">
+        <h4>{{ item.title }}</h4>
+        <p>{{ item.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
-  <div>
-    <p class="mk-kicker">Our mission</p>
+</div>
+
+<div class="About-innersec5">
+  <div class="container text-center">
+    <h3>{{ about_page.motto }}</h3>
     <p>{{ about_page.mission }}</p>
-  </div>
-</section>
-
-<section class="mk-values" data-reveal>
-  <div class="mk-section-intro">
-    <p class="mk-kicker">Our values</p>
-    <h2>What guides every journey</h2>
     <p>{{ about_page.values_intro }}</p>
+    <div class="row g-4">
+      {% for item in values %}
+      <div class="col-md-6">
+        <h4>{{ item.title }}</h4>
+        <p>{{ item.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
   </div>
-  <ul class="mk-values-list">
-    {% for item in values %}
-    <li>
-      <h3>{{ item.title }}</h3>
-      <p>{{ item.text }}</p>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-
-<section class="mk-closing" data-reveal>
-  <h2>Plan your next journey with us</h2>
-  <div class="mk-cta-row">
-    <a class="mk-btn mk-btn-dark" href="{% url 'contact' %}">Contact us</a>
-    <a class="mk-btn mk-btn-outline" href="{% url 'destinations' %}">View destinations</a>
-  </div>
-</section>
+</div>
 {% endblock %}

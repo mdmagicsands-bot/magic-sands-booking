@@ -21,11 +21,12 @@
       step.classList.toggle("is-active", n === index);
       step.classList.toggle("is-done", n < index);
     });
-    prevBtn.hidden = index === 0;
-    nextBtn.hidden = index === panels.length - 1;
-    submitBtn.hidden = index !== panels.length - 1;
-    progress.textContent = `Step ${index + 1} of ${panels.length}`;
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (prevBtn) prevBtn.hidden = index === 0;
+    if (nextBtn) nextBtn.hidden = index === panels.length - 1;
+    if (submitBtn) submitBtn.hidden = index !== panels.length - 1;
+    form.dataset.lastStep = index === panels.length - 1 ? "true" : "false";
+    if (progress) progress.textContent = `Step ${index + 1} of ${panels.length}`;
+    form.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const validatePanel = (panel) => {
@@ -49,11 +50,15 @@
     return true;
   };
 
-  nextBtn?.addEventListener("click", () => {
+  nextBtn?.addEventListener("click", (event) => {
+    event.preventDefault();
     if (!validatePanel(panels[index])) return;
     show(index + 1);
   });
-  prevBtn?.addEventListener("click", () => show(index - 1));
+  prevBtn?.addEventListener("click", (event) => {
+    event.preventDefault();
+    show(index - 1);
+  });
 
   form.addEventListener("submit", (event) => {
     if (!validatePanel(panels[index])) {

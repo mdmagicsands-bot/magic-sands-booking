@@ -10,6 +10,8 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 from bookings.models import Booking
 
+from marketing.views import _ctx as marketing_ctx
+
 from .models import PartnerRegistration
 
 
@@ -261,11 +263,12 @@ def gateway_partner_register(request):
         return render(
             request,
             "partners/register.html",
-            {
-                "success": request.GET.get("ok") == "1",
-                "error": request.GET.get("error") == "1",
-                "currencies": ["USD", "EUR", "GBP", "AED", "OMR", "SAR", "QAR", "BHD", "KWD", "EGP"],
-            },
+            marketing_ctx(
+                success=request.GET.get("ok") == "1",
+                error=request.GET.get("error") == "1",
+                header_color=True,
+                currencies=["USD", "EUR", "GBP", "AED", "OMR", "SAR", "QAR", "BHD", "KWD", "EGP"],
+            ),
         )
 
     # Hostinger posts go back to Hostinger; on-app posts stay here.

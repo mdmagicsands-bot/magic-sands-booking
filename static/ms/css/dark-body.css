@@ -1,0 +1,299 @@
+ 
+
+/* Want Sticky Header */
+
+.want-sticky-header .main-header .sticky-header{
+	position:relative;
+	display:none;
+}
+
+/* Dark Version Style CSS Code */
+
+.dark-body,
+.dark-body .testimonial-one,
+.dark-body .reply-comment,
+.dark-body .news-block_two-more,
+.dark-body .customer-block_one-inner,
+.dark-body .counter-block_two-inner{
+	background-color: #0b0b0b;
+}
+
+.dark-body .testimonial-one .single-item_carousel-pagination .swiper-pagination-bullet::before{
+	border-color:var(--white-color) !important;
+}
+
+.dark-body .clock-second,
+.dark-body .clock-minute,
+.dark-body .clock-hour,
+.dark-body .blog-detail_list li:before,
+.dark-body .click-indicator div > span,
+.dark-body .testimonial-one .single-item_carousel-pagination .swiper-pagination-bullet:hover,
+.dark-body .testimonial-one .single-item_carousel-pagination .swiper-pagination-bullet.swiper-pagination-bullet-active{
+	background-color:var(--white-color);
+}
+
+.dark-body .contact-one .video-image{
+	margin-top:50px;
+}
+
+.dark-body .news-block_one-image:before,
+.dark-body .contact-one .video-image:before{
+	display:none;
+}
+
+.dark-body .news-block_one-date{
+	bottom:10px;
+}
+
+.dark-body .marketing-two .brand-conetnt h1,
+.dark-body .marketing-one .animation_mode h1.light{
+	-webkit-text-stroke-color: rgba(var(--white-color-rgb), 1);
+}
+
+
+.dark-body ,
+.dark-body ,
+.dark-body ,
+.dark-body ,
+.dark-body ,
+.dark-body ,
+.dark-body ,
+.dark-body .contact-info_block-inner p,
+.dark-body .contact-info_block-inner h4,
+.dark-body .contact-info_text,
+.dark-body .contact-three_info-outer h3,
+.dark-body .error-one_text,
+.dark-body .error-one h2,
+.dark-body .popular-tags a,
+.dark-body .comment-form-outer .rating strong,
+.dark-body .sidebar-page-container .group-title h4,
+.dark-body .sidebar-page-container .comments-area .comment-box .text,
+.dark-body .sidebar-page-container .comments-area .comment-box strong,
+.dark-body .comments-area .group-title h4,
+.dark-body .blog-author-post .text,
+.dark-body .blog-author-post h5,
+.dark-body .post-share-options .social-links span,
+.dark-body .post-share-options .social-links a,
+.dark-body .blog-detail h3,
+.dark-body .blog-detail_list li,
+.dark-body .blog-detail p,
+.dark-body .blog-detail_title,
+.dark-body .blog-detail_meta li,
+.dark-body .news-block_one-text,
+.dark-body .coming-soon .emailed-form .text,
+.dark-body .coming-soon .emailed-form h3,
+.dark-body .contact-form .form-group .text,
+.dark-body .register-one h3,
+.dark-body .shipping-form .check-box label,
+.dark-body .order-box .order-total,
+.dark-body .order-totals li span,
+.dark-body .checkout-section h4,
+.dark-body .shipping-list li,
+.dark-body .shoping-cart-section .check-box label,
+.dark-body .cart-totals li,
+.dark-body .shoping-cart-section .total-column .title-box h6,
+.dark-body .cart-table tbody tr td.sub-total,
+.dark-body .cart-table thead tr th,
+.dark-body .cart-table tbody tr td.price,
+.dark-body .cart-table .prod-text,
+.dark-body .cart-table .prod-title,
+.dark-body .cart-table thead tr th.prod-column,
+.dark-body .related-products h3,
+.dark-body .comment-box .text,
+.dark-body .comment-box .comment-info,
+.dark-body .prod-tabs .tabs-content .tab .title,
+.dark-body .prod-tabs .tabs-content p,
+.dark-body .shop-detail_socials li a,
+.dark-body .shop-detail_socials .share,
+.dark-body .quantity-box .bootstrap-touchspin .glyphicon-chevron-up:before,
+.dark-body .quantity-box .bootstrap-touchspin .glyphicon-chevron-down:before,
+.dark-body .quantity-box .item-quantity input.qty-spinner,
+.dark-body .shop-detail_list li,
+.dark-body .shop-detail_list li span,
+.dark-body .shop-detail_text,
+.dark-body .shop-detail_price,
+.dark-body .shop-detail_rating .fa-star,
+.dark-body .shop-detail_title,
+.dark-body .shop-section .lower-text .products,
+.dark-body .shop-item .inner-box .lower-content .price,
+.dark-body .shop-item .inner-box .lower-content h3 a,
+.dark-body .sidebar .related-posts .post h4 a,
+.dark-body .shop-section .items-sorting .total-items,
+.dark-body .shop-cat li a,
+.dark-body .more-projects a,
+.dark-body .project-detail_list-two li,
+.dark-body .project-detail_list-two li span,
+.dark-body .project-detail p,
+.dark-body .project-detail h3,
+.dark-body .project-detail_list li strong,
+.dark-body .project-detail_list li,
+.dark-body .project-detail_heading,
+.dark-body .project-detail_location,
+.dark-body .styled-pagination li a,
+.dark-body .service-block_two-inner,
+.dark-body .service-detail_list li,
+.dark-body .service-detail_list li span,
+.dark-body .service-block_two strong,
+.dark-body .service-detail_subtitle,
+.dark-body .service-detail p,
+.dark-body .service-detail_title,
+.dark-body .category-list li a,
+.dark-body .sidebar-title h4,
+.dark-body .default-skill-title,
+.dark-body .team-detail .lower-box h3,
+.dark-body .team-detail_info li span,
+.dark-body .team-detail p,
+.dark-body .team-detail_title,
+.dark-body .privacy-section .privacy-list li,
+.dark-body .privacy-section h4,
+.dark-body .privacy-section p,
+.dark-body .privacy-section h3,
+.dark-body .news-block_two-more,
+.dark-body .news-block_two-text,
+.dark-body .team-block_two-designation,
+.dark-body .team-block_two-title a,
+.dark-body .customer-block_one-text,
+.dark-body .customer-block_one-title a,
+.dark-body .about-three_award,
+.dark-body .about-three_phone a,
+.dark-body .news-block_two-title a,
+.dark-body .news-block_two-meta li,
+.dark-body .feature-block_three-text,
+.dark-body .feature-block_three-title,
+.dark-body .team-one_text,
+.dark-body .marketing-two .brand-conetnt.two h1,
+.dark-body .counter-block_two-count,
+.dark-body .counter-block_two-text,
+.dark-body .fluid-one_list li,
+.dark-body .sec-title_text,
+.dark-body .service-block_one-text,
+.dark-body .service-block_one-heading a,
+.dark-body .banner-one_text,
+.dark-body .banner-one_title,
+.dark-body .contact-form_text,
+.dark-body .info-block_one-inner,
+.dark-body .info-block_one-inner strong,
+.dark-body .contact-one .sec-title_text,
+.dark-body .counter-block_one-count,
+.dark-body .counter-block_one-text,
+.dark-body .marketing-one .animation_mode h1,
+.dark-body .post-share-options .post-tags strong,
+.dark-body .post-share-options .post-tags a,
+.dark-body .testimonial-block_one-designation span,
+.dark-body .testimonial-block_one-designation,
+.dark-body .testimonial-block_one-text,
+.dark-body .news-block_one-meta li,
+.dark-body .about-three_list li,
+.dark-body .post-widget .post h4 a,
+.dark-body .post-widget .post .post-date,
+.dark-body .news-block_one-title a,
+.dark-body .counter-block_three-title,
+.dark-body .counter-block_three-text,
+.dark-body .fluid-one_author-inner span,
+.dark-body .testimonial-one__trusted span,
+.dark-body .testimonial-one__trusted,
+.dark-body .feature-block_one-title,
+.dark-body .feature-block_one-text,
+.dark-body .feature-block_one-title,
+.dark-body .sec-title_heading{
+	color:var(--white-color);
+}
+
+.dark-body .fluid-one_experiance{
+	-webkit-text-stroke-color: rgba(var(--white-color-rgb), 1);
+}
+
+.dark-body .shop-item .inner-box .lower-content .cart{
+	filter: invert(100%);
+}
+
+.dark-body .about-one{
+	background-image:inherit;
+	background-color: #0b0b0b;
+}
+
+.dark-body .client-one_subtitle{
+	color:var(--white-color);
+	border-color:var(--white-color);
+}
+
+.dark-body .order-box,
+.dark-body .item-quantity,
+.dark-body .cart-total-box,
+.dark-body .shipping-list li,
+.dark-body .post-widget .post,
+.dark-body .popular-tags a,
+.dark-body .shop-detail_socials li a,
+.dark-body .post-share-options .post-tags a,
+.dark-body .register-one .form-column .inner-column,
+.dark-body .shipping-outer .cart-shipping-box,
+.dark-body .shop-detail .prod-tabs .tab-btns::before,
+.dark-body .shop-detail_gallery-column .thumb,
+.dark-body .shop-section .lower-text .products,
+.dark-body .more-projects{
+	border-color:rgba(var(--white-color-rgb), 0.40);
+}
+
+.dark-body .project-detail_list li .icon,
+.dark-body .styled-pagination li a,
+.dark-body .service-block_two strong,
+.dark-body .team-detail_contact,
+.dark-body .category-list li a,
+.dark-body .counter-block_three-count,
+.dark-body .counter-block_two-text{
+	border-color:var(--white-color);
+}
+
+.dark-body .news-two{
+	padding-top:110px;
+	background-color: #222222;
+}
+
+.dark-body .counter-three,
+.dark-body .award-one,
+.dark-body .faq-one,
+.dark-body .customer-one_bg,
+.dark-body .counter-two,
+.dark-body .fluid-one:before,
+.dark-body .comments-area,
+.dark-body .service-block_one-inner,
+.dark-body .shop-item .inner-box .image,
+.dark-body .service-three .outer-container,
+.dark-body .shop-detail_gallery-column .image,
+.dark-body .shop-detail_gallery-column .thumb,
+.dark-body .sidebar .related-posts .post .post-thumb,
+.dark-body .project-one{
+	background-color: #222222;
+}
+
+.dark-body .testimonial-two{
+	padding-bottom:110px;
+}
+
+.dark-body .team-two_pattern,
+.dark-body .about-two_image:before,
+.dark-body .team-one_pattern,
+.dark-body .main-footer_bg:before,
+.dark-body .main-footer_bg:after,
+.dark-body .counter-one_pattern,
+.dark-body .testimonial-two_circle-image,
+.dark-body .project-block_one-image:before{
+	display:none;
+}
+
+.dark-body .main-header .mobile-menu .navigation li.dropdown .dropdown-btn{
+	color: #0b0b0b;
+}
+
+.dark-body .footer-three,
+.dark-body .main-footer{
+	margin-bottom:0px;
+}
+
+.dark-body .price-one_circle{
+	opacity:0.10;
+}
+
+.dark-body .blog-detail blockquote:before{
+	background-color:var(--theme-color);
+}

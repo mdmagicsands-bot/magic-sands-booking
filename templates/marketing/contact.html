@@ -1,45 +1,103 @@
 {% extends "marketing/base.html" %}
+{% load static %}
+
 {% block title %}Contact Us | {{ brand_full }}{% endblock %}
-{% block meta_description %}Contact Magic Sands DMC offices in Oman, UAE, Egypt, India, and Italy.{% endblock %}
-{% block body_class %}page-contact{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/contact-marketing.css' %}">
+{% endblock %}
+
 {% block content %}
-<section class="mk-page-hero">
-  <div class="mk-page-hero-inner">
-    <p class="mk-brand-signal">{{ brand }}</p>
-    <h1>Contact us</h1>
-    <p class="mk-lede">Have questions about our services and destinations? Our dedicated team is on hand to assist and guide you.</p>
-  </div>
-</section>
+<div class="inner-pagesconatct-sec" style="background-image:url({{ contact_banner }})">
+  <div class="container">
+    <div class="sec-title">
+      <h3 class="sec-title_heading text-white">Contact Us</h3>
+    </div>
+    <p class="contact-lede">
+      Have any questions about our services &amp; destinations please don't hesitate to reach out. Our
+      dedicated team is on hand to assist and guide you.
+    </p>
 
-<section class="mk-contact" data-reveal>
-  <div class="mk-office-list">
-    {% for office in offices %}
-    <article>
-      <h2>{{ office.label }}</h2>
-      <p>{{ office.address }}</p>
-      <p>
-        <a href="tel:{{ office.phone|cut:' ' }}">{{ office.phone }}</a><br>
-        <a href="mailto:{{ office.email }}">{{ office.email }}</a>
-      </p>
-    </article>
-    {% endfor %}
+    <div class="row justify-content-between">
+      <div class="col-lg-12 col-md-12 col-sm-12 d-flex">
+        <div class="row w-100">
+          {% for office in offices %}
+          <div class="col-lg-4 col-md-6 col-sm-6 d-flex">
+            <div class="Infacility-single contact-office-card{% if office.variant == 'head' %} is-head{% endif %}">
+              <div class="text">
+                <h4>{{ office.label }}</h4>
+                <div class="office-address">
+                  <i class="fas fa-location-dot" style="padding-top: 7px;"></i>
+                  <p>{{ office.address }}</p>
+                </div>
+                <p><a href="tel:{{ office.phone|cut:' ' }}"><i class="fas fa-phone"></i>{{ office.phone }}</a></p>
+                <p><a href="mailto:{{ office.email }}"><i class="fas fa-envelope"></i>{{ office.email }}</a></p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="mk-contact-form-wrap">
-    {% if sent %}
-    <h2>Thank you</h2>
-    <p>Your message was received. Our team will get back to you soon.</p>
-    {% else %}
-    <h2>Send us a message</h2>
-    <form method="post" class="mk-form">
-      {% csrf_token %}
-      <label>Name <input type="text" name="name" required autocomplete="name"></label>
-      <label>Email <input type="email" name="email" required autocomplete="email"></label>
-      <label>Company <input type="text" name="company" autocomplete="organization"></label>
-      <label>Message <textarea name="message" rows="5" required></textarea></label>
-      <button type="submit" class="mk-btn mk-btn-dark">Submit</button>
-    </form>
-    {% endif %}
+<div class="container">
+  {% if sent %}
+  <div class="contact-sent">Thank you — your message was received. Our team will get back to you soon.</div>
+  {% endif %}
+
+  <div class="row">
+    <div class="contact-three_form-column col-lg-6 col-md-6 col-sm-12 d-flex">
+      <div class="contact-three_form-outer">
+        <div class="sec-title">
+          <h3 class="sec-title_heading sec-colorr">Send Us a Message</h3>
+        </div>
+
+        <div class="contact-form">
+          <form method="post" action="{% url 'contact' %}" id="contact-form" novalidate>
+            {% csrf_token %}
+            <div class="row clearfix">
+              <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                <input type="text" name="name" placeholder="  Name" required>
+              </div>
+              <div class="form-group col-lg-6 col-md-12 col-sm-12">
+                <input type="number" name="phone" placeholder="Phone No" required>
+              </div>
+              <div class="form-group col-lg-12 col-sm-12">
+                <input type="email" name="email_r" placeholder="Email address" required>
+                <input type="text" name="email" class="email-span" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none!important;visibility:hidden;position:absolute;left:-9999px">
+              </div>
+              <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                <textarea name="message" placeholder="Your Message" required></textarea>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="theme-btn btn-style-three">
+                  <span class="btn-wrap">
+                    <span class="text-one">Submit Now <i><img src="{% static 'ms/images/icons/arrow-1.svg' %}" alt=""></i></span>
+                    <span class="text-two">Submit Now <i><img src="{% static 'ms/images/icons/arrow-1.svg' %}" alt=""></i></span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div class="mapsecs-inn">
+        <iframe
+          src="{{ contact_map_embed }}"
+          width="100%"
+          height="350"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Magic Sands head office map"></iframe>
+      </div>
+    </div>
   </div>
-</section>
+</div>
 {% endblock %}

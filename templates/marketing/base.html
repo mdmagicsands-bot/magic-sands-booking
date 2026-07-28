@@ -3,93 +3,46 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1280">
   <title>{% block title %}{{ brand_full }} | {{ tagline }}{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}{{ brand_full }} — journeys across Arabia crafted with elegance, comfort, and discovery.{% endblock %}">
-  <link rel="icon" href="{{ media.favicon }}" type="image/png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/marketing.css' %}">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <link href="{% static 'ms/css/bootstrap.css' %}" rel="stylesheet">
+  <link href="{% static 'ms/css/style.css' %}" rel="stylesheet">
+  <link href="{% static 'ms/css/meanmenu.min.css' %}" rel="stylesheet">
+  <link href="{% static 'ms/css/responsive.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+  <link href="{% static 'ms/css/color-switcher-design.css' %}" rel="stylesheet">
+  <link id="theme-color-file" href="{% static 'ms/css/color-themes/default-color.css' %}" rel="stylesheet">
+  <link rel="shortcut icon" href="{% static 'ms/images/favicon.png' %}" type="image/x-icon">
+  <link rel="icon" href="{% static 'ms/images/favicon.png' %}" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   {% block extra_head %}{% endblock %}
 </head>
-<body class="{% block body_class %}{% endblock %}">
-  <header class="mk-header" data-header>
-    <a class="mk-brand" href="{% url 'home' %}">
-      <img src="{{ media.logo }}" alt="{{ brand }}" width="150" height="48">
-    </a>
-    <button class="mk-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" data-nav-toggle>
-      <span></span><span></span><span></span>
-    </button>
-    <nav class="mk-nav" id="site-nav" data-nav>
-      <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'about' %}">About Us</a>
-      <a href="{% url 'services' %}">Services</a>
-      <a href="{% url 'destinations' %}">Destinations</a>
-      <a href="{% url 'testimonials' %}">Testimonials</a>
-      <a href="{% url 'contact' %}">Contact Us</a>
-      <a href="{% url 'book_home' %}">Book Hotels</a>
-      <a class="mk-nav-cta" href="{% url 'partner_login' %}">Partner Login</a>
-    </nav>
-  </header>
+<body>
+  <div class="page-wrapper">
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-  {% if messages %}
-  <div class="mk-flash-wrap">
-    {% for message in messages %}
-    <div class="mk-flash">{{ message }}</div>
-    {% endfor %}
-  </div>
-  {% endif %}
+    {% include "marketing/partials/ms_header.html" %}
 
-  <main>
-    {% block content %}{% endblock %}
-  </main>
-
-  <footer class="mk-footer">
-    <div class="mk-footer-inner">
-      <div class="mk-footer-brand">
-        <img src="{{ media.footer_logo }}" alt="{{ brand }}" width="160" height="52">
-        <p>We design journeys that transcend the expected — elegance, comfort, and discovery across Arabia.</p>
-        <div class="mk-social">
-          {% for s in social %}
-          <a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.label }}</a>
-          {% endfor %}
-        </div>
-      </div>
-      <div>
-        <h4>Explore</h4>
-        <a href="{% url 'services' %}">Services</a>
-        <a href="{% url 'destinations' %}">Destinations</a>
-        <a href="{% url 'book_home' %}">Book Hotels</a>
-        <a href="{% url 'partner_login' %}">Partner Login</a>
-      </div>
-      <div>
-        <h4>Company</h4>
-        <a href="{% url 'about' %}">About Us</a>
-        <a href="{% url 'privacy_policy' %}">Privacy Policy</a>
-        <a href="{% url 'testimonials' %}">Testimonials</a>
-        <a href="{% url 'contact' %}">Contact Us</a>
-        <a href="{% url 'partner_register' %}">Register as Partner</a>
-        <a href="{% url 'admin_login' %}">Admin login</a>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <p class="mk-office">
-          <strong>Oman</strong><br>
-          <a href="tel:+96896772959">+968 9677 2959</a><br>
-          <a href="mailto:oman@magicsandsdmc.com">oman@magicsandsdmc.com</a>
-        </p>
-        <p class="mk-office">
-          <strong>UAE</strong><br>
-          <a href="tel:+971557561989">+971 55 756 1989</a><br>
-          <a href="mailto:uae@magicsandsdmc.com">uae@magicsandsdmc.com</a>
-        </p>
-      </div>
+    {% if messages %}
+    <div class="container" style="margin-top:1rem;">
+      {% for message in messages %}
+      <div class="alert alert-info">{{ message }}</div>
+      {% endfor %}
     </div>
-    <p class="mk-legal">© {% now "Y" %} {{ brand_full }}. All rights reserved. · <a href="{{ site_url }}">www.magicsandsdmc.com</a></p>
-  </footer>
+    {% endif %}
 
-  <script src="{% static 'js/marketing.js' %}" defer></script>
+    {% block content %}{% endblock %}
+
+    {% include "marketing/partials/ms_footer.html" %}
+  </div>
+
+  {% include "marketing/partials/ms_scripts.html" %}
   {% block extra_js %}{% endblock %}
 </body>
 </html>

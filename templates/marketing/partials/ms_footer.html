@@ -1,0 +1,110 @@
+{% load static %}
+<footer class="main-footer">
+  <div class="main-footer_bg" style="background-image:url('{% static 'ms/images/footer-bg.jpg' %}')"></div>
+  <div class="container">
+    <div class="widgets-section">
+      <div class="row clearfix justify-content-between">
+        <div class="main-footer_column col-xl-auto col-lg-12 col-md-auto col-sm-12">
+          <div class="logo-widget">
+            <div class="main-footer_logo"><a href="{% url 'home' %}"><img src="{% static 'ms/images/footer-logo.png' %}" alt="{{ brand }}"></a></div>
+          </div>
+        </div>
+
+        <div class="main-footer_column col-xl-auto col-lg-auto col-md-auto col-sm-12">
+          <div class="links-widget">
+            <h4 class="footer-three_widget-title">Explore</h4>
+            <ul class="main-footer_links">
+              <li><a href="{% url 'home' %}">Home</a></li>
+              <li><a href="{% url 'services' %}">Services</a></li>
+              <li><a href="{% url 'destinations' %}">Destinations</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="main-footer_column col-xl-auto col-lg-auto col-md-auto col-sm-12">
+          <div class="links-widget">
+            <h4 class="footer-three_widget-title">Company</h4>
+            <ul class="main-footer_links">
+              <li><a href="{% url 'about' %}">About Us</a></li>
+              <li><a href="{% url 'testimonials' %}">Testimonials</a></li>
+              <li><a href="{% url 'contact' %}">Contact Us</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-three_column col-xl-auto col-lg-auto col-md-6 col-sm-6">
+          <div class="info-widget">
+            <h4 class="footer-three_widget-title">Contact Us</h4>
+            <ul class="footer-three_contacts">
+              <li><a href="tel:+96896772959">+96896772959</a></li>
+              <li><a href="mailto:oman@magicsandsdmc.com">oman@magicsandsdmc.com</a></li>
+              <li>Shop #04, Building # 1//2210, Block # 415, Al wafa street, Amerat, Oman</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="main-footer_column col-xl-3 col-lg-3 col-md-6 col-sm-6">
+          <div class="newsletter-widget">
+            <h4 class="main-footer_title">Follow Our Journey</h4>
+            <div class="main-footer_text">Subscribe to our newsletter for the latest updates and news.</div>
+            <div class="newsletter-box">
+              <form method="post" action="{% url 'contact' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                  <input type="email" name="newsletter_email" placeholder="Enter Your Email Address" required>
+                  <button type="submit" class="theme-btn btn-style-three">
+                    <span class="btn-wrap">
+                      <span class="text-one">Subscribe <i><img src="{% static 'ms/images/icons/arrow-1.svg' %}" alt=""></i></span>
+                      <span class="text-two">Subscribe <i><img src="{% static 'ms/images/icons/arrow-1.svg' %}" alt=""></i></span>
+                    </span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="main-footer_bottom">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-lg-3">
+          <div class="main-footer_socials">
+            <a href="https://www.facebook.com/share/15nCuowwfs/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/magicsandsllc" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" target="_blank" rel="noopener noreferrer"><img src="{% static 'ms/images/b-threads.png' %}" alt="Threads"></a>
+            <a href="https://www.linkedin.com/company/magic-sands-dmc/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://www.youtube.com/channel/UCogJAsMh_Nqy11mlw2PPH5g" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="main-footer_copyright">Copyright &copy; {% now "Y" %} Magic Sands Technology Pvt ltd (India). All rights reserved.</div>
+        </div>
+        <div class="col-lg-3">
+          <div class="footer__payments">
+            <img class="footer__payments-img" src="{% static 'ms/images/pay-1.svg' %}" alt="">
+            <img class="footer__payments-img" src="{% static 'ms/images/pay-2.svg' %}" alt="">
+            <img class="footer__payments-img" src="{% static 'ms/images/pay-3.svg' %}" alt="">
+            <img class="footer__payments-img" src="{% static 'ms/images/pay-4.svg' %}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="fixedRit">
+  <ul>
+    <li><a class="whatsapp" href="https://api.whatsapp.com/send/?phone=+96896772959&text=%2AHey Magic Sands+&app_absent=0" target="_blank" rel="noopener noreferrer"><div class="align"><i class="fab fa-whatsapp" aria-hidden="true"></i></div></a></li>
+    <li><a class="mail" href="mailto:oman@magicsandsdmc.com"><div class="align"><i class="fas fa-envelope" aria-hidden="true"></i></div></a></li>
+    <li><a class="call" href="tel:+96896772959"><div class="align"><i class="fa fa-phone" aria-hidden="true"></i></div></a></li>
+  </ul>
+</div>
+
+<div class="progress-wrap">
+  <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+    <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+  </svg>
+</div>

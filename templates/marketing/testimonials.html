@@ -1,35 +1,37 @@
 {% extends "marketing/base.html" %}
-{% block title %}Testimonials | {{ brand_full }}{% endblock %}
-{% block meta_description %}What our happy customers say about journeys with {{ brand_full }}.{% endblock %}
-{% block body_class %}page-testimonials{% endblock %}
+{% load static %}
+{% block title %}Our Testimonials | {{ brand_full }}{% endblock %}
+
 {% block content %}
-<section class="mk-page-hero">
-  <div class="mk-page-hero-inner">
-    <p class="mk-brand-signal">{{ brand }}</p>
-    <h1>Testimonials</h1>
-    <p class="mk-lede">Words from travellers who explored Arabia with Magic Sands.</p>
+<div class="Testimonial-innersec">
+  <div class="container">
+    <div class="sec-title title-anim centered">
+      <h2 class="sec-title_heading sec-colorr">Our Testimonials</h2>
+    </div>
+    <div class="row justify-content-center">
+      {% for t in testimonials %}
+      <div class="col-lg-6 col-md-6 d-flex wow fadeInUp">
+        <div class="testimonial-block_three">
+          <div class="testimonial-block_three-inner">
+            {% if t.image %}
+            <img src="{{ t.image }}" class="tess-img" alt="{{ t.name }}">
+            {% endif %}
+            <div class="testimonial-block_three-author">
+              {{ t.name }} <span>{{ t.role }}</span>
+            </div>
+            <div class="testimonial-block_three-rating">
+              {% for i in "12345" %}
+                {% if forloop.counter <= t.rating|default:5 %}<span class="fa fa-star"></span>{% endif %}
+              {% endfor %}
+            </div>
+            <div class="testimonial-block_three-textnew">
+              <p>{{ t.quote }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
   </div>
-</section>
-
-<section class="mk-quotes mk-quotes-page" data-reveal>
-  <div class="mk-quote-grid">
-    {% for t in testimonials %}
-    <blockquote>
-      <p>“{{ t.quote }}”</p>
-      <footer>
-        <strong>{{ t.name }}</strong>
-        <span>{{ t.role }}</span>
-      </footer>
-    </blockquote>
-    {% endfor %}
-  </div>
-</section>
-
-<section class="mk-closing" data-reveal>
-  <h2>Ready for your own story?</h2>
-  <div class="mk-cta-row">
-    <a class="mk-btn mk-btn-dark" href="{% url 'contact' %}">Contact us</a>
-    <a class="mk-btn mk-btn-outline" href="{% url 'destinations' %}">Explore destinations</a>
-  </div>
-</section>
+</div>
 {% endblock %}

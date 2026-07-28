@@ -1,6 +1,7 @@
 """Resolve public marketing content from the CMS database, with static fallbacks."""
 
 from . import content
+from .assets import ms, resolve_ms_url
 from .models import (
     Destination,
     MarketingSettings,
@@ -9,6 +10,33 @@ from .models import (
     Testimonial,
     WhyChooseItem,
 )
+
+_TESTIMONIAL_DEFAULT = ms("uploads/testimonial/default.png")
+_TESTIMONIAL_BY_NAME = {t["name"].lower(): t for t in content.TESTIMONIALS}
+
+
+def _resolve_testimonial_row(row, *, fallback=None):
+    fb = fallback or {}
+    if isinstance(row, dict):
+        quote = row.get("quote", "")
+        name = row.get("name", "")
+        role = row.get("role", "")
+        rating = row.get("rating", 5)
+        raw_image = row.get("image") or fb.get("image")
+    else:
+        quote = row.quote
+        name = row.name
+        role = row.role
+        rating = fb.get("rating", 5)
+        raw_image = fb.get("image")
+    image = resolve_ms_url(raw_image, default=_TESTIMONIAL_DEFAULT)
+    return {
+        "quote": quote,
+        "name": name,
+        "role": role,
+        "image": image,
+        "rating": rating,
+    }
 
 
 def get_settings():
@@ -61,20 +89,41 @@ def get_destinations(published_only=True):
         qs = qs.filter(is_published=True)
     rows = list(qs)
     if rows:
-        return [
-            {
-                "slug": d.slug,
-                "name": d.name,
-                "short": d.short,
-                "summary": d.summary,
-                "teaser": d.teaser,
-                "image": d.image_url,
-                "banner": d.banner_url or d.image_url,
-                "accent": d.accent,
-            }
-            for d in rows
-        ]
-    return content.DESTINATIONS
+        data = []
+        for i, d in enumerate(rows, start=1):
+            card = resolve_ms_url(
+                f"uploads/destination/desti{i}.jpg",
+                default=resolve_ms_url(d.image_url),
+            )
+            detail = resolve_ms_url(
+                f"uploads/destination/destination{i}_main.jpg",
+                default=resolve_ms_url(d.image_url),
+            )
+            data.append(
+                {
+                    "slug": d.slug,
+                    "name": d.name,
+                    "short": d.short,
+                    "summary": d.summary,
+                    "teaser": d.teaser,
+                    "image": resolve_ms_url(d.image_url, default=card),
+                    "card_image": card,
+                    "detail_image": detail,
+                    "banner": resolve_ms_url(d.banner_url or d.image_url, default=card),
+                    "accent": d.accent,
+                }
+            )
+        return data
+    return [
+        {
+            **d,
+            "card_image": resolve_ms_url(f"uploads/destination/desti{i}.jpg", default=d["image"]),
+            "detail_image": resolve_ms_url(
+                f"uploads/destination/destination{i}_main.jpg", default=d["image"]
+            ),
+        }
+        for i, d in enumerate(content.DESTINATIONS, start=1)
+    ]
 
 
 def get_services(published_only=True):
@@ -88,7 +137,7 @@ def get_services(published_only=True):
                 "slug": s.slug,
                 "title": s.title,
                 "text": s.text,
-                "image": s.image_url,
+                "image": resolve_ms_url(s.image_url),
             }
             for s in rows
         ]
@@ -96,14 +145,8 @@ def get_services(published_only=True):
 
 
 def get_testimonials(published_only=True, limit=None):
-    qs = Testimonial.objects.all()
-    if published_only:
-        qs = qs.filter(is_published=True)
-    rows = list(qs)
-    if rows:
-        data = [{"quote": t.quote, "name": t.name, "role": t.role} for t in rows]
-        return data[:limit] if limit else data
-    data = content.TESTIMONIALS
+    # Use Hostinger-export testimonials (with local photo paths) for the public site.
+    data = [_resolve_testimonial_row(t) for t in content.TESTIMONIALS]
     return data[:limit] if limit else data
 
 
@@ -119,6 +162,7 @@ def get_offices(published_only=True):
                 "address": o.address,
                 "phone": o.phone,
                 "email": o.email,
+                "variant": "head" if "head office" in o.label.lower() else "branch",
             }
             for o in rows
         ]
@@ -132,7 +176,11 @@ def get_why_choose(published_only=True):
     rows = list(qs)
     if rows:
         return [
-            {"title": w.title, "text": w.text, "icon": w.icon_url}
-            for w in rows
+            {
+                "title": w.title,
+                "text": w.text,
+                "icon": resolve_ms_url(w.icon_url, default=content.WHY_CHOOSE[i]["icon"] if i < len(content.WHY_CHOOSE) else ""),
+            }
+            for i, w in enumerate(rows)
         ]
     return content.WHY_CHOOSE

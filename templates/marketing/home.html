@@ -1,135 +1,245 @@
 {% extends "marketing/base.html" %}
-{% block title %}{{ brand }} | Your Guide to Arabia{% endblock %}
-{% block body_class %}page-home{% endblock %}
+{% load static %}
+{% block title %}Magic Sands | Your Guide to Arabia{% endblock %}
+
 {% block content %}
-<section class="mk-hero" aria-label="{{ brand }} hero">
-  <div class="mk-hero-media" aria-hidden="true">
-    {% for banner in hero_banners %}
-    <div class="mk-hero-slide{% if forloop.first %} is-active{% endif %}" style="background-image:url('{{ banner }}')"></div>
-    {% endfor %}
+<section class="slider-one">
+  <div class="main-slider swiper-container">
+    <div class="swiper-wrapper">
+      {% for slide in hero_slides %}
+      <div class="swiper-slide">
+        <div class="slider-one_image-layer" style="background-image:url('{{ slide.image }}')"></div>
+        <div class="container">
+          <div class="slider-one_content">
+            <div class="slider-one_content-inner">
+              <div class="slider-one_heading">
+                <span class="hero__text-1">ARTISANS OF </span>
+                <span class="hero__text-2">Elevating </span>
+                <span class="hero__text-3">The </span>
+                <span class="hero__text-4">Extraordinary </span>
+                <span class="hero__text-5">EXPERIENCES </span>
+              </div>
+            </div>
+          </div>
+          <div class="sider-location">
+            <p><i class="fa-classic fa-solid fa-location-dot"></i> {{ slide.location }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="slider-one_pagination"></div>
   </div>
-  <div class="mk-hero-veil" aria-hidden="true"></div>
-  <div class="mk-hero-content">
-    <p class="mk-brand-signal">{{ hero.brand }}</p>
-    <h1>{{ hero.title }}</h1>
-    <p class="mk-lede">{{ hero.lede }}</p>
-    <div class="mk-cta-row">
-      <a class="mk-btn mk-btn-light" href="{% url 'destinations' %}">Explore destinations</a>
-      <a class="mk-btn mk-btn-line" href="{% url 'contact' %}">Contact us</a>
+  <a href="#about" class="scroll-btn">
+    <span>Scroll For More</span>
+    <div class="scroll-befor"><img src="{% static 'ms/images/down-arrow.svg' %}" alt=""></div>
+  </a>
+</section>
+
+<section class="about-one" id="about">
+  <div class="container">
+    <div class="sec-title title-anim">
+      <div class="sec-title_title">About Us</div>
+      <h2 class="sec-title_heading">Premier Destination <span>and Event Management</span></h2>
+    </div>
+    <div class="row clearfix align-items-center">
+      <div class="about-one_image-column col-xl-7 col-lg-8 col-md-12 col-sm-12">
+        <div class="about-one_image-outer">
+          <div class="row clearfix">
+            <div class="column col-lg-4 col-md-6 col-sm-6">
+              <div class="image"><img src="{{ media.about_primary }}" alt="Magic Sands"></div>
+              <div class="about-one_button">
+                <a href="{% url 'about' %}" class="theme-btn btn-style-three">
+                  <span class="btn-wrap">
+                    <span class="text-one">learn more <i><img src="{% static 'ms/images/icons/arrow-1.svg' %}" alt=""></i></span>
+                    <span class="text-two">learn more <i><img src="{% static 'ms/images/icons/arrow-1.svg' %}" alt=""></i></span>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <div class="column col-lg-8 col-md-6 col-sm-6">
+              <div class="image"><img src="{{ media.about_secondary }}" alt="Magic Sands journeys"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-one_content-column col-xl-5 col-lg-4 col-md-12 col-sm-12">
+        <div class="about-one_content-outer">
+          <div class="feature-block_one">
+            <p>At <strong>Magic Sands,</strong> we design journeys that transcend the expected, weaving moments of elegance, comfort, and discovery.</p>
+            <p>{{ about_blurb }}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <a class="mk-scroll-hint" href="#about" aria-label="Scroll for more">Scroll</a>
 </section>
 
-<section class="mk-band" id="about" data-reveal>
-  <div class="mk-band-copy">
-    <p class="mk-kicker">About us</p>
-    <h2>Premier destination and event management</h2>
-    <p>{{ about_blurb }}</p>
-    <a class="mk-link" href="{% url 'about' %}">Learn more</a>
-  </div>
-  <div class="mk-band-visual">
-    <img src="{{ media.about_primary }}" alt="Magic Sands journeys across Arabia" loading="lazy">
-  </div>
-</section>
-
-<section class="mk-destinations" data-reveal>
-  <div class="mk-section-intro">
-    <p class="mk-kicker">Our destinations</p>
-    <h2>Where Arabia unfolds</h2>
-  </div>
-  <div class="mk-dest-mosaic">
-    {% for d in destinations %}
-    <a class="mk-dest-panel" href="{% url 'destination_detail' d.slug %}" style="--accent: {{ d.accent }}">
-      <img src="{{ d.image }}" alt="{{ d.name }}" loading="lazy">
-      <span class="mk-dest-copy">
-        <strong>{{ d.short }}</strong>
-        <em>{{ d.teaser|truncatewords:14 }}</em>
-      </span>
-    </a>
-    {% endfor %}
-  </div>
-</section>
-
-<section class="mk-statement" data-reveal>
-  <div class="mk-statement-bg" style="background-image:url('{{ media.about_secondary }}')" aria-hidden="true"></div>
-  <div class="mk-statement-inner">
-    <p class="mk-kicker mk-kicker-light">Our craft</p>
-    <h2>{{ elevating.title }}</h2>
-    <p>{{ elevating.text }}</p>
-  </div>
-</section>
-
-<section class="mk-services" data-reveal>
-  <div class="mk-section-intro">
-    <p class="mk-kicker">Our services</p>
-    <h2>The art of what we do</h2>
-  </div>
-  <div class="mk-service-rail">
-    {% for s in services %}
-    <a class="mk-service-panel" href="{% url 'services' %}#{{ s.slug }}">
-      <img src="{{ s.image }}" alt="{{ s.title }}" loading="lazy">
-      <span>{{ s.title }}</span>
-    </a>
-    {% endfor %}
-  </div>
-</section>
-
-<section class="mk-why" data-reveal>
-  <div class="mk-section-intro">
-    <p class="mk-kicker">Why choose us</p>
-    <h2>What we provide</h2>
-  </div>
-  <ul class="mk-why-list">
-    {% for item in why_choose %}
-    <li>
-      <img src="{{ item.icon }}" alt="" width="40" height="40" loading="lazy">
-      <div>
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.text }}</p>
+<section class="project-one">
+  <div class="container-fluid">
+    <div class="sec-title title-anim centered">
+      <div class="sec-title_title">Our Destinations</div>
+    </div>
+    <div class="project-style-one-items">
+      {% for d in destinations %}
+      <div class="project-block_one{% if forloop.counter|divisibleby:2 %} style-two{% endif %}">
+        <div class="project-block_one-inner">
+          <div class="project-block_one-image">
+            <div class="expand-section{{ forloop.counter }}">
+              <img src="{{ d.image }}" alt="{{ d.name }}">
+            </div>
+            <div class="project-block_one-overlay">
+              <div class="project-block_one-overlay_inner expand-isection{{ forloop.counter }}" style="background-image:url('{% static 'ms/images/background/project-1.png' %}')">
+                <h3 class="project-block_one-heading"><a href="{% url 'destination_detail' d.slug %}">{{ d.short }}</a></h3>
+                <div class="project-block_one-text"><p>{{ d.summary }}</p></div>
+                <a href="{% url 'destination_detail' d.slug %}" class="project-block_one-arrow"><i class="fa-classic fa-solid fa-arrow-right fa-fw"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </li>
-    {% endfor %}
-  </ul>
-</section>
-
-<section class="mk-quotes" data-reveal>
-  <div class="mk-section-intro">
-    <p class="mk-kicker">Testimonials</p>
-    <h2>What our happy customers say</h2>
-  </div>
-  <div class="mk-quote-rail">
-    {% for t in testimonials %}
-    <blockquote>
-      <p>“{{ t.quote }}”</p>
-      <footer>
-        <strong>{{ t.name }}</strong>
-        <span>{{ t.role }}</span>
-      </footer>
-    </blockquote>
-    {% endfor %}
-  </div>
-  <p class="mk-center"><a class="mk-link" href="{% url 'testimonials' %}">Read all testimonials</a></p>
-</section>
-
-<section class="mk-partners" data-reveal>
-  <div class="mk-section-intro">
-    <p class="mk-kicker">Our partners</p>
-    <h2>Trusted across the region</h2>
-  </div>
-  <div class="mk-partner-row">
-    {% for logo in partners %}
-    <img src="{{ logo }}" alt="Partner logo" loading="lazy">
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
 </section>
 
-<section class="mk-closing" data-reveal>
-  <h2>Ready to craft your next journey?</h2>
-  <p>Plan with our DMC teams across Arabia, or search live hotel inventory online.</p>
-  <div class="mk-cta-row">
-    <a class="mk-btn mk-btn-dark" href="{% url 'contact' %}">Talk to us</a>
-    <a class="mk-btn mk-btn-outline" href="{% url 'book_home' %}">Book hotels</a>
+<section class="desticontent-one">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-10 col-lg-10 text-center">
+        <div class="sec-title title-anim centered">
+          <h2 class="sec-title_heading">{{ elevating.title }}</h2>
+        </div>
+        <p>{{ elevating.text }}</p>
+      </div>
+    </div>
   </div>
 </section>
+
+<section class="proo-innersec">
+  <div class="container">
+    <div class="sec-title title-anim centered">
+      <div class="sec-title_title">Our Services</div>
+      <h2 class="sec-title_heading">The Art of What We Do</h2>
+    </div>
+    <div class="row justify-content-center">
+      {% for s in home_services %}
+      <div class="col-lg-{{ s.col }} col-md-{{ s.col }} col-sm-12 d-flex">
+        <div class="ppproject-card">
+          <img src="{{ s.image }}" alt="{{ s.title }}">
+          <img src="{{ s.image }}" alt="{{ s.title }}">
+          <div class="ppcontent">
+            <div class="ppcontent-inner">
+              <h2><a href="{% url 'services' %}">{{ s.title }}</a></h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="testimonial-three">
+  <div class="container">
+    <div class="inner-container">
+      <div class="sec-title">
+        <div class="sec-title_title">Our Testimonial</div>
+        <h2 class="sec-title_heading">What Our Happy Customers Says</h2>
+      </div>
+      <div class="two-item_carousel swiper-container">
+        <div class="swiper-wrapper">
+          {% for t in testimonials %}
+          <div class="swiper-slide">
+            <div class="testimonial-block_three">
+              <div class="testimonial-block_three-inner">
+                <div class="testimonial-block_three-rating">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= t.rating|default:5 %}<span class="fa fa-star"></span>{% endif %}
+                  {% endfor %}
+                </div>
+                <div class="testimonial-block_three-text"><p>{{ t.quote }}</p></div>
+                <div class="testimonial-block_three-author">
+                  <div class="testimonial-block_three-image"><img src="{{ t.image }}" alt="{{ t.name }}"></div>
+                  {{ t.name }} <span>{{ t.role }}</span>
+                </div>
+                <div class="testimonial-block_three-quote"><img src="{% static 'ms/images/icons/quote.svg' %}" alt=""></div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="testimonial-three_arrow">
+          <div class="two-item_carousel-prev fas fa-angle-left fa-fw"></div>
+          <div class="two-item_carousel-next fas fa-angle-right fa-fw"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-one">
+  <div class="container">
+    <div class="video-image expand-sectionnew">
+      <img src="{{ video.image }}" alt="Magic Sands video">
+      <a href="{{ video.youtube }}" class="contact-one_video lightbox-video"><span class="fa-classic fa-solid fa-play fa-fw"><i class="ripple"></i></span></a>
+    </div>
+  </div>
+</section>
+
+<div class="meetus-sec">
+  <div class="container">
+    <div class="sec-title centered"><h2 class="sec-title_heading">where you can expect us</h2></div>
+    <div class="meetus-box_one">
+      <div class="meetus-one_slider swiper-container">
+        <div class="swiper-wrapper">
+          {% for item in meet_us %}
+          <div class="swiper-slide">
+            <div class="meetus-image"><a href="#"><img src="{{ item.image }}" title="{{ item.title }}" alt="{{ item.title }}"></a></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="Facility-inn-sec">
+  <div class="container">
+    <div class="sec-title title-anim centered">
+      <div class="sec-title_title">What We Provide</div>
+      <h2 class="sec-title_heading">Why Choose Us</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      {% for item in why_choose %}
+      <div class="col-lg-4 col-md-4 col-sm-6 d-flex">
+        <div class="Infacility-single">
+          <div class="icon"><img src="{{ item.icon }}" alt=""></div>
+          <div class="text">
+            <h4>{{ item.title|title }}</h4>
+            <p>{{ item.text }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="Client-sec">
+  <div class="container">
+    <div class="sec-title centered"><h2 class="sec-title_heading">Our Partners</h2></div>
+    <div class="clients-box_one">
+      <div class="clients-one_slider swiper-container">
+        <div class="swiper-wrapper">
+          {% for p in partner_logos %}
+          <div class="swiper-slide">
+            <div class="client-image"><a href="#"><img src="{{ p.image }}" title="{{ p.title }}" alt="{{ p.title }}"></a></div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

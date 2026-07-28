@@ -7,12 +7,16 @@
   --sea: #1b6b74;
   --sea-deep: #0f4d54;
   --gold: #b8923a;
+  --brand-cyan: #16aad8;
+  --nav-ink: #1a1a1a;
   --hero-veil: linear-gradient(180deg, rgba(8, 28, 32, 0.35) 0%, rgba(8, 28, 32, 0.72) 100%);
   --display: "Baskervville", Georgia, serif;
   --sans: "Manrope", "Segoe UI", sans-serif;
+  --brand: "Nunito", "Manrope", "Segoe UI", sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --gutter: clamp(1.1rem, 3vw, 2.5rem);
   --max: 1180px;
+  --header-max: 1400px;
 }
 
 * { box-sizing: border-box; }
@@ -35,72 +39,124 @@ a:hover { color: var(--ink); }
   position: sticky;
   top: 0;
   z-index: 50;
+  background: #ffffff;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.mk-header.is-scrolled {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+}
+.mk-header-inner {
+  width: min(100%, var(--header-max));
+  margin: 0 auto;
+  padding: 1.25rem var(--gutter);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem var(--gutter);
-  background: rgba(247, 248, 246, 0.88);
-  border-bottom: 1px solid transparent;
-  backdrop-filter: blur(14px);
-  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+  gap: 1.5rem;
 }
-.mk-header.is-scrolled {
-  border-bottom-color: var(--line);
-  background: rgba(247, 248, 246, 0.96);
+.mk-brand {
+  display: flex;
+  align-items: center;
+  color: inherit;
+  min-width: 0;
+  flex-shrink: 0;
 }
-.mk-brand img { height: 44px; width: auto; }
+.mk-brand-logo {
+  display: block;
+  width: auto;
+  height: clamp(4rem, 6.5vw, 5rem);
+  max-width: min(280px, 46vw);
+  object-fit: contain;
+  object-position: left center;
+}
+.mk-header-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  margin-left: auto;
+}
 .mk-nav {
   display: none;
   align-items: center;
-  gap: 1.05rem;
+  gap: clamp(0.85rem, 1.8vw, 1.65rem);
 }
 .mk-nav a {
-  color: var(--ink);
+  color: var(--nav-ink);
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+.mk-nav a:hover {
+  color: var(--brand-cyan);
+}
+.mk-partner-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--nav-ink);
+  background: transparent;
+  color: var(--nav-ink);
+  font-family: var(--sans);
   font-size: 0.88rem;
   font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
 }
-.mk-nav-cta {
-  padding: 0.55rem 0.95rem;
-  border: 1px solid var(--ink);
-  color: var(--ink) !important;
-}
-.mk-nav-cta:hover {
-  background: var(--ink);
-  color: #fff !important;
+.mk-partner-login:hover {
+  background: var(--nav-ink);
+  color: #fff;
 }
 .mk-nav-toggle {
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 1px solid var(--line);
-  background: var(--white);
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
   display: grid;
   place-content: center;
   gap: 5px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 .mk-nav-toggle span {
   display: block;
-  width: 1.1rem;
+  width: 1.35rem;
   height: 2px;
-  background: var(--ink);
+  background: var(--nav-ink);
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
-@media (min-width: 980px) {
+@media (min-width: 1080px) {
   .mk-nav { display: flex; }
-  .mk-nav-toggle { display: none; }
 }
-.mk-nav.open {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  top: 4.2rem;
-  background: var(--white);
-  border: 1px solid var(--line);
-  padding: 1rem 1.1rem;
-  gap: 0.85rem;
+@media (max-width: 1079px) {
+  .mk-header-actions {
+    position: relative;
+  }
+  .mk-nav.open {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.65rem);
+    min-width: min(280px, 88vw);
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.1);
+    padding: 0.85rem 1rem;
+    gap: 0.65rem;
+    z-index: 60;
+  }
+  .mk-nav.open a {
+    padding: 0.45rem 0.15rem;
+  }
 }
 
 .mk-btn {
