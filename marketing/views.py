@@ -102,7 +102,7 @@ def testimonials(request):
 
 @require_http_methods(["GET", "POST"])
 def submit_your_review(request):
-    """Public feedback form — creates an unpublished testimonial for staff approval."""
+    """Public feedback form — new reviews appear on the website immediately."""
     from django.contrib import messages
 
     from .forms import PublicReviewForm
@@ -118,14 +118,14 @@ def submit_your_review(request):
             rating=int(data["rating"]),
             date_from=data["fdate"],
             date_to=data["tdate"],
-            is_published=False,
-            sort_order=9999,
+            is_published=True,
+            sort_order=0,
             image=data.get("image"),
         )
         obj.sync_role_from_dates()
         obj.save()
-        messages.success(request, "Thank you for your review!")
-        return redirect("submit_your_review")
+        messages.success(request, "Thank you for your review! It is now live on our website.")
+        return redirect("testimonials")
 
     return render(
         request,
