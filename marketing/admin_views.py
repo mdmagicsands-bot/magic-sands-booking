@@ -76,9 +76,12 @@ def _crud_list(request, model, template, context_key):
 
 def _crud_edit(request, model, form_class, instance, success_url_name, template, label):
     if request.method == "POST":
-        form = form_class(request.POST, instance=instance)
+        form = form_class(request.POST, request.FILES, instance=instance)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            if hasattr(obj, "sync_role_from_dates"):
+                obj.sync_role_from_dates()
+            obj.save()
             messages.success(request, f"{label} saved.")
             return redirect(success_url_name)
     else:

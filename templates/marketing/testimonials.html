@@ -7,6 +7,14 @@
   <div class="container">
     <div class="sec-title title-anim centered">
       <h2 class="sec-title_heading sec-colorr">Our Testimonials</h2>
+      <p class="sec-title_text" style="margin-top:12px">
+        <a href="{% url 'submit_your_review' %}" class="theme-btn btn-style-three" style="display:inline-flex">
+          <span class="btn-wrap">
+            <span class="text-one">Share your review</span>
+            <span class="text-two">Share your review</span>
+          </span>
+        </a>
+      </p>
     </div>
     <div class="row justify-content-center">
       {% for t in testimonials %}
@@ -25,11 +33,13 @@
               {% endfor %}
             </div>
             <div class="testimonial-block_three-textnew">
-              <p>{{ t.quote }}</p>
+              <p style="white-space:pre-line">{{ t.quote }}</p>
             </div>
           </div>
         </div>
       </div>
+      {% empty %}
+      <p class="muted">No testimonials published yet.</p>
       {% endfor %}
     </div>
   </div>

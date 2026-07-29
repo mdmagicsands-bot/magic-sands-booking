@@ -5,7 +5,7 @@ from . import catalog, content
 from .assets import resolve_ms_url
 from .legal_content import PRIVACY_POLICY
 from .live_content import HERO_SLIDES, HOME_SERVICES, MEET_US, PARTNER_LOGOS, VIDEO
-from .models import ContactMessage
+from .models import ContactMessage, Testimonial
 
 
 def _ctx(**extra):
@@ -97,6 +97,40 @@ def testimonials(request):
         request,
         "marketing/testimonials.html",
         _ctx(testimonials=catalog.get_testimonials(), header_color=True),
+    )
+
+
+@require_http_methods(["GET", "POST"])
+def submit_your_review(request):
+    """Public feedback form — creates an unpublished testimonial for staff approval."""
+    from django.contrib import messages
+
+    from .forms import PublicReviewForm
+
+    form = PublicReviewForm(request.POST or None, request.FILES or None)
+    if request.method == "POST" and form.is_valid():
+        data = form.cleaned_data
+        name = f"{data['fname'].strip()} {data['lname'].strip()}".strip()
+        obj = Testimonial(
+            name=name,
+            email=(data.get("email") or "").strip(),
+            quote=data["content"].strip(),
+            rating=int(data["rating"]),
+            date_from=data["fdate"],
+            date_to=data["tdate"],
+            is_published=False,
+            sort_order=9999,
+            image=data.get("image"),
+        )
+        obj.sync_role_from_dates()
+        obj.save()
+        messages.success(request, "Thank you for your review!")
+        return redirect("submit_your_review")
+
+    return render(
+        request,
+        "marketing/submit_your_review.html",
+        _ctx(form=form, header_color=True),
     )
 
 

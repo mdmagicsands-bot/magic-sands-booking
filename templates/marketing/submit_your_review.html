@@ -1,0 +1,122 @@
+{% extends "marketing/base.html" %}
+{% load static %}
+{% block title %}Testimonials & Feedback | {{ brand_full }}{% endblock %}
+
+{% block content %}
+<div class="Reviewsecc">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-6 col-lg-8 col-md-10">
+        <div class="contact-three_testi">
+          <div class="sec-title title-anim centered">
+            <h2 class="sec-title_heading sec-colorr">Testimonials &amp; Feedback</h2>
+          </div>
+
+          {% if messages %}
+            {% for message in messages %}
+            <div class="pl-alert pl-alert-{{ message.tags|default:'info' }}" style="margin-bottom:16px">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+
+          <div class="contact-formneww">
+            <form method="post" action="{% url 'submit_your_review' %}" enctype="multipart/form-data" id="submit-review-form">
+              {% csrf_token %}
+              <div class="row clearfix">
+                <div class="col-lg-12">
+                  <div class="form-group rating-select">
+                    <h3>Rating</h3>
+                    <p class="stars selected" id="star-picker">
+                      <a class="star-1" href="#" data-value="1">1</a>
+                      <a class="star-2" href="#" data-value="2">2</a>
+                      <a class="star-3" href="#" data-value="3">3</a>
+                      <a class="star-4" href="#" data-value="4">4</a>
+                      <a class="star-5 active" href="#" data-value="5">5</a>
+                    </p>
+                    <input type="hidden" name="rating" id="rating-input" value="{{ form.rating.value|default:5 }}">
+                    {% if form.rating.errors %}<span class="field-error">{{ form.rating.errors|striptags }}</span>{% endif %}
+                  </div>
+                </div>
+
+                <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                  <label>First Name *</label>
+                  <input type="text" name="fname" value="{{ form.fname.value|default:'' }}" required>
+                  {% if form.fname.errors %}<span class="field-error">{{ form.fname.errors|striptags }}</span>{% endif %}
+                </div>
+                <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                  <label>Last Name *</label>
+                  <input type="text" name="lname" value="{{ form.lname.value|default:'' }}" required>
+                  {% if form.lname.errors %}<span class="field-error">{{ form.lname.errors|striptags }}</span>{% endif %}
+                </div>
+                <div class="form-group col-lg-12 col-sm-12">
+                  <label>Email (optional)</label>
+                  <input type="email" name="email" value="{{ form.email.value|default:'' }}">
+                  {% if form.email.errors %}<span class="field-error">{{ form.email.errors|striptags }}</span>{% endif %}
+                </div>
+
+                <div class="col-lg-12 col-sm-12"><h3>Travel Date</h3></div>
+                <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                  <label>From date</label>
+                  <input type="date" name="fdate" value="{{ form.fdate.value|default:'' }}" required>
+                  {% if form.fdate.errors %}<span class="field-error">{{ form.fdate.errors|striptags }}</span>{% endif %}
+                </div>
+                <div class="form-group col-lg-6 col-md-6 col-sm-6">
+                  <label>To date</label>
+                  <input type="date" name="tdate" value="{{ form.tdate.value|default:'' }}" required>
+                  {% if form.tdate.errors %}<span class="field-error">{{ form.tdate.errors|striptags }}</span>{% endif %}
+                </div>
+
+                <div class="form-group col-lg-12">
+                  <label>Upload your favourite picture of the trip (Optional)</label>
+                  <input type="file" name="image" accept="image/*">
+                  {% if form.image.errors %}<span class="field-error">{{ form.image.errors|striptags }}</span>{% endif %}
+                </div>
+
+                <div class="form-group col-lg-12 col-md-12 col-sm-12">
+                  <label>Your Comments</label>
+                  <textarea name="content" required>{{ form.content.value|default:'' }}</textarea>
+                  {% if form.content.errors %}<span class="field-error">{{ form.content.errors|striptags }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                  <button type="submit" class="theme-btn btn-style-three">
+                    <span class="btn-wrap">
+                      <span class="text-one">Submit Now <i><img src="{% static 'ms/images/icons/arrow-1.svg' %}" alt=""></i></span>
+                      <span class="text-two">Submit Now <i><img src="{% static 'ms/images/icons/arrow-1.svg' %}" alt=""></i></span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  var stars = document.querySelectorAll('#star-picker a');
+  var input = document.getElementById('rating-input');
+  if (!stars.length || !input) return;
+  function paint(value) {
+    stars.forEach(function (a) {
+      var v = parseInt(a.getAttribute('data-value'), 10);
+      a.classList.toggle('active', v <= value);
+      a.classList.toggle('inactive', v > value);
+    });
+  }
+  paint(parseInt(input.value || '5', 10));
+  stars.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var value = parseInt(a.getAttribute('data-value'), 10);
+      input.value = value;
+      paint(value);
+    });
+  });
+})();
+</script>
+{% endblock %}

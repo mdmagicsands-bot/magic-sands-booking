@@ -9,6 +9,7 @@ urlpatterns = [
     path("destinations/", views.destinations, name="destinations"),
     path("destinations/<slug:slug>/", views.destination_detail, name="destination_detail"),
     path("testimonials/", views.testimonials, name="testimonials"),
+    path("submit-your-review/", views.submit_your_review, name="submit_your_review"),
     path("contact/", views.contact, name="contact"),
     path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
     # Marketing CMS (staff)

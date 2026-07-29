@@ -21,22 +21,53 @@ def _resolve_testimonial_row(row, *, fallback=None):
         quote = row.get("quote", "")
         name = row.get("name", "")
         role = row.get("role", "")
-        rating = row.get("rating", 5)
-        raw_image = row.get("image") or fb.get("image")
+        rating = int(row.get("rating") or fb.get("rating") or 5)
+        raw_image = row.get("image_path") or row.get("image") or fb.get("image")
+        uploaded = None
     else:
         quote = row.quote
         name = row.name
         role = row.role
-        rating = fb.get("rating", 5)
-        raw_image = fb.get("image")
+        rating = int(getattr(row, "rating", None) or fb.get("rating") or 5)
+        raw_image = getattr(row, "image_path", "") or fb.get("image") or fb.get("image_path")
+        uploaded = getattr(row, "image", None)
+        if uploaded:
+            try:
+                if uploaded.name:
+                    return {
+                        "quote": quote,
+                        "name": name,
+                        "role": role,
+                        "image": uploaded.url,
+                        "rating": max(1, min(5, rating)),
+                    }
+            except ValueError:
+                pass
     image = resolve_ms_url(raw_image, default=_TESTIMONIAL_DEFAULT)
     return {
         "quote": quote,
         "name": name,
         "role": role,
         "image": image,
-        "rating": rating,
+        "rating": max(1, min(5, rating)),
     }
+
+
+def get_testimonials(published_only=True, limit=None):
+    qs = Testimonial.objects.all()
+    if published_only:
+        qs = qs.filter(is_published=True)
+    rows = list(qs)
+    if rows:
+        data = []
+        for row in rows:
+            fb = _TESTIMONIAL_BY_NAME.get((row.name or "").lower(), {})
+            data.append(_resolve_testimonial_row(row, fallback=fb))
+        return data[:limit] if limit else data
+
+    # Fallback to Hostinger-export static list when CMS is empty.
+    data = [_resolve_testimonial_row(t) for t in content.TESTIMONIALS]
+    return data[:limit] if limit else data
 
 
 def get_settings():
@@ -142,12 +173,6 @@ def get_services(published_only=True):
             for s in rows
         ]
     return content.SERVICES
-
-
-def get_testimonials(published_only=True, limit=None):
-    # Use Hostinger-export testimonials (with local photo paths) for the public site.
-    data = [_resolve_testimonial_row(t) for t in content.TESTIMONIALS]
-    return data[:limit] if limit else data
 
 
 def get_offices(published_only=True):

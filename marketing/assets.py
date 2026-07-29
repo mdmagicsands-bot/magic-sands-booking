@@ -8,7 +8,7 @@ MS_ROOT = Path(__file__).resolve().parents[1] / "static" / "ms"
 # Common renames between theme backup paths and Laravel upload paths.
 _ALIASES = {
     "images/testimonial/1.png": "uploads/testimonial/default.png",
-    "images/testimonial/t4.png": "uploads/testimonial/default.png",
+    "images/testimonial/t4.png": "uploads/testimonial/t4.png",
     "images/service/s1_1.jpg": "uploads/service/s1.jpg",
     "uploads/pages/about_2.jpg": "images/about-2.jpg",
     "uploads/pages/more/about_3.jpg": "images/about-3.jpg",

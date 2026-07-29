@@ -2,7 +2,7 @@
 {% block heading %}{% if is_create %}Add testimonial{% else %}Edit testimonial{% endif %}{% endblock %}
 {% block content %}
 <section class="pa-card">
-  <form method="post" class="mk-admin-form">
+  <form method="post" class="mk-admin-form" enctype="multipart/form-data">
     {% csrf_token %}
     {% for field in form %}
     <label class="admin-field">

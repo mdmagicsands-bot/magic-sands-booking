@@ -30,7 +30,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         force = options["force"]
         if options["if_empty"] and MarketingSettings.objects.exists():
-            self.stdout.write("Marketing CMS already present — skipping seed_marketing.")
+            synced = self._sync_canonical_testimonials()
+            self.stdout.write(
+                f"Marketing CMS already present — synced {synced} canonical testimonials."
+            )
             return
         created = 0
 
@@ -96,9 +99,19 @@ class Command(BaseCommand):
                     quote=t["quote"],
                     name=t["name"],
                     role=t.get("role", ""),
+                    rating=int(t.get("rating") or 5),
+                    image_path=t.get("image_path")
+                    or (t.get("image") or "").replace("/static/ms/", ""),
                     sort_order=i,
+                    is_published=True,
                 )
                 created += 1
+        else:
+            # Keep the canonical Hostinger reviews in sync without wiping guest submissions.
+            synced = self._sync_canonical_testimonials()
+            created += synced
+            if synced:
+                self.stdout.write(f"Synced {synced} canonical testimonials.")
 
         if force or not Office.objects.exists():
             if force:
@@ -126,3 +139,25 @@ class Command(BaseCommand):
                 created += 1
 
         self.stdout.write(self.style.SUCCESS(f"Marketing CMS seeded ({created} writes)."))
+
+    def _sync_canonical_testimonials(self) -> int:
+        """Upsert the Hostinger-export reviews by guest name; leave other rows alone."""
+        synced = 0
+        for i, t in enumerate(content.TESTIMONIALS):
+            image_path = t.get("image_path") or (t.get("image") or "").replace(
+                "/static/ms/", ""
+            )
+            defaults = {
+                "quote": t["quote"],
+                "role": t.get("role", ""),
+                "rating": int(t.get("rating") or 5),
+                "image_path": image_path,
+                "sort_order": i,
+                "is_published": True,
+            }
+            obj, created = Testimonial.objects.update_or_create(
+                name=t["name"],
+                defaults=defaults,
+            )
+            synced += 1
+        return synced

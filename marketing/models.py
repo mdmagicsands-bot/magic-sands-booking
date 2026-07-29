@@ -78,9 +78,26 @@ class Service(models.Model):
 class Testimonial(models.Model):
     quote = models.TextField()
     name = models.CharField(max_length=120)
-    role = models.CharField(max_length=180, blank=True)
+    role = models.CharField(
+        max_length=180,
+        blank=True,
+        help_text="Travel dates display, e.g. 01 Sep 2024 to 02 Sep 2024",
+    )
+    email = models.EmailField(blank=True)
+    rating = models.PositiveSmallIntegerField(default=5)
+    image_path = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Static path under ms/, e.g. uploads/testimonial/t1.jpg",
+    )
+    image = models.ImageField(upload_to="testimonials/", blank=True, null=True)
+    date_from = models.DateField(blank=True, null=True)
+    date_to = models.DateField(blank=True, null=True)
     sort_order = models.PositiveIntegerField(default=0)
-    is_published = models.BooleanField(default=True)
+    is_published = models.BooleanField(
+        default=True,
+        help_text="Public submissions start unpublished until staff approves.",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -88,6 +105,16 @@ class Testimonial(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.quote[:48]}"
+
+    def sync_role_from_dates(self):
+        """Keep role in sync with travel dates for public templates."""
+        if self.date_from and self.date_to:
+            self.role = (
+                f"{self.date_from.strftime('%d %b %Y')} to "
+                f"{self.date_to.strftime('%d %b %Y')}"
+            )
+        elif self.date_from:
+            self.role = self.date_from.strftime("%d %b %Y")
 
 
 class Office(models.Model):

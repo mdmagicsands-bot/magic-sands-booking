@@ -47,16 +47,23 @@ VIDEO = {
     "youtube": "https://www.youtube.com/watch?v=ZZF2qzU7WO4",
 }
 
+# Full guest reviews from Hostinger htmlbackup testimonials.php
 LIVE_TESTIMONIALS = [
     {
         "name": "George Mcleen",
         "role": "01 Sep 2024 to 02 Sep 2024",
         "rating": 5,
         "image": ms("uploads/testimonial/t1.jpg"),
+        "image_path": "uploads/testimonial/t1.jpg",
         "quote": (
             "Amazing place, we had the best time swimming through the wadi and jumping off rocks. "
-            "Recommend packing water shoes, cap/hat, and walking trainers — the walk to the water "
-            "is uneven and rocky, so don't wear flip flops!!"
+            "So much fun and our group of people was great. I would just suggest you hire a car/ taxi "
+            "and do it yourself. If you research before it would be easy enough to do.\n\n"
+            "Recommend packing water shoes, cap/ hat, top all for swimming as you're exposed to the sun "
+            "throughout swimming and walking. Very hot over 40 in June so I walked in a long sleeve top "
+            "and shorts then swam in them as it's a real pain/ dusty/ hot trying to change out there. "
+            "Walking trainers/ boots are needed too as the 40min walk to the water is uneven and rocky "
+            "so don't wear flip flops!!"
         ),
     },
     {
@@ -64,9 +71,13 @@ LIVE_TESTIMONIALS = [
         "role": "01 Feb 2024 to 07 Feb 2024",
         "rating": 4,
         "image": ms("uploads/testimonial/t2.jpg"),
+        "image_path": "uploads/testimonial/t2.jpg",
         "quote": (
             "Il viaggio è stato fantastico, indulgendo nei luoghi storici vicino ai forti. "
-            "Organizzato da Nasser Al Jabri con eccezionali capacità organizzative. Altamente raccomandato."
+            "Sono stato con amici per una breve vacanza con una compagnia di guide turistiche "
+            "esperte dell'Oman, organizzata da una compagnia di tour di montagna. Il viaggio è "
+            "stato organizzato dal tour operator Nasser Al Jabri con eccezionali capacità "
+            "organizzative e gestionali. Altamente raccomandato per te"
         ),
     },
     {
@@ -74,26 +85,39 @@ LIVE_TESTIMONIALS = [
         "role": "01 Apr 2024 to 10 Apr 2024",
         "rating": 5,
         "image": ms("uploads/testimonial/t3.jpg"),
+        "image_path": "uploads/testimonial/t3.jpg",
         "quote": (
-            "Il nostro tour in Oman è stato a dir poco fantastico! Dalle meravigliose dune di sabbia "
-            "di Wahiba Sands alla serena bellezza di Wadi Shab, ogni parte del viaggio è stata una nuova avventura."
+            '"Un viaggio indimenticabile!"\n'
+            '"Il nostro tour in Oman è stato a dir poco fantastico! Dalle meravigliose dune di '
+            "sabbia di Wahiba Sands alla serena bellezza di Wadi Shab, ogni parte del viaggio è "
+            "stata una nuova avventura. La nostra guida era molto ben informata e ha reso "
+            "l'esperienza ancora più speciale. Consiglio vivamente questo tour a chiunque "
+            'desideri esplorare le gemme nascoste dell\'Oman."'
         ),
     },
     {
         "name": "Jessica Silotti",
         "role": "12 Aug 2024 to 19 Aug 2024",
         "rating": 5,
-        "image": ms("uploads/testimonial/default.png"),
-        "quote": "Un eccellente organizzazione ed una guida fantastica. Sicuramente li contatterò per altri viaggi",
+        "image": ms("uploads/testimonial/t4.png"),
+        "image_path": "uploads/testimonial/t4.png",
+        "quote": (
+            "Un eccellente organizzazione ed una guida fantastica. "
+            "Sicuramente li contatterò per altri viaggi"
+        ),
     },
     {
         "name": "Chaimaa Labe",
         "role": "18 Aug 2025 to 18 Aug 2025",
         "rating": 5,
         "image": ms("uploads/testimonial/default.png"),
+        "image_path": "uploads/testimonial/default.png",
         "quote": (
-            "Tour di Muscate bellissimo. La nostra guida Ossama (e autista) il migliore! Preparatissimo, "
-            "gentile e sempre disponibile. Consigliatissimo!"
+            "Tour di Muscate bellissimo. La nostra guida Ossama (e autista) il migliore! "
+            "Preparatissimo, gentile e sempre disponibile. Ci ha fatto scoprire luoghi "
+            "incredibili con passione e competenza, raccontandoci la storia e la cultura "
+            "dell'Oman in modo coinvolgente e mai noioso. Grazie a lui, l'esperienza è "
+            "stata davvero indimenticabile. Consigliatissimo!"
         ),
     },
     {
@@ -101,9 +125,11 @@ LIVE_TESTIMONIALS = [
         "role": "11 Aug 2025 to 11 Aug 2025",
         "rating": 5,
         "image": ms("uploads/testimonial/default.png"),
+        "image_path": "uploads/testimonial/default.png",
         "quote": (
-            "During a long stepover in Muscat we decided to do a guided tour. Osama drove us around the city, "
-            "we saw beautiful places, and he explained the history and traditions. I absolutely recommend him!"
+            "During a long stepover in Muscat we decided to do a guided tour. Osama drove us "
+            "around the city, we saw a lot of beautiful places and he explained us everything "
+            "about the history and the tradition of the Omani. I absolutely recommend him!"
         ),
     },
     {
@@ -111,16 +137,22 @@ LIVE_TESTIMONIALS = [
         "role": "11 Apr 2025 to 21 Apr 2025",
         "rating": 5,
         "image": ms("uploads/testimonial/default.png"),
-        "quote": "We have spent a wondurfull time with Osama. Now we know many things about people and history of Oman.",
+        "image_path": "uploads/testimonial/default.png",
+        "quote": (
+            "We have spent a wondurfull time with Osama. Now we know many things about people "
+            "and history of Oman. Thanks a lot Osama for your time."
+        ),
     },
     {
         "name": "Elena Verga",
         "role": "12 Apr 2025 to 21 Apr 2025",
         "rating": 5,
         "image": ms("uploads/testimonial/default.png"),
+        "image_path": "uploads/testimonial/default.png",
         "quote": (
-            "Very good experience! Fantastic tour with Magic Sands a special thank to the great guide Osama!! "
-            "I would like to come back to Oman and contact Magic Sands to organize my trip!"
+            "Very good experience! Fantastic tour with Magic Sands a special thank to the great "
+            "guide Osama !! I would like to come back to Oman and of course I will contact "
+            "Magic Sands to organize my trip!"
         ),
     },
     {
@@ -128,9 +160,12 @@ LIVE_TESTIMONIALS = [
         "role": "07 Dec 2024 to 17 Dec 2024",
         "rating": 5,
         "image": ms("uploads/testimonial/default.png"),
+        "image_path": "uploads/testimonial/default.png",
         "quote": (
-            "Viaggio meraviglioso e molto ben organizzato. Paesaggi stupendi, ospitalità e cordialità. "
-            "La guida parlava molto bene italiano ed era colta e preparata."
+            "Io e Costanza abbiamo fatto un viaggio meraviglioso e molto ben organizzato. "
+            "Paesaggi stupendi, ospitalità e cordialità. La guida, che parlava molto bene "
+            "italiano, era colta e preparata su tutti gli argomenti. Grazie per averci fatto "
+            "vivere una vacanza indimenticabile !"
         ),
     },
     {
@@ -138,9 +173,20 @@ LIVE_TESTIMONIALS = [
         "role": "12 Sep 2023 to 16 Sep 2023",
         "rating": 5,
         "image": ms("uploads/testimonial/default.png"),
+        "image_path": "uploads/testimonial/default.png",
         "quote": (
-            "Una guida eccezionale e un viaggio indimenticabile! Ossama conosce ogni aspetto dell'Oman — "
-            "dalla cultura alla natura, dalla storia alla vita della gente locale."
+            "Una guida eccezionale e un viaggio indimenticabile! Abbiamo avuto la fortuna di "
+            "avere Ossama come guida durante il nostro viaggio in Oman, ed è stata un'esperienza "
+            "fantastica! Ossama è una persona incredibile, gentile, competente e sempre "
+            "disponibile. Conosce ogni aspetto dell'Oman: dalla cultura alla natura, dalla "
+            "storia alla vita della gente locale. Non importa quale fosse la nostra domanda, "
+            "lui aveva sempre una risposta o un suggerimento. Il viaggio è stato pianificato "
+            "con grande cura e attenzione ai nostri desideri. Ossama è riuscito a includere "
+            "tutto ciò che volevamo vedere e ci ha sorpreso con tantissimi altri luoghi e "
+            "attività lungo il percorso, rendendo il nostro road trip ancora più speciale. "
+            "Abbiamo vissuto momenti indimenticabili: dal deserto ai magnifici wadi, dalle "
+            "spiagge paradisiache alla Grande Moschea di Muscat e alla città vecchia. Ossama "
+            "ci ha mostrato tutto con"
         ),
     },
 ]
