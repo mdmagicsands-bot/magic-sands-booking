@@ -389,14 +389,16 @@ PRIVACY_POLICY = {
                     "open": True,
                     "paragraphs": [
                         (
-                            "Welcome to the Magic Sands DMC website privacy policy. Magic Sands DMC "
-                            "(“Magic Sands”, “we”, “our”, or “us”) is a destination management company "
-                            "providing travel experiences, packages and related services in Oman and beyond. "
-                            "We operate the marketing website available at "
-                            '<a href="https://www.magicsandsdmc.com">https://www.magicsandsdmc.com</a> '
-                            "(the “Website”) to promote our services, share destination content, collect "
-                            "enquiries and newsletter subscriptions, invite partner registrations, and publish "
-                            "guest testimonials."
+                            "Magic Sands DMC is a Destination Management Company specializing in hotel "
+                            "accommodations, transfers, sightseeing tours, attraction tickets, MICE "
+                            "services, and customized travel experiences across the Arabian region. We "
+                            "provide travel solutions through our website and B2B booking platform for "
+                            "travel agencies, tour operators, corporate clients, and business partners."
+                        ),
+                        (
+                            "As the controller of your personal information, Magic Sands DMC is committed "
+                            "to protecting your privacy and processing your personal data in a lawful, "
+                            "transparent, and secure manner."
                         ),
                     ],
                 },
@@ -405,15 +407,13 @@ PRIVACY_POLICY = {
                     "title": "2. About This Policy",
                     "paragraphs": [
                         (
-                            "We are committed to protecting and respecting the privacy of visitors to our "
-                            "Website. This Privacy Policy sets out the basis on which your personal data, as a "
-                            "visitor of our Website, will be processed by us as a controller. Please read this "
-                            "Privacy Policy carefully to understand how we will use your personal data."
+                            "This Privacy Policy explains how Magic Sands DMC collects, uses, stores, "
+                            "shares, and protects your personal information when you access our website, "
+                            "mobile services, booking platform, or communicate with us."
                         ),
                         (
-                            "Once you have created an account for our partner / booking Platform, any personal "
-                            "data that we process relating to partners, suppliers and their customers will also "
-                            "be governed by our Platform Privacy Policy."
+                            "By using our services, you acknowledge that you have read and understood this "
+                            "Privacy Policy."
                         ),
                     ],
                 },
@@ -422,46 +422,60 @@ PRIVACY_POLICY = {
                     "title": "3. How Can You Contact Us?",
                     "paragraphs": [
                         (
-                            "If you have any questions about your personal data, how we look after it, or if "
-                            "there are any changes to your personal data, please:"
+                            "If you have any questions regarding this Privacy Policy or wish to exercise "
+                            "your privacy rights, please contact us."
                         ),
                         (
-                            "<ul>"
-                            '<li>Email us at <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>; or</li>'
-                            "<li>Write to us at Attn: Legal / Privacy, Magic Sands DMC, 507, 5th floor, "
-                            "Business center Alkhuwair, Muscat, Sultanate of Oman</li>"
-                            "</ul>"
+                            "Magic Sands DMC<br>"
+                            'Email: <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a><br>'
+                            'Website: <a href="https://www.magicsandsdmc.com">www.magicsandsdmc.com</a>'
+                        ),
+                        (
+                            "Our team will respond to all privacy-related enquiries as promptly as "
+                            "reasonably possible."
                         ),
                     ],
                 },
                 {
                     "id": "website-data",
-                    "title": "4. What Personal Data Do We Collect and Process?",
+                    "title": "4. What Personal Data Do We Collect and Process, and How Do We Use It?",
                     "paragraphs": [
                         (
-                            "When you access the Website, you may provide us with personal data, and we may "
-                            "collect and process such personal data in accordance with this Privacy Policy. We "
-                            "will only use your personal data where we have a valid lawful basis to do so."
+                            "Depending on the services you use, we may collect personal and business "
+                            "information including:"
                         ),
                         (
-                            "<strong>Information you give us</strong> may include: identity data (name and "
-                            "other personal identifiers); contact data (email, phone, postal address); company "
-                            "data if you enquire as a partner or supplier; content of correspondence, enquiries, "
-                            "reviews and feedback; and marketing preferences when you subscribe to our newsletter."
+                            "<ul>"
+                            "<li>Full Name</li>"
+                            "<li>Company Name</li>"
+                            "<li>Email Address</li>"
+                            "<li>Telephone Number</li>"
+                            "<li>Billing Address</li>"
+                            "<li>Nationality</li>"
+                            "<li>Passport Information (where required)</li>"
+                            "<li>Guest Information</li>"
+                            "<li>Booking Details</li>"
+                            "<li>Travel Preferences</li>"
+                            "<li>Payment Information</li>"
+                            "<li>Login Credentials</li>"
+                            "<li>IP Address</li>"
+                            "<li>Device Information</li>"
+                            "<li>Communication Records</li>"
+                            "</ul>"
                         ),
+                        ("We use this information to:"),
                         (
-                            "<strong>Information collected automatically</strong> may include: technical data "
-                            "(IP address, browser type and version, time zone, operating system and platform); "
-                            "usage data (pages visited, clickstream, preferences and navigation paths); and "
-                            "approximate location based on IP address. For more information about cookies, see "
-                            "the Cookie Policy under the Privacy Policy tab."
-                        ),
-                        (
-                            "Typical purposes include: responding to enquiries; sending newsletters where you "
-                            "have subscribed; registering partner interest; publishing testimonials you submit; "
-                            "operating, securing and improving the Website; fraud prevention; and complying with "
-                            "legal obligations. Where we rely on consent for marketing, you may withdraw it at "
-                            "any time (for example via an unsubscribe link)."
+                            "<ul>"
+                            "<li>Process bookings</li>"
+                            "<li>Manage partner accounts</li>"
+                            "<li>Issue confirmations, vouchers and invoices</li>"
+                            "<li>Process payments</li>"
+                            "<li>Provide customer support</li>"
+                            "<li>Improve our services</li>"
+                            "<li>Maintain website security</li>"
+                            "<li>Prevent fraud</li>"
+                            "<li>Comply with applicable legal obligations</li>"
+                            "</ul>"
                         ),
                     ],
                 },
@@ -470,16 +484,26 @@ PRIVACY_POLICY = {
                     "title": "5. Who Do We Share Your Personal Data With?",
                     "paragraphs": [
                         (
-                            "By using the Website, we may need to disclose your personal data to limited "
-                            "categories of third parties so that we can operate our Website and comply with legal "
-                            "duties, including: website hosting and infrastructure providers; email / CRM and "
-                            "analytics providers; parties involved in corporate transactions; regulators or law "
-                            "enforcement where required; and parties necessary to enforce legal rights or "
-                            "investigate fraud."
+                            "Your personal information may be shared only where necessary with trusted "
+                            "service providers including:"
                         ),
                         (
-                            "You can ask us for more information about these organisations by contacting us "
-                            "using the details in section 3."
+                            "<ul>"
+                            "<li>Hotels</li>"
+                            "<li>Airlines</li>"
+                            "<li>Transfer Providers</li>"
+                            "<li>Tour Operators</li>"
+                            "<li>Attraction Suppliers</li>"
+                            "<li>Payment Gateway Providers</li>"
+                            "<li>Technology Service Providers</li>"
+                            "<li>Government Authorities where legally required</li>"
+                            "</ul>"
+                        ),
+                        (
+                            "We only share information required to complete the requested travel services."
+                        ),
+                        (
+                            "Magic Sands DMC does not sell your personal information to third parties."
                         ),
                     ],
                 },
@@ -488,11 +512,13 @@ PRIVACY_POLICY = {
                     "title": "6. Where Do We Store Your Information?",
                     "paragraphs": [
                         (
-                            "We may transfer or store personal data outside your home country, including with "
-                            "selected third parties instructed to help us provide the Website. Where we do so, "
-                            "we will take appropriate measures to protect your personal data to standards "
-                            "required by applicable law. Contact us using the details in section 3 for more "
-                            "information about transfers."
+                            "Your information is stored on secure servers and cloud infrastructure "
+                            "protected by appropriate technical and organizational security measures."
+                        ),
+                        (
+                            "Depending on operational requirements, data may be stored or processed in "
+                            "different jurisdictions where our service providers operate, subject to "
+                            "appropriate contractual and security safeguards."
                         ),
                     ],
                 },
@@ -500,54 +526,92 @@ PRIVACY_POLICY = {
                     "id": "website-secure",
                     "title": "7. How Do We Keep Your Personal Data Secure?",
                     "paragraphs": [
+                        ("Protecting your information is one of our highest priorities."),
+                        ("We implement appropriate security measures including:"),
                         (
-                            "We put security measures in place to protect personal data from being destroyed, "
-                            "lost or accessed by someone who should not see it. However, we cannot guarantee that "
-                            "personal data will be free from every security risk that may arise when information "
-                            "is sent to and from the Website."
+                            "<ul>"
+                            "<li>SSL Encryption</li>"
+                            "<li>Secure Cloud Infrastructure</li>"
+                            "<li>Firewalls</li>"
+                            "<li>Password Encryption</li>"
+                            "<li>Multi-level User Access Controls</li>"
+                            "<li>Regular Security Monitoring</li>"
+                            "<li>Backup Systems</li>"
+                            "<li>Employee Access Restrictions</li>"
+                            "</ul>"
                         ),
                         (
-                            "The Website may include links to third-party websites which may collect your "
-                            "personal data. We have no control over those websites; please check their policies."
+                            "Although we take reasonable measures to protect your information, no internet "
+                            "transmission or electronic storage method can be guaranteed to be completely "
+                            "secure."
                         ),
                     ],
                 },
                 {
-                    "id": "website-cookies-ref",
+                    "id": "website-cookies",
                     "title": "8. How Do We Use Cookies?",
                     "paragraphs": [
                         (
-                            "We use cookies or other similar technologies to capture certain data when you "
-                            "interact with the Website. For further information, please see the Cookie Policy "
-                            "section under the Privacy Policy tab."
+                            "Magic Sands DMC uses cookies and similar technologies to improve your browsing "
+                            "experience."
+                        ),
+                        ("Cookies help us to:"),
+                        (
+                            "<ul>"
+                            "<li>Keep you signed in</li>"
+                            "<li>Remember your preferences</li>"
+                            "<li>Improve website performance</li>"
+                            "<li>Analyse website traffic</li>"
+                            "<li>Enhance security</li>"
+                            "<li>Personalize your experience</li>"
+                            "</ul>"
+                        ),
+                        (
+                            "You may disable cookies through your browser settings; however, certain "
+                            "website features may become unavailable."
                         ),
                     ],
                 },
                 {
                     "id": "website-retention",
-                    "title": "9. How Long Do We Keep Your Information?",
+                    "title": "9. How Long Do We Keep Your Information For?",
                     "paragraphs": [
+                        ("We retain personal information only for as long as necessary to:"),
                         (
-                            "We will only keep your personal data for as long as is necessary for the reasons we "
-                            "collected it, as set out in this Privacy Policy, or as otherwise required by "
-                            "applicable laws. Contact us if you want further information on retention periods."
+                            "<ul>"
+                            "<li>Deliver our services</li>"
+                            "<li>Fulfil contractual obligations</li>"
+                            "<li>Comply with legal and regulatory requirements</li>"
+                            "<li>Resolve disputes</li>"
+                            "<li>Maintain financial and accounting records</li>"
+                            "<li>Prevent fraud</li>"
+                            "</ul>"
+                        ),
+                        (
+                            "When information is no longer required, it will be securely deleted or anonymized."
                         ),
                     ],
                 },
                 {
                     "id": "website-rights",
-                    "title": "10. What Are Your Rights?",
+                    "title": "10. What Are Your Rights in Relation to Your Personal Data?",
                     "paragraphs": [
+                        ("Subject to applicable laws, you may have the right to:"),
                         (
-                            "Depending on applicable law, you may have rights to: access a copy of the personal "
-                            "data we hold about you; ask us to correct inaccurate or incomplete data; ask us to "
-                            "delete data where we do not have a compelling reason to continue processing; ask us "
-                            "to stop or restrict certain processing; and ask us to stop using your personal data "
-                            "for marketing emails."
+                            "<ul>"
+                            "<li>Access your personal information</li>"
+                            "<li>Correct inaccurate information</li>"
+                            "<li>Update your personal details</li>"
+                            "<li>Request deletion of your information</li>"
+                            "<li>Restrict or object to certain processing</li>"
+                            "<li>Withdraw consent where applicable</li>"
+                            "<li>Request a copy of your personal information</li>"
+                            "<li>Opt out of marketing communications</li>"
+                            "</ul>"
                         ),
                         (
-                            "To exercise these rights, contact us using the details in section 3. We may ask for "
-                            "proof of identity before responding."
+                            'Requests may be submitted by contacting us at '
+                            '<a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>.'
                         ),
                     ],
                 },
@@ -556,10 +620,16 @@ PRIVACY_POLICY = {
                     "title": "11. How Can You Make a Complaint?",
                     "paragraphs": [
                         (
-                            "You have the right to make a complaint about how we have used your personal data by "
-                            "contacting us first using the details in section 3. If you are still not satisfied, "
-                            "you may contact a data protection regulator or seek a remedy before the competent "
-                            "courts where available under applicable law."
+                            "If you believe your personal information has been processed in a manner that "
+                            "does not comply with applicable privacy laws, please contact us first so that "
+                            "we can investigate and resolve your concern."
+                        ),
+                        (
+                            'Email: <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>'
+                        ),
+                        (
+                            "If you remain dissatisfied, you may have the right to contact the relevant "
+                            "data protection or regulatory authority in your jurisdiction."
                         ),
                     ],
                 },
@@ -568,9 +638,16 @@ PRIVACY_POLICY = {
                     "title": "12. Changes to This Privacy Policy",
                     "paragraphs": [
                         (
-                            "We may need to change this Privacy Policy as our Website develops or if the law "
-                            "changes. We will let you know if any important changes are made; otherwise we will "
-                            "always display the latest version of our policy on our Website."
+                            "Magic Sands DMC may update this Privacy Policy from time to time to reflect "
+                            "changes in our services, legal obligations, or business practices."
+                        ),
+                        (
+                            "The latest version will always be published on our website, and the effective "
+                            "date will be updated accordingly."
+                        ),
+                        (
+                            "We encourage users to review this Privacy Policy periodically to stay informed "
+                            "about how we protect their personal information."
                         ),
                     ],
                 },
