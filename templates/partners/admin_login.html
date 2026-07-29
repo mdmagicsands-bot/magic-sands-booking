@@ -3,31 +3,35 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=1280">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Login | Magic Sands</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baskervville:wght@400;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/partner.css' %}">
+  <link rel="icon" href="{% static 'ms/images/ms-genie-logo.png' %}">
 </head>
 <body class="admin-login-page">
   <main class="admin-login-wrap">
     <form class="admin-login-box" method="post" action="{% url 'admin_login' %}">
       {% csrf_token %}
+
       <div class="admin-login-brand">
-        <span class="pl-mark">MS</span>
+        <img
+          class="admin-login-logo"
+          src="{% static 'ms/images/ms-genie-logo.png' %}"
+          alt="Magic Sands"
+          width="72"
+          height="72"
+        >
         <div>
           <strong>Magic Sands</strong>
           <small>Website admin</small>
         </div>
       </div>
 
-      <h1>Admin sign in</h1>
-      <p class="admin-login-sub">Sign in to manage the marketing website or the booking system.</p>
-
-      <div class="pl-alert pl-alert-info">
-        Demo admin: <strong>admin@magicsandsdmc.com</strong> / <strong>admin123</strong>
-      </div>
+      <h1>Sign in</h1>
+      <p class="admin-login-sub">Enter your admin credentials to continue.</p>
 
       {% if messages %}
         {% for message in messages %}
@@ -37,17 +41,15 @@
 
       <label class="admin-field">
         Username or email
-        <input type="text" name="username" required autocomplete="username" autofocus placeholder="admin@magicsandsdmc.com">
+        <input type="text" name="username" required autocomplete="username" autofocus>
       </label>
       <label class="admin-field">
         Password
-        <input type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+        <input type="password" name="password" required autocomplete="current-password">
       </label>
-      <button type="submit" class="admin-login-btn">Continue</button>
+      <button type="submit" class="admin-login-btn">Sign in</button>
       <p class="admin-login-foot">
         <a href="{% url 'home' %}">← Back to website</a>
-        ·
-        <a href="{% url 'partner_login' %}">Partner login</a>
       </p>
     </form>
   </main>
