@@ -110,8 +110,8 @@ LIVE_TESTIMONIALS = [
         "name": "Chaimaa Labe",
         "role": "18 Aug 2025 to 18 Aug 2025",
         "rating": 5,
-        "image": ms("uploads/testimonial/default.png"),
-        "image_path": "uploads/testimonial/default.png",
+        "image": ms("uploads/testimonial/20260511_053705.jpg"),
+        "image_path": "uploads/testimonial/20260511_053705.jpg",
         "quote": (
             "Tour di Muscate bellissimo. La nostra guida Ossama (e autista) il migliore! "
             "Preparatissimo, gentile e sempre disponibile. Ci ha fatto scoprire luoghi "
@@ -124,8 +124,8 @@ LIVE_TESTIMONIALS = [
         "name": "Laita Fiorese",
         "role": "11 Aug 2025 to 11 Aug 2025",
         "rating": 5,
-        "image": ms("uploads/testimonial/default.png"),
-        "image_path": "uploads/testimonial/default.png",
+        "image": ms("uploads/testimonial/IMG_2536.jpeg"),
+        "image_path": "uploads/testimonial/IMG_2536.jpeg",
         "quote": (
             "During a long stepover in Muscat we decided to do a guided tour. Osama drove us "
             "around the city, we saw a lot of beautiful places and he explained us everything "
@@ -136,8 +136,8 @@ LIVE_TESTIMONIALS = [
         "name": "Fernando Carioni",
         "role": "11 Apr 2025 to 21 Apr 2025",
         "rating": 5,
-        "image": ms("uploads/testimonial/default.png"),
-        "image_path": "uploads/testimonial/default.png",
+        "image": ms("uploads/testimonial/8f000809_8302_4d3b_9ec0_fd131fd9fac4.jpeg"),
+        "image_path": "uploads/testimonial/8f000809_8302_4d3b_9ec0_fd131fd9fac4.jpeg",
         "quote": (
             "We have spent a wondurfull time with Osama. Now we know many things about people "
             "and history of Oman. Thanks a lot Osama for your time."
@@ -147,8 +147,8 @@ LIVE_TESTIMONIALS = [
         "name": "Elena Verga",
         "role": "12 Apr 2025 to 21 Apr 2025",
         "rating": 5,
-        "image": ms("uploads/testimonial/default.png"),
-        "image_path": "uploads/testimonial/default.png",
+        "image": ms("uploads/testimonial/3cfc57e0_cc23_4dc8_9f5f_dabd9682dee1.jpeg"),
+        "image_path": "uploads/testimonial/3cfc57e0_cc23_4dc8_9f5f_dabd9682dee1.jpeg",
         "quote": (
             "Very good experience! Fantastic tour with Magic Sands a special thank to the great "
             "guide Osama !! I would like to come back to Oman and of course I will contact "
@@ -159,8 +159,8 @@ LIVE_TESTIMONIALS = [
         "name": "Gaibazzi Giorgio",
         "role": "07 Dec 2024 to 17 Dec 2024",
         "rating": 5,
-        "image": ms("uploads/testimonial/default.png"),
-        "image_path": "uploads/testimonial/default.png",
+        "image": ms("uploads/testimonial/IMG_3499.jpeg"),
+        "image_path": "uploads/testimonial/IMG_3499.jpeg",
         "quote": (
             "Io e Costanza abbiamo fatto un viaggio meraviglioso e molto ben organizzato. "
             "Paesaggi stupendi, ospitalità e cordialità. La guida, che parlava molto bene "
@@ -172,8 +172,8 @@ LIVE_TESTIMONIALS = [
         "name": "Lisa Colucci",
         "role": "12 Sep 2023 to 16 Sep 2023",
         "rating": 5,
-        "image": ms("uploads/testimonial/default.png"),
-        "image_path": "uploads/testimonial/default.png",
+        "image": ms("uploads/testimonial/d52b9197_f1bb_47d2_89c6_7a626fe57165.jpeg"),
+        "image_path": "uploads/testimonial/d52b9197_f1bb_47d2_89c6_7a626fe57165.jpeg",
         "quote": (
             "Una guida eccezionale e un viaggio indimenticabile! Abbiamo avuto la fortuna di "
             "avere Ossama come guida durante il nostro viaggio in Oman, ed è stata un'esperienza "
