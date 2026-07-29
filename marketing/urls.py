@@ -11,6 +11,7 @@ urlpatterns = [
     path("testimonials/", views.testimonials, name="testimonials"),
     path("submit-your-review/", views.submit_your_review, name="submit_your_review"),
     path("contact/", views.contact, name="contact"),
+    path("newsletter/subscribe/", views.newsletter_subscribe, name="newsletter_subscribe"),
     path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
     # Marketing CMS (staff)
     path("admin/marketing/", admin_views.marketing_dashboard, name="marketing_admin"),
@@ -124,5 +125,15 @@ urlpatterns = [
         "admin/marketing/messages/<int:pk>/",
         admin_views.message_detail,
         name="marketing_admin_message_detail",
+    ),
+    path(
+        "admin/marketing/subscribers/",
+        admin_views.subscriber_list,
+        name="marketing_admin_subscribers",
+    ),
+    path(
+        "admin/marketing/subscribers/<int:pk>/delete/",
+        admin_views.subscriber_delete,
+        name="marketing_admin_subscriber_delete",
     ),
 ]

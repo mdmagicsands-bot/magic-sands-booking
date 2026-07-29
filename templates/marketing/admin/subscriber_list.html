@@ -1,0 +1,35 @@
+{% extends "marketing/admin/base.html" %}
+{% block heading %}Newsletter subscribers{% endblock %}
+{% block content %}
+<section class="pa-card">
+  <div class="pa-card-head">
+    <h2>Subscribed emails</h2>
+    <span class="muted">{{ items|length }} total</span>
+  </div>
+  {% if items %}
+  <div class="pa-table-wrap">
+    <table class="pa-table">
+      <thead><tr><th>Email</th><th>Status</th><th>Source</th><th>Subscribed</th><th></th></tr></thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td><strong>{{ item.email }}</strong></td>
+          <td>{% if item.is_active %}Active{% else %}Inactive{% endif %}</td>
+          <td>{{ item.source|default:"—" }}</td>
+          <td>{{ item.created_at|date:"Y-m-d H:i" }}</td>
+          <td>
+            <form method="post" action="{% url 'marketing_admin_subscriber_delete' item.pk %}" onsubmit="return confirm('Remove this subscriber?');">
+              {% csrf_token %}
+              <button type="submit" class="pa-danger-btn" style="padding:0.35rem 0.7rem;font-size:0.8rem">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="muted">No newsletter subscribers yet. Footer “Subscribe” signups appear here.</p>
+  {% endif %}
+</section>
+{% endblock %}

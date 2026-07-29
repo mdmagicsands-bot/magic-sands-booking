@@ -15,6 +15,7 @@ from .models import (
     ContactMessage,
     Destination,
     MarketingSettings,
+    NewsletterSubscriber,
     Office,
     Service,
     Testimonial,
@@ -44,9 +45,11 @@ def marketing_dashboard(request):
                 "testimonials": Testimonial.objects.count(),
                 "offices": Office.objects.count(),
                 "messages": ContactMessage.objects.filter(is_read=False).count(),
+                "subscribers": NewsletterSubscriber.objects.filter(is_active=True).count(),
                 "why": WhyChooseItem.objects.count(),
             },
             "recent_messages": ContactMessage.objects.all()[:5],
+            "recent_subscribers": NewsletterSubscriber.objects.all()[:5],
         },
     )
 
@@ -338,3 +341,21 @@ def message_detail(request, pk: int):
         messages.success(request, "Message deleted.")
         return redirect("marketing_admin_messages")
     return render(request, "marketing/admin/message_detail.html", {"item": obj})
+
+
+@staff_required
+def subscriber_list(request):
+    return render(
+        request,
+        "marketing/admin/subscriber_list.html",
+        {"items": NewsletterSubscriber.objects.all()[:1000]},
+    )
+
+
+@staff_required
+@require_POST
+def subscriber_delete(request, pk: int):
+    obj = get_object_or_404(NewsletterSubscriber, pk=pk)
+    obj.delete()
+    messages.success(request, "Subscriber removed.")
+    return redirect("marketing_admin_subscribers")

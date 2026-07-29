@@ -1,11 +1,16 @@
+from django.conf import settings
+from django.contrib import messages
+from django.core.mail import send_mail
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
-from django.views.decorators.http import require_GET, require_http_methods
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
 from . import catalog, content
 from .assets import resolve_ms_url
 from .legal_content import PRIVACY_POLICY
 from .live_content import HERO_SLIDES, HOME_SERVICES, MEET_US, PARTNER_LOGOS, VIDEO
-from .models import ContactMessage, Testimonial
+from .models import ContactMessage, NewsletterSubscriber, Testimonial
 
 
 def _ctx(**extra):
@@ -103,8 +108,6 @@ def testimonials(request):
 @require_http_methods(["GET", "POST"])
 def submit_your_review(request):
     """Public feedback form — new reviews appear on the website immediately."""
-    from django.contrib import messages
-
     from .forms import PublicReviewForm
 
     form = PublicReviewForm(request.POST or None, request.FILES or None)
@@ -141,6 +144,51 @@ def privacy_policy(request):
         "marketing/privacy_policy.html",
         _ctx(privacy=PRIVACY_POLICY, header_color=True),
     )
+
+
+@require_POST
+def newsletter_subscribe(request):
+    """Footer newsletter signup — store email and notify info@."""
+    email = (request.POST.get("newsletter_email") or "").strip().lower()
+    next_url = request.META.get("HTTP_REFERER") or "/"
+    if not email:
+        messages.error(request, "Please enter your email address.")
+        return redirect(next_url)
+    try:
+        validate_email(email)
+    except ValidationError:
+        messages.error(request, "Please enter a valid email address.")
+        return redirect(next_url)
+
+    subscriber, created = NewsletterSubscriber.objects.get_or_create(
+        email=email,
+        defaults={"source": "footer", "is_active": True},
+    )
+    if not created and not subscriber.is_active:
+        subscriber.is_active = True
+        subscriber.save(update_fields=["is_active"])
+
+    notify_to = getattr(settings, "NEWSLETTER_NOTIFY_EMAIL", "info@magicsandsdmc.com")
+    subject = "New newsletter subscription — Magic Sands"
+    body = (
+        f"A visitor subscribed to the Magic Sands newsletter.\n\n"
+        f"Email: {email}\n"
+        f"Source: footer\n"
+        f"{'Status: new subscription' if created else 'Status: already on the list (reactivated if needed)'}\n"
+    )
+    try:
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            [notify_to],
+            fail_silently=True,
+        )
+    except Exception:
+        pass
+
+    messages.success(request, "Thank you for subscribing.")
+    return redirect(next_url)
 
 
 @require_http_methods(["GET", "POST"])

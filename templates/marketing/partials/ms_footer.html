@@ -49,7 +49,7 @@
             <h4 class="main-footer_title">Follow Our Journey</h4>
             <div class="main-footer_text">Subscribe to our newsletter for the latest updates and news.</div>
             <div class="newsletter-box">
-              <form method="post" action="{% url 'contact' %}">
+              <form method="post" action="{% url 'newsletter_subscribe' %}">
                 {% csrf_token %}
                 <div class="form-group">
                   <input type="email" name="newsletter_email" placeholder="Enter Your Email Address" required>

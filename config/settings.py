@@ -233,6 +233,10 @@ PARTNER_REGISTRATION_NOTIFY_EMAIL = os.getenv(
     "PARTNER_REGISTRATION_NOTIFY_EMAIL",
     "oman@magicsandsdmc.com",
 )
+NEWSLETTER_NOTIFY_EMAIL = os.getenv(
+    "NEWSLETTER_NOTIFY_EMAIL",
+    "info@magicsandsdmc.com",
+)
 PARTNER_REGISTRATION_EMAILS_ENABLED = _env_bool("PARTNER_REGISTRATION_EMAILS_ENABLED", default=True)
 EMAIL_FILE_PATH = os.getenv("EMAIL_FILE_PATH", str(BASE_DIR / "tmp" / "emails"))
 

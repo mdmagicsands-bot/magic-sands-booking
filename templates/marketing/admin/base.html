@@ -29,6 +29,7 @@
       <a href="{% url 'marketing_admin_why' %}" class="{% if 'why' in request.resolver_match.url_name %}active{% endif %}">Why choose us</a>
       <a href="{% url 'marketing_admin_offices' %}" class="{% if 'office' in request.resolver_match.url_name %}active{% endif %}">Offices</a>
       <a href="{% url 'marketing_admin_messages' %}" class="{% if 'message' in request.resolver_match.url_name %}active{% endif %}">Contact messages</a>
+      <a href="{% url 'marketing_admin_subscribers' %}" class="{% if 'subscriber' in request.resolver_match.url_name %}active{% endif %}">Newsletter emails</a>
       <a href="{% url 'home' %}" target="_blank" rel="noopener">View website ↗</a>
     </nav>
     <form method="post" action="{% url 'partner_logout' %}" class="pa-logout">

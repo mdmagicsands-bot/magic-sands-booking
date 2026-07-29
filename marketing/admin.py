@@ -4,6 +4,7 @@ from .models import (
     ContactMessage,
     Destination,
     MarketingSettings,
+    NewsletterSubscriber,
     Office,
     Service,
     Testimonial,
@@ -55,4 +56,12 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ("name", "email", "company", "is_read", "created_at")
     list_filter = ("is_read", "created_at")
     search_fields = ("name", "email", "company", "message")
+    readonly_fields = ("created_at",)
+
+
+@admin.register(NewsletterSubscriber)
+class NewsletterSubscriberAdmin(admin.ModelAdmin):
+    list_display = ("email", "is_active", "source", "created_at")
+    list_filter = ("is_active", "created_at")
+    search_fields = ("email",)
     readonly_fields = ("created_at",)

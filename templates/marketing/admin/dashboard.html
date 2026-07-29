@@ -6,6 +6,7 @@
   <article class="pa-stat"><p>Services</p><strong>{{ counts.services }}</strong></article>
   <article class="pa-stat"><p>Testimonials</p><strong>{{ counts.testimonials }}</strong></article>
   <article class="pa-stat warn"><p>Unread messages</p><strong>{{ counts.messages }}</strong></article>
+  <article class="pa-stat"><p>Newsletter emails</p><strong>{{ counts.subscribers }}</strong></article>
 </section>
 
 <section class="pa-feature-row">
@@ -28,6 +29,11 @@
     <h3>Contact inbox</h3>
     <p>Messages submitted from the public contact form.</p>
     <a class="pl-btn small" href="{% url 'marketing_admin_messages' %}">Open messages</a>
+  </article>
+  <article class="pa-card mini">
+    <h3>Newsletter emails</h3>
+    <p>Emails collected from the footer Subscribe form.</p>
+    <a class="pl-btn small" href="{% url 'marketing_admin_subscribers' %}">View subscribers</a>
   </article>
 </section>
 
