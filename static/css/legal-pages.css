@@ -211,6 +211,14 @@
   padding-top: 1.75rem;
 }
 
+@media (max-width: 900px) {
+  .legal-tab {
+    flex: 1 1 auto;
+    font-size: 0.72rem;
+    padding: 0.75rem 0.85rem;
+  }
+}
+
 @media (max-width: 640px) {
   .legal-page-shell {
     padding: 0 1rem;

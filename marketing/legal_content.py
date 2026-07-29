@@ -1,4 +1,4 @@
-"""Privacy policy — TBO-style two-panel accordion layout, Magic Sands DMC content."""
+"""Privacy policy — TBO-style three-panel accordion layout, Magic Sands DMC content."""
 
 PRIVACY_POLICY = {
     "title": "Privacy Policy",
@@ -10,11 +10,11 @@ PRIVACY_POLICY = {
     ),
     "panels": [
         {
-            "id": "website",
-            "label": "Website Privacy Policy",
+            "id": "privacy",
+            "label": "Privacy Policy",
             "sections": [
                 {
-                    "id": "website-overview",
+                    "id": "privacy-overview",
                     "title": "Overview",
                     "open": True,
                     "paragraphs": [
@@ -41,7 +41,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-collect",
+                    "id": "privacy-collect",
                     "title": "Information We Collect",
                     "paragraphs": [
                         (
@@ -55,7 +55,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-you-give",
+                    "id": "privacy-you-give",
                     "title": "Information You Give Us",
                     "paragraphs": [
                         (
@@ -95,7 +95,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-auto",
+                    "id": "privacy-auto",
                     "title": "Information We Collect Automatically",
                     "paragraphs": [
                         (
@@ -130,7 +130,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-use",
+                    "id": "privacy-use",
                     "title": "How We Use Information",
                     "paragraphs": [
                         (
@@ -160,7 +160,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-cookies",
+                    "id": "privacy-cookies",
                     "title": "Cookie Policy",
                     "paragraphs": [
                         (
@@ -212,7 +212,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-cards",
+                    "id": "privacy-cards",
                     "title": "Credit / Debit Cards",
                     "paragraphs": [
                         (
@@ -223,7 +223,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-choices",
+                    "id": "privacy-choices",
                     "title": "Choices Regarding Your Personal Information",
                     "paragraphs": [
                         (
@@ -251,7 +251,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-retention",
+                    "id": "privacy-retention",
                     "title": "How Long We Keep Your Personal Information",
                     "paragraphs": [
                         (
@@ -267,7 +267,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-security",
+                    "id": "privacy-security",
                     "title": "Security Safeguards",
                     "paragraphs": [
                         (
@@ -281,7 +281,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-updates",
+                    "id": "privacy-updates",
                     "title": "Updates to Our Privacy Policy",
                     "paragraphs": [
                         (
@@ -296,7 +296,7 @@ PRIVACY_POLICY = {
                     ],
                 },
                 {
-                    "id": "website-contact",
+                    "id": "privacy-contact",
                     "title": "Contact Us",
                     "paragraphs": [
                         (
@@ -314,6 +314,205 @@ PRIVACY_POLICY = {
                 },
             ],
         },
+
+        {
+            "id": "website",
+            "label": "Website Privacy Policy",
+            "sections": [
+                {
+                    "id": "website-who",
+                    "title": "1. Who Are We?",
+                    "open": True,
+                    "paragraphs": [
+                        (
+                            "Welcome to the Magic Sands DMC website privacy policy. Magic Sands DMC "
+                            "(“Magic Sands”, “we”, “our”, or “us”) is a destination management company "
+                            "providing travel experiences, packages and related services in Oman and beyond. "
+                            "We operate the marketing website available at "
+                            '<a href="https://www.magicsandsdmc.com">https://www.magicsandsdmc.com</a> '
+                            "(the “Website”) to promote our services, share destination content, collect "
+                            "enquiries and newsletter subscriptions, invite partner registrations, and publish "
+                            "guest testimonials."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-about",
+                    "title": "2. About This Policy",
+                    "paragraphs": [
+                        (
+                            "We are committed to protecting and respecting the privacy of visitors to our "
+                            "Website. This Privacy Policy sets out the basis on which your personal data, as a "
+                            "visitor of our Website, will be processed by us as a controller. Please read this "
+                            "Privacy Policy carefully to understand how we will use your personal data."
+                        ),
+                        (
+                            "Once you have created an account for our partner / booking Platform, any personal "
+                            "data that we process relating to partners, suppliers and their customers will also "
+                            "be governed by our Platform Privacy Policy."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-contact",
+                    "title": "3. How Can You Contact Us?",
+                    "paragraphs": [
+                        (
+                            "If you have any questions about your personal data, how we look after it, or if "
+                            "there are any changes to your personal data, please:"
+                        ),
+                        (
+                            "<ul>"
+                            '<li>Email us at <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>; or</li>'
+                            "<li>Write to us at Attn: Legal / Privacy, Magic Sands DMC, 507, 5th floor, "
+                            "Business center Alkhuwair, Muscat, Sultanate of Oman</li>"
+                            "</ul>"
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-data",
+                    "title": "4. What Personal Data Do We Collect and Process?",
+                    "paragraphs": [
+                        (
+                            "When you access the Website, you may provide us with personal data, and we may "
+                            "collect and process such personal data in accordance with this Privacy Policy. We "
+                            "will only use your personal data where we have a valid lawful basis to do so."
+                        ),
+                        (
+                            "<strong>Information you give us</strong> may include: identity data (name and "
+                            "other personal identifiers); contact data (email, phone, postal address); company "
+                            "data if you enquire as a partner or supplier; content of correspondence, enquiries, "
+                            "reviews and feedback; and marketing preferences when you subscribe to our newsletter."
+                        ),
+                        (
+                            "<strong>Information collected automatically</strong> may include: technical data "
+                            "(IP address, browser type and version, time zone, operating system and platform); "
+                            "usage data (pages visited, clickstream, preferences and navigation paths); and "
+                            "approximate location based on IP address. For more information about cookies, see "
+                            "the Cookie Policy under the Privacy Policy tab."
+                        ),
+                        (
+                            "Typical purposes include: responding to enquiries; sending newsletters where you "
+                            "have subscribed; registering partner interest; publishing testimonials you submit; "
+                            "operating, securing and improving the Website; fraud prevention; and complying with "
+                            "legal obligations. Where we rely on consent for marketing, you may withdraw it at "
+                            "any time (for example via an unsubscribe link)."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-share",
+                    "title": "5. Who Do We Share Your Personal Data With?",
+                    "paragraphs": [
+                        (
+                            "By using the Website, we may need to disclose your personal data to limited "
+                            "categories of third parties so that we can operate our Website and comply with legal "
+                            "duties, including: website hosting and infrastructure providers; email / CRM and "
+                            "analytics providers; parties involved in corporate transactions; regulators or law "
+                            "enforcement where required; and parties necessary to enforce legal rights or "
+                            "investigate fraud."
+                        ),
+                        (
+                            "You can ask us for more information about these organisations by contacting us "
+                            "using the details in section 3."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-storage",
+                    "title": "6. Where Do We Store Your Information?",
+                    "paragraphs": [
+                        (
+                            "We may transfer or store personal data outside your home country, including with "
+                            "selected third parties instructed to help us provide the Website. Where we do so, "
+                            "we will take appropriate measures to protect your personal data to standards "
+                            "required by applicable law. Contact us using the details in section 3 for more "
+                            "information about transfers."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-secure",
+                    "title": "7. How Do We Keep Your Personal Data Secure?",
+                    "paragraphs": [
+                        (
+                            "We put security measures in place to protect personal data from being destroyed, "
+                            "lost or accessed by someone who should not see it. However, we cannot guarantee that "
+                            "personal data will be free from every security risk that may arise when information "
+                            "is sent to and from the Website."
+                        ),
+                        (
+                            "The Website may include links to third-party websites which may collect your "
+                            "personal data. We have no control over those websites; please check their policies."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-cookies-ref",
+                    "title": "8. How Do We Use Cookies?",
+                    "paragraphs": [
+                        (
+                            "We use cookies or other similar technologies to capture certain data when you "
+                            "interact with the Website. For further information, please see the Cookie Policy "
+                            "section under the Privacy Policy tab."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-retention",
+                    "title": "9. How Long Do We Keep Your Information?",
+                    "paragraphs": [
+                        (
+                            "We will only keep your personal data for as long as is necessary for the reasons we "
+                            "collected it, as set out in this Privacy Policy, or as otherwise required by "
+                            "applicable laws. Contact us if you want further information on retention periods."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-rights",
+                    "title": "10. What Are Your Rights?",
+                    "paragraphs": [
+                        (
+                            "Depending on applicable law, you may have rights to: access a copy of the personal "
+                            "data we hold about you; ask us to correct inaccurate or incomplete data; ask us to "
+                            "delete data where we do not have a compelling reason to continue processing; ask us "
+                            "to stop or restrict certain processing; and ask us to stop using your personal data "
+                            "for marketing emails."
+                        ),
+                        (
+                            "To exercise these rights, contact us using the details in section 3. We may ask for "
+                            "proof of identity before responding."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-complaints",
+                    "title": "11. How Can You Make a Complaint?",
+                    "paragraphs": [
+                        (
+                            "You have the right to make a complaint about how we have used your personal data by "
+                            "contacting us first using the details in section 3. If you are still not satisfied, "
+                            "you may contact a data protection regulator or seek a remedy before the competent "
+                            "courts where available under applicable law."
+                        ),
+                    ],
+                },
+                {
+                    "id": "website-updates",
+                    "title": "12. Changes to This Privacy Policy",
+                    "paragraphs": [
+                        (
+                            "We may need to change this Privacy Policy as our Website develops or if the law "
+                            "changes. We will let you know if any important changes are made; otherwise we will "
+                            "always display the latest version of our policy on our Website."
+                        ),
+                    ],
+                },
+            ],
+        },
+
         {
             "id": "platform",
             "label": "Platform Privacy Policy",
@@ -324,17 +523,14 @@ PRIVACY_POLICY = {
                     "open": True,
                     "paragraphs": [
                         (
-                            "Welcome to the Magic Sands DMC privacy policy. Magic Sands DMC (“Magic Sands”) "
-                            "operates marketing websites and partner / booking services that allow travellers and "
-                            "registered travel partners to explore destinations, request services, and (where "
-                            "available) book hotels and travel experiences with selected suppliers (“Suppliers”) "
-                            "on behalf of end customers (“Customers”). References in this privacy policy "
-                            "(“Privacy Policy”) to “we”, “our”, or “us” are references to Magic Sands DMC. We "
-                            "operate "
-                            '<a href="https://www.magicsandsdmc.com">https://www.magicsandsdmc.com</a> '
-                            "(the “Website”) to promote our services and provide opportunities to contact us, "
-                            "subscribe to updates, register as a partner, and receive information about our "
-                            "programmes."
+                            "Welcome to the Magic Sands DMC Platform privacy policy. Magic Sands DMC "
+                            "(“Magic Sands”) owns and operates partner / booking services (the “Platform”) "
+                            "that allow registered travel partners to explore destinations, request services, and "
+                            "(where available) book hotels and travel experiences with selected suppliers "
+                            "(“Suppliers”) on behalf of end customers (“Customers”). References in this privacy "
+                            "policy (“Privacy Policy”) to “we”, “our”, or “us” are references to Magic Sands DMC. "
+                            "For more information about Magic Sands, please visit "
+                            '<a href="https://www.magicsandsdmc.com">https://www.magicsandsdmc.com</a>.'
                         ),
                     ],
                 },
@@ -499,7 +695,7 @@ PRIVACY_POLICY = {
                         (
                             "We use cookies or other similar technologies to capture certain data when you "
                             "interact with the Website. For further information, please see the Cookie Policy "
-                            "section under Website Privacy Policy."
+                            "section under the Privacy Policy tab."
                         ),
                     ],
                 },
