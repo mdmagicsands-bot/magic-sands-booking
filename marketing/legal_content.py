@@ -4,9 +4,10 @@ PRIVACY_POLICY = {
     "title": "Privacy Policy",
     "effective_date": "01 August 2025",
     "intro": (
-        "This Privacy and Cookie Policy explains how Magic Sands DMC collects, processes, "
-        "uses, shares and protects personal information on our websites, emails and related "
-        "digital services (collectively, the “Platform”), as amended from time to time."
+        "At Magic Sands DMC, we value your privacy and are committed to protecting the personal "
+        "information entrusted to us. This Privacy Policy explains how we collect, use, store, "
+        "process, and safeguard your personal data when you visit our website, use our B2B booking "
+        "portal, or interact with our services."
     ),
     "panels": [
         {
@@ -15,300 +16,363 @@ PRIVACY_POLICY = {
             "sections": [
                 {
                     "id": "privacy-overview",
-                    "title": "Overview",
+                    "title": "1. Overview",
                     "open": True,
                     "paragraphs": [
                         (
-                            "This Privacy and Cookie Policy (the “Policy”) becomes effective for all users "
-                            "from the date 01 August 2025."
-                        ),
-                        (
-                            "We, Magic Sands Technology / Magic Sands DMC (“Magic Sands”, “We”, or “us”), "
-                            "explain in this Policy how we collect, process and/or use information that we "
-                            "receive via our websites, emails we send, and applications that link to this "
-                            "Policy. This Policy describes how Magic Sands collects, processes, uses, shares "
-                            "and secures the personal information you provide. It also describes your choices "
-                            "regarding use, access and correction of your personal information. For purposes "
-                            "of this Policy, personal information means any information relating to an "
-                            "identified or identifiable natural person."
-                        ),
-                        (
-                            "This Policy applies only to information we collect, process and use through the "
-                            "Platform. It does not apply to information that we collect through other channels, "
-                            "such as information collected offline, from other websites, or from emails you "
-                            "send us, except where those channels expressly link to this Policy."
+                            "At Magic Sands DMC, we value your privacy and are committed to protecting the "
+                            "personal information entrusted to us. This Privacy Policy explains how we collect, "
+                            "use, store, process, and safeguard your personal data when you visit our website, "
+                            "use our B2B booking portal, or interact with our services. By accessing our "
+                            "services, you agree to the practices described in this Privacy Policy."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-collect",
-                    "title": "Information We Collect",
+                    "title": "2. Information We Collect",
                     "paragraphs": [
                         (
-                            "We collect information about you to provide our services. In order for us to best "
-                            "provide our services to you (and to help make it feasible for us to do so), it is "
-                            "essential that we are able to collect and use the information as described in this "
-                            "Policy. This means that the data collection is largely necessary for fulfilling the "
-                            "relationship we have with you, and where that is not the case, we have a legitimate "
-                            "interest in collecting the information described below."
+                            "We collect information necessary to provide travel-related services, process "
+                            "bookings, manage partner accounts, improve our platform, and comply with legal "
+                            "obligations. The information collected may include personal details, business "
+                            "information, booking details, payment information, technical data, and "
+                            "communication records."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-you-give",
-                    "title": "Information You Give Us",
+                    "title": "3. Information You Give Us",
                     "paragraphs": [
-                        (
-                            "When you fill out online forms, provide traveller or booking information, subscribe "
-                            "to our newsletter, submit a review, register as a partner, or provide us with other "
-                            "personal information actively, we collect that information for processing and use "
-                            "in accordance with this Policy. Magic Sands may change its offerings, products and "
-                            "features from time to time; the options you have to provide us with personal "
-                            "information also may change. Examples include:"
-                        ),
+                        ("Information you voluntarily provide may include:"),
                         (
                             "<ul>"
-                            "<li>When you register or create an account on our site</li>"
-                            "<li>When you sign up for email alerts or our newsletter</li>"
-                            "<li>Completing a form related to one of our products or services</li>"
-                            "<li>Submitting a testimonial or contact enquiry</li>"
-                            "<li>Uploading documents required for identification or partner onboarding</li>"
-                            "<li>Contacting us for technical support or customer service</li>"
+                            "<li>Company Name</li>"
+                            "<li>Contact Person</li>"
+                            "<li>Email Address</li>"
+                            "<li>Telephone Number</li>"
+                            "<li>Business Address</li>"
+                            "<li>Passport details (where required)</li>"
+                            "<li>Guest Names</li>"
+                            "<li>Nationality</li>"
+                            "<li>Travel Dates</li>"
+                            "<li>Hotel Preferences</li>"
+                            "<li>Payment Information</li>"
+                            "<li>Company Registration Documents</li>"
+                            "<li>VAT or Tax Registration Details</li>"
+                            "<li>Any information submitted through enquiry forms, registration forms, "
+                            "bookings or customer support</li>"
                             "</ul>"
-                        ),
-                        (
-                            "Depending on how you interact with our Platform, the personal information we collect "
-                            "from you may vary. For example, to create an account we may ask only for an email "
-                            "address and password. In other circumstances we may ask for your name, phone number "
-                            "and/or postal address. We also collect and store certain information associated with "
-                            "actions you take, such as searches, information provided through online forms, IP "
-                            "addresses, bookings or offers, the time and duration of your activity, and other "
-                            "behavioural information on our Platform."
-                        ),
-                        (
-                            "If you enter credit card information on the Platform in connection with a booking, "
-                            "that information is typically sent directly from your browser to the third-party "
-                            "payment service provider we use to manage card processing, and we do not store full "
-                            "card details on our servers. The service provider is not permitted to use the "
-                            "information you provide except for the sole purpose of payment processing on our behalf."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-auto",
-                    "title": "Information We Collect Automatically",
+                    "title": "4. Information We Collect Automatically",
                     "paragraphs": [
                         (
-                            "When you use the Platform, your device automatically provides information so that we "
-                            "can customise our response to you. This generally includes technical information such "
-                            "as your IP address or other device identifier, the type of device you use, and "
-                            "operating system version. It may also include usage information and statistics about "
-                            "your interaction with the Platform — for example URLs visited, referring and exiting "
-                            "pages, page views, time spent on a page, number of clicks, platform type, location "
-                            "data (if you have enabled access on your device), and other usage information."
+                            "When you visit our website or booking portal, we may automatically collect "
+                            "technical information including:"
                         ),
                         (
-                            "<strong>Cookies and tracking technologies.</strong> Technologies such as cookies, "
-                            "locally shared objects, mobile identifiers and similar technologies (“Cookies”) are "
-                            "used by Magic Sands to remember settings, support authentication and analytics, "
-                            "administer the Platform, track movements around the Platform, and gather demographic "
-                            "information about our user base as a whole. You can control Cookies at the individual "
-                            "browser level; disabling Cookies may limit certain features."
+                            "<ul>"
+                            "<li>IP Address</li>"
+                            "<li>Browser Type</li>"
+                            "<li>Device Information</li>"
+                            "<li>Operating System</li>"
+                            "<li>Login Date &amp; Time</li>"
+                            "<li>Pages Visited</li>"
+                            "<li>Booking Activity</li>"
+                            "<li>Referral Website</li>"
+                            "<li>Language Preferences</li>"
+                            "<li>Session Information</li>"
+                            "</ul>"
                         ),
                         (
-                            "<strong>Log file information.</strong> Log file information is automatically reported "
-                            "by your browser or mobile application each time you access a website on our Platform, "
-                            "including web request, IP address, browser type, referring/exit pages and URLs, "
-                            "number of clicks, domain names, landing pages and pages viewed."
+                            "This information helps us improve security, system performance, and user experience."
+                        ),
+                    ],
+                },
+                {
+                    "id": "privacy-automated",
+                    "title": "5. Automated Means of Data Collection Include the Following",
+                    "paragraphs": [
+                        ("Magic Sands DMC may use automated technologies including:"),
+                        (
+                            "<ul>"
+                            "<li>Cookies</li>"
+                            "<li>Session Cookies</li>"
+                            "<li>Browser Storage</li>"
+                            "<li>Analytics Tools</li>"
+                            "<li>Web Server Logs</li>"
+                            "<li>Security Monitoring</li>"
+                            "<li>Authentication Tokens</li>"
+                            "<li>Device Recognition Technologies</li>"
+                            "</ul>"
                         ),
                         (
-                            "<strong>Device information.</strong> We collect information about the device you use "
-                            "to access the Platform, including type of device, operating system, settings, unique "
-                            "device identifiers and IP address. Whether we collect some or all of this information "
-                            "often depends on what type of device you are using and its settings."
+                            "These technologies help maintain secure sessions, remember preferences, and "
+                            "improve website performance."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-use",
-                    "title": "How We Use Information",
+                    "title": "6. How We Use Information / Purposes",
                     "paragraphs": [
-                        (
-                            "We use the information we collect to provide our services. It is largely necessary for "
-                            "fulfilling the relationship we have with you and, where that is not the case, we have "
-                            "a legitimate interest in using the information we collect, including personal "
-                            "information, for these purposes:"
-                        ),
+                        ("Your information may be used to:"),
                         (
                             "<ul>"
-                            "<li>To provide you with relevant content and services</li>"
-                            "<li>To customise and improve features, performance and support of the site</li>"
-                            "<li>For internal operations, including troubleshooting, data analysis, testing, research and service improvement</li>"
-                            "<li>To communicate with you by email, telephone or postal mail using contact information you provide</li>"
-                            "<li>To analyse use of the Platform and improve the Platform</li>"
-                            "<li>To create aggregate statistical data that does not identify you individually</li>"
-                            "<li>For other purposes that you separately authorise as you interact with Magic Sands</li>"
+                            "<li>Create and manage your account</li>"
+                            "<li>Process hotel, transfer, tour and attraction bookings</li>"
+                            "<li>Confirm reservations</li>"
+                            "<li>Generate invoices and vouchers</li>"
+                            "<li>Process payments</li>"
+                            "<li>Verify partner registrations</li>"
+                            "<li>Communicate booking updates</li>"
+                            "<li>Provide customer support</li>"
+                            "<li>Prevent fraud</li>"
+                            "<li>Improve our products and services</li>"
+                            "<li>Comply with legal obligations</li>"
+                            "<li>Send important service notifications</li>"
+                            "<li>Conduct internal reporting and analytics</li>"
                             "</ul>"
                         ),
-                        (
-                            "When we collect any information that does not identify you as a specific natural person "
-                            "(“Non-Personal Information”), we may use and disclose this information for any purpose "
-                            "except where applicable law requires otherwise. If we combine Non-Personal Information "
-                            "with your personal information, we will treat the combined information as personal "
-                            "information in accordance with this Policy."
-                        ),
+                        ("We will only process personal information for legitimate business purposes."),
                     ],
                 },
                 {
                     "id": "privacy-cookies",
-                    "title": "Cookie Policy",
+                    "title": "7. Cookie Policy",
                     "paragraphs": [
                         (
-                            "Magic Sands DMC (“Magic Sands”, “we”, or “us”) is committed to protecting your privacy. "
-                            "This Cookie Policy explains (i) what types of cookies and similar technologies are "
-                            "placed on your device when you visit "
-                            '<a href="https://www.magicsandsdmc.com">https://www.magicsandsdmc.com</a> '
-                            "(the “Website”) and related services (together, the “Services”); and (ii) how Magic "
-                            "Sands uses these cookies and similar technologies."
+                            "Cookies are small text files stored on your device to improve website "
+                            "functionality and user experience."
+                        ),
+                        ("We use cookies to:"),
+                        (
+                            "<ul>"
+                            "<li>Remember login sessions</li>"
+                            "<li>Save user preferences</li>"
+                            "<li>Improve website performance</li>"
+                            "<li>Analyse website traffic</li>"
+                            "<li>Enhance security</li>"
+                            "<li>Personalise content</li>"
+                            "</ul>"
                         ),
                         (
-                            "<strong>What are cookies?</strong> Cookies are small text files that are sent to or "
-                            "accessed from your web browser or your device’s memory. A cookie typically contains "
-                            "the name of the domain from which the cookie originated, the lifetime of the cookie, "
-                            "and a randomly generated unique number or other identifier. A cookie also may contain "
-                            "information about your device, such as user settings, browsing history and activities "
-                            "conducted while using our Services."
-                        ),
-                        (
-                            "<strong>First-party cookies</strong> are placed on your device directly by Magic Sands "
-                            "(for example to keep you logged in, authenticate your device, or adapt language/"
-                            "culture preferences). <strong>Third-party cookies</strong> may be placed by partners "
-                            "and service providers where we enable analytics or maps features."
-                        ),
-                        (
-                            "<strong>Session cookies</strong> last until you close your browser. "
-                            "<strong>Persistent cookies</strong> have a longer lifespan and are primarily used to "
-                            "authenticate your device, save preferences, help you sign in again, and for analytics."
-                        ),
-                        (
-                            "Like most providers of online services, Magic Sands uses cookies to provide, secure "
-                            "and improve our Services, including by remembering your preferences and recognising "
-                            "you when you visit. Essential cookies are set to support the structure of our sites "
-                            "and services. Analytics cookies (where used) help us understand how Services are used "
-                            "and improve them; where required by law, we rely on your consent for non-essential "
-                            "analytics cookies."
-                        ),
-                        (
-                            "You can control or reject cookies via your browser settings. Disabling cookies may "
-                            "make browsing less satisfying and, in some cases, you may be unable to use all or "
-                            "part of our site. If you delete cookies after setting preferences, you may need to "
-                            "select your preferences again on your next visit."
-                        ),
-                        (
-                            "If you have questions about this Cookie Policy, email "
-                            '<a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a> '
-                            "or write to us at 507, 5th floor, Business center Alkhuwair, Muscat, Sultanate of Oman."
+                            "You may disable cookies through your browser settings; however, some features "
+                            "of our website may not function properly."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-cards",
-                    "title": "Credit / Debit Cards",
+                    "title": "8. All Credit / Debit Cards",
                     "paragraphs": [
                         (
-                            "All credit/debit card details and personally identifiable payment information will "
-                            "NOT be stored, sold, shared, rented or leased to any third parties by Magic Sands, "
-                            "except as required to process a transaction through our authorised payment providers."
+                            "Magic Sands DMC does not store complete credit or debit card information on "
+                            "its servers."
+                        ),
+                        (
+                            "Online payments are processed through secure third-party payment gateways "
+                            "using industry-standard encryption and security protocols."
+                        ),
+                        (
+                            "All payment transactions are encrypted using Secure Socket Layer (SSL) or "
+                            "equivalent security technologies."
+                        ),
+                    ],
+                },
+                {
+                    "id": "privacy-opt-out-cookies",
+                    "title": "9. Opting Out of Cookies",
+                    "paragraphs": [
+                        (
+                            "You may choose to disable or remove cookies through your browser settings at "
+                            "any time."
+                        ),
+                        (
+                            "Please note that disabling cookies may affect certain features including login "
+                            "sessions, booking functionality, saved preferences, and website performance."
+                        ),
+                    ],
+                },
+                {
+                    "id": "privacy-dnt",
+                    "title": "10. Do Not Track Signals",
+                    "paragraphs": [
+                        ('Some web browsers offer a “Do Not Track” feature.'),
+                        (
+                            "Currently, Magic Sands DMC does not respond differently to Do Not Track "
+                            "browser requests, as there is no universally accepted industry standard "
+                            "governing such signals."
+                        ),
+                    ],
+                },
+                {
+                    "id": "privacy-other",
+                    "title": "11. Other Important Privacy Information",
+                    "paragraphs": [
+                        ("Magic Sands DMC may share necessary information with trusted suppliers including:"),
+                        (
+                            "<ul>"
+                            "<li>Hotels</li>"
+                            "<li>Airlines</li>"
+                            "<li>Transfer Providers</li>"
+                            "<li>Tour Operators</li>"
+                            "<li>Attraction Operators</li>"
+                            "<li>Government Authorities (where legally required)</li>"
+                            "<li>Payment Service Providers</li>"
+                            "</ul>"
+                        ),
+                        (
+                            "Information is shared only when necessary to provide the requested travel "
+                            "services."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-choices",
-                    "title": "Choices Regarding Your Personal Information",
+                    "title": "12. Choices Regarding Your Personal Information",
                     "paragraphs": [
+                        ("You may request to:"),
                         (
-                            "If you wish to access, correct, update or request deletion of your personal "
-                            "information, you can do so at any time by contacting us using the details under "
-                            "“Contact Us”."
+                            "<ul>"
+                            "<li>Access your personal information</li>"
+                            "<li>Correct inaccurate information</li>"
+                            "<li>Update your account details</li>"
+                            "<li>Withdraw marketing consent</li>"
+                            "<li>Request deletion where legally permitted</li>"
+                            "<li>Request a copy of your stored personal information</li>"
+                            "</ul>"
+                        ),
+                        ("Requests may be submitted by contacting us."),
+                    ],
+                },
+                {
+                    "id": "privacy-closure",
+                    "title": "13. Closure of Account",
+                    "paragraphs": [
+                        ("You may request closure of your account at any time."),
+                        (
+                            "Following account closure, certain information may be retained where required for:"
                         ),
                         (
-                            "You have the right to opt out of marketing communications we send you at any time by "
-                            "clicking the “unsubscribe” or “opt-out” link in marketing emails, or by contacting us. "
-                            "Withdrawing consent will not affect the lawfulness of processing conducted prior to "
-                            "withdrawal."
-                        ),
-                        (
-                            "We will send you service-related announcements when we believe it is necessary. In "
-                            "some cases you can stop or limit information collected by automated means by reviewing "
-                            "the Cookie Policy section above."
-                        ),
-                        (
-                            "We respond to requests from individuals wishing to exercise their data protection "
-                            "rights in accordance with applicable laws. We reserve the right to keep information "
-                            "in our archives where necessary to comply with legal obligations, resolve disputes "
-                            "and enforce our agreements."
+                            "<ul>"
+                            "<li>Legal obligations</li>"
+                            "<li>Financial reporting</li>"
+                            "<li>Tax regulations</li>"
+                            "<li>Fraud prevention</li>"
+                            "<li>Dispute resolution</li>"
+                            "</ul>"
                         ),
                     ],
                 },
                 {
                     "id": "privacy-retention",
-                    "title": "How Long We Keep Your Personal Information",
+                    "title": "14. How Long We Keep Your Personal Information",
                     "paragraphs": [
+                        ("We retain personal information only for as long as necessary to:"),
                         (
-                            "We keep your personal information only so long as we need it to provide the Platform "
-                            "to you and fulfil the purposes described in this Policy. Retention periods can vary "
-                            "based on the type of information and how it is used, and may reflect legally mandated "
-                            "periods, pending or potential litigation, intellectual property or ownership rights, "
-                            "contract requirements, operational needs, and historical archiving. When we no longer "
-                            "need your personal information and there is no need to keep it to comply with legal "
-                            "obligations, resolve disputes or enforce agreements, we will remove it from our "
-                            "systems or depersonalise it so that we cannot identify you."
+                            "<ul>"
+                            "<li>Complete bookings</li>"
+                            "<li>Fulfil contractual obligations</li>"
+                            "<li>Comply with legal requirements</li>"
+                            "<li>Resolve disputes</li>"
+                            "<li>Meet accounting and regulatory obligations</li>"
+                            "</ul>"
+                        ),
+                        (
+                            "Once retention periods expire, information will be securely deleted or anonymised."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-security",
-                    "title": "Security Safeguards",
+                    "title": "15. Security Safeguards",
                     "paragraphs": [
                         (
-                            "We employ physical, electronic and managerial measures to safeguard the information "
-                            "we collect online. However, no company can fully eliminate security risks, so we "
-                            "cannot make guarantees about any part of our services. You are responsible for "
-                            "keeping your username and password secret. Once you have registered with us, we will "
-                            "never ask you for your password. Please create a unique password for your Magic Sands "
-                            "account and do not use it for other services. Do not share your password with anyone else."
+                            "Magic Sands DMC employs appropriate technical and organisational measures to "
+                            "protect your information, including:"
+                        ),
+                        (
+                            "<ul>"
+                            "<li>SSL Encryption</li>"
+                            "<li>Secure Servers</li>"
+                            "<li>Firewall Protection</li>"
+                            "<li>Role-Based Access Control</li>"
+                            "<li>Password Encryption</li>"
+                            "<li>System Monitoring</li>"
+                            "<li>Backup Systems</li>"
+                            "<li>Restricted Employee Access</li>"
+                            "</ul>"
+                        ),
+                        (
+                            "While we strive to protect your information, no method of internet transmission "
+                            "or electronic storage can be guaranteed to be completely secure."
+                        ),
+                    ],
+                },
+                {
+                    "id": "privacy-control",
+                    "title": "16. Data Control",
+                    "paragraphs": [
+                        (
+                            "Magic Sands DMC acts as the data controller for information collected through "
+                            "our website and B2B booking platform."
+                        ),
+                        (
+                            "Where information is processed on behalf of suppliers or partners, we ensure "
+                            "appropriate contractual and security measures are maintained."
+                        ),
+                    ],
+                },
+                {
+                    "id": "privacy-reach",
+                    "title": "17. You May Reach Us Here",
+                    "paragraphs": [
+                        (
+                            "If you have any questions regarding this Privacy Policy or wish to exercise "
+                            "your privacy rights, please contact us."
+                        ),
+                        (
+                            'Email: <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>'
+                        ),
+                        (
+                            "Our team will respond to privacy-related enquiries within a reasonable timeframe."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-updates",
-                    "title": "Updates to Our Privacy Policy",
+                    "title": "18. Updates to Our Privacy Policy",
                     "paragraphs": [
                         (
-                            "We may revise this Policy from time to time by posting an updated version on the "
-                            "Platform. If we make a change that we believe materially reduces your rights or "
-                            "increases your responsibilities, we will notify you by email (where we have your "
-                            "address) or by a notice on this website prior to the change becoming effective. We "
-                            "encourage you to periodically review this page for the latest information on our "
-                            "privacy practices. Your continued use of the Platform is subject to the most current "
-                            "effective version of this Policy."
+                            "Magic Sands DMC reserves the right to update or modify this Privacy Policy at "
+                            "any time."
+                        ),
+                        (
+                            "Any changes will become effective upon publication on our website. We encourage "
+                            "users to review this policy periodically to remain informed about how we protect "
+                            "personal information."
                         ),
                     ],
                 },
                 {
                     "id": "privacy-contact",
-                    "title": "Contact Us",
+                    "title": "19. Contact Us",
                     "paragraphs": [
                         (
                             "Magic Sands DMC<br>"
-                            "507, 5th floor, Business center Alkhuwair, Muscat, Sultanate of Oman<br>"
-                            'Email: <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a><br>'
-                            'Phone: <a href="tel:+96895481989">+968 95481989</a>'
+                            'Website: <a href="https://www.magicsandsdmc.com">www.magicsandsdmc.com</a><br>'
+                            'Email: <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>'
                         ),
                         (
-                            "If you have an unresolved privacy or data-use concern that we have not addressed "
-                            "satisfactorily, please contact us at the details above and mark your message for "
-                            "the attention of our Privacy / Legal team."
+                            "Thank you for trusting Magic Sands DMC. We are committed to protecting your "
+                            "privacy and providing a secure, reliable, and professional travel booking "
+                            "experience."
                         ),
                     ],
                 },
