@@ -16,7 +16,7 @@ urlpatterns = [
 if settings.MARKETING_ONLY:
     urlpatterns += [
         path("", include("partners.marketing_urls")),
-        path("partner-login/", redirect_to_booking_site, name="partner_login_redirect"),
+        path("partner-login/", redirect_to_booking_site, name="partner_login"),
         path("gateway/partner-login/", redirect_to_booking_site),
         path("hotels/", redirect_to_booking_site),
         path("hotels/<path:rest>", redirect_to_booking_site),
