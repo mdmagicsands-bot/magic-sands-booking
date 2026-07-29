@@ -183,6 +183,15 @@
   margin-bottom: 0;
 }
 
+.legal-section-body ul {
+  margin: 0 0 0.85rem;
+  padding-left: 1.25rem;
+}
+
+.legal-section-body li {
+  margin-bottom: 0.35rem;
+}
+
 .legal-section-body a {
   color: #00667f;
   font-weight: 600;
