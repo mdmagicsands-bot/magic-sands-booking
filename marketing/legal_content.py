@@ -664,32 +664,43 @@ PRIVACY_POLICY = {
                     "open": True,
                     "paragraphs": [
                         (
-                            "Welcome to the Magic Sands DMC Platform privacy policy. Magic Sands DMC "
-                            "(“Magic Sands”) owns and operates partner / booking services (the “Platform”) "
-                            "that allow registered travel partners to explore destinations, request services, and "
-                            "(where available) book hotels and travel experiences with selected suppliers "
-                            "(“Suppliers”) on behalf of end customers (“Customers”). References in this privacy "
-                            "policy (“Privacy Policy”) to “we”, “our”, or “us” are references to Magic Sands DMC. "
-                            "For more information about Magic Sands, please visit "
-                            '<a href="https://www.magicsandsdmc.com">https://www.magicsandsdmc.com</a>.'
+                            "Magic Sands DMC (“Magic Sands”, “we”, “our”, or “us”) is a Destination "
+                            "Management Company specializing in hotel reservations, tours, transfers, "
+                            "attractions, MICE services, and travel solutions across the Arabian region. "
+                            "Through our B2B booking platform, we provide travel agencies, tour operators, "
+                            "and corporate partners with access to travel products and services offered "
+                            "directly by Magic Sands DMC and our trusted suppliers."
+                        ),
+                        (
+                            "We are committed to protecting your privacy and ensuring that your personal "
+                            "information is handled securely, fairly, and transparently."
                         ),
                     ],
                 },
                 {
-                    "id": "platform-about",
-                    "title": "2. About This Policy",
+                    "id": "platform-how",
+                    "title": "2. How Does Magic Sands Work?",
                     "paragraphs": [
                         (
-                            "We are committed to protecting and respecting the privacy of users of our Service. "
-                            "This Privacy Policy sets out the basis on which your personal data, as a visitor of "
-                            "our Website or user of our partner / booking platform (the “Platform”), will be "
-                            "processed by us. Please read this Privacy Policy carefully to understand how we will "
-                            "use your personal data."
+                            "Magic Sands DMC operates a secure online B2B booking platform that connects "
+                            "registered travel agencies and business partners with hotels, transfers, "
+                            "sightseeing tours, attraction tickets, and other travel services."
+                        ),
+                        ("Our platform enables partners to:"),
+                        (
+                            "<ul>"
+                            "<li>Search and book travel services</li>"
+                            "<li>Receive real-time confirmations</li>"
+                            "<li>Manage reservations</li>"
+                            "<li>Download vouchers and invoices</li>"
+                            "<li>Access contracted and API-connected inventory</li>"
+                            "<li>Make secure online payments</li>"
+                            "<li>Manage company users and bookings</li>"
+                            "</ul>"
                         ),
                         (
-                            "Once you have created an account for our Platform, personal data that we process "
-                            "relating to partners, suppliers and their customers will be governed by this Platform "
-                            "Privacy Policy together with any specific terms you accept when registering."
+                            "Magic Sands DMC acts either as a principal supplier or as an intermediary "
+                            "between our partners and travel service providers."
                         ),
                     ],
                 },
@@ -698,199 +709,317 @@ PRIVACY_POLICY = {
                     "title": "3. How Can You Contact Us?",
                     "paragraphs": [
                         (
-                            "If you have any questions about your personal data, how we look after it, or if there "
-                            "are any changes to your personal data, please:"
+                            "For questions regarding this Privacy Policy or the processing of your "
+                            "personal information, please contact:"
                         ),
                         (
-                            "<ul>"
-                            '<li>Email us at <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>; or</li>'
-                            "<li>Write to us at Attn: Legal / Privacy, Magic Sands DMC, 507, 5th floor, "
-                            "Business center Alkhuwair, Muscat, Sultanate of Oman</li>"
-                            "</ul>"
+                            "Magic Sands DMC<br>"
+                            'Email: <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a><br>'
+                            'Website: <a href="https://www.magicsandsdmc.com">www.magicsandsdmc.com</a>'
+                        ),
+                        (
+                            "Our team will respond to all privacy-related requests within a reasonable period."
                         ),
                     ],
                 },
                 {
                     "id": "platform-roles",
-                    "title": "4. Controller and Processor Roles",
+                    "title": "4. Magic Sands as Controller and Processor",
                     "paragraphs": [
                         (
-                            "<strong>Controller.</strong> If you visit our Website, register as a partner, or use "
-                            "our Platform, we may use your personal data in connection with your request for or "
-                            "use of our services. Where this is the case, we will be the controller of the personal "
-                            "data that you provide to us or that we collect from you, and we are responsible for "
-                            "safeguarding that data in accordance with this Privacy Policy."
+                            "Depending on the services provided, Magic Sands DMC may act as either:"
+                        ),
+                        ("<strong>Data Controller</strong>"),
+                        (
+                            "When we determine how and why your personal information is processed, including:"
                         ),
                         (
-                            "<strong>Processor.</strong> Where our Platform allows travel partners to input "
-                            "information about their Customers which is then used to fulfil bookings with "
-                            "Suppliers, our role in respect of Customer personal data may be limited to that of "
-                            "an intermediary / processor acting on documented instructions from the partner "
-                            "(controller). Partners remain responsible for ensuring they are authorised to "
-                            "disclose Customer data to us and that Customers are informed in accordance with "
-                            "applicable law."
+                            "<ul>"
+                            "<li>Partner Registration</li>"
+                            "<li>User Accounts</li>"
+                            "<li>Website Administration</li>"
+                            "<li>Customer Support</li>"
+                            "<li>Marketing Communications</li>"
+                            "<li>Billing</li>"
+                            "</ul>"
+                        ),
+                        ("<strong>Data Processor</strong>"),
+                        (
+                            "When processing booking information on behalf of travel agencies, corporate "
+                            "clients, or suppliers solely for providing requested travel services."
+                        ),
+                        (
+                            "In all cases, we process personal information in accordance with applicable "
+                            "privacy laws."
                         ),
                     ],
                 },
                 {
                     "id": "platform-collect",
-                    "title": "5. What Personal Data Do We Collect?",
+                    "title": "5. What Data Do We Collect About You?",
                     "paragraphs": [
+                        ("We may collect:"),
+                        ("<strong>Business Information</strong>"),
                         (
-                            "When you use the Service, we may collect, use, store, transfer and otherwise process "
-                            "the following types of data depending on your relationship with us:"
+                            "<ul>"
+                            "<li>Company Name</li>"
+                            "<li>Business Address</li>"
+                            "<li>Registration Details</li>"
+                            "<li>VAT / Tax Number</li>"
+                            "</ul>"
+                        ),
+                        ("<strong>Personal Information</strong>"),
+                        (
+                            "<ul>"
+                            "<li>Full Name</li>"
+                            "<li>Job Title</li>"
+                            "<li>Email Address</li>"
+                            "<li>Telephone Number</li>"
+                            "<li>Nationality</li>"
+                            "<li>Passport Details (where required)</li>"
+                            "</ul>"
+                        ),
+                        ("<strong>Booking Information</strong>"),
+                        (
+                            "<ul>"
+                            "<li>Hotel Reservations</li>"
+                            "<li>Transfers</li>"
+                            "<li>Tours</li>"
+                            "<li>Attraction Tickets</li>"
+                            "<li>Flight Details</li>"
+                            "<li>Special Requests</li>"
+                            "</ul>"
+                        ),
+                        ("<strong>Financial Information</strong>"),
+                        (
+                            "<ul>"
+                            "<li>Billing Details</li>"
+                            "<li>Payment References</li>"
+                            "<li>Transaction Records</li>"
+                            "</ul>"
+                        ),
+                        ("<strong>Technical Information</strong>"),
+                        (
+                            "<ul>"
+                            "<li>IP Address</li>"
+                            "<li>Device Information</li>"
+                            "<li>Browser Type</li>"
+                            "<li>Login Activity</li>"
+                            "<li>Website Usage</li>"
+                            "</ul>"
+                        ),
+                    ],
+                },
+                {
+                    "id": "platform-how-collect",
+                    "title": "6. How Do We Collect Personal Data About You?",
+                    "paragraphs": [
+                        ("We collect information through:"),
+                        (
+                            "<ul>"
+                            "<li>Partner Registration Forms</li>"
+                            "<li>Booking Requests</li>"
+                            "<li>Online Payments</li>"
+                            "<li>Customer Support Communications</li>"
+                            "<li>Website Forms</li>"
+                            "<li>Cookies</li>"
+                            "<li>Login Activity</li>"
+                            "<li>API Integrations</li>"
+                            "<li>Supplier Communications</li>"
+                            "<li>Marketing Enquiries</li>"
+                            "</ul>"
                         ),
                         (
-                            "<strong>(A) Partners / agents / suppliers</strong> — business representative contact "
-                            "details (name, job title, work email, work telephone); company data (name, location, "
-                            "telephone, postal address, tax IDs where provided); billing data; feedback and "
-                            "enquiry information; marketing preferences; technical and usage data collected "
-                            "automatically when you use our Services."
-                        ),
-                        (
-                            "<strong>(B) Customers</strong> — where a partner inputs or collects data for a "
-                            "booking, this may include identity and contact data (name, phone, email, address, "
-                            "nationality, passport details, date of birth), payment data required for "
-                            "transactions, and special requirements (for example dietary or accessibility "
-                            "information) where provided."
-                        ),
-                        (
-                            "Some types of personal data are treated as “special” under applicable law (for "
-                            "example health-related information). We will only collect or use this type of data "
-                            "with your explicit consent or where the law requires us to do so."
+                            "Information may also be received from authorized travel agencies, suppliers, "
+                            "payment providers, and other trusted business partners."
                         ),
                     ],
                 },
                 {
                     "id": "platform-use",
-                    "title": "6. How Do We Use Your Personal Data?",
+                    "title": "7. How Do We Use Your Personal Data?",
                     "paragraphs": [
+                        ("We use your information to:"),
                         (
-                            "We collect personal data so that we can provide our Services. We will only use your "
-                            "personal data where we have a valid lawful basis to do so, including: performing a "
-                            "contract with you; taking steps at your request prior to entering a contract; "
-                            "legitimate interests in operating and improving our Website and business (where these "
-                            "do not unfairly affect your rights); compliance with legal obligations; and your "
-                            "consent where legally required (for example certain marketing)."
+                            "<ul>"
+                            "<li>Register Partner Accounts</li>"
+                            "<li>Process Bookings</li>"
+                            "<li>Confirm Reservations</li>"
+                            "<li>Issue Vouchers</li>"
+                            "<li>Generate Invoices</li>"
+                            "<li>Process Payments</li>"
+                            "<li>Provide Customer Support</li>"
+                            "<li>Verify Business Information</li>"
+                            "<li>Improve Our Services</li>"
+                            "<li>Prevent Fraud</li>"
+                            "<li>Maintain Platform Security</li>"
+                            "<li>Comply with Legal Obligations</li>"
+                            "<li>Send Operational Communications</li>"
+                            "</ul>"
                         ),
                         (
-                            "Typical purposes include registering and managing accounts; responding to enquiries; "
-                            "providing demos or service information; sending service communications; fraud "
-                            "prevention; analytics to improve products and experiences; and sending marketing "
-                            "where permitted (you may unsubscribe at any time)."
+                            "We only process information necessary for legitimate business purposes."
                         ),
                     ],
                 },
                 {
                     "id": "platform-share",
-                    "title": "7. Who Do We Share Your Personal Data With?",
+                    "title": "8. Who Do We Share Your Personal Data With?",
                     "paragraphs": [
+                        ("Where necessary, your information may be shared with:"),
                         (
-                            "By using the Website or Platform, we may need to disclose personal data to limited "
-                            "categories of third parties so that we can operate our services and comply with legal "
-                            "duties, including: third-party service providers (hosting, CRM, analytics, security, "
-                            "payment processing); parties involved in corporate transactions; regulators or law "
-                            "enforcement where required; parties necessary to enforce legal rights or investigate "
-                            "fraud; and, where applicable, suppliers needed to fulfil a booking."
+                            "<ul>"
+                            "<li>Hotels</li>"
+                            "<li>Airlines</li>"
+                            "<li>Transfer Companies</li>"
+                            "<li>Tour Operators</li>"
+                            "<li>Attraction Providers</li>"
+                            "<li>Payment Gateway Providers</li>"
+                            "<li>Technology Partners</li>"
+                            "<li>Government Authorities</li>"
+                            "<li>Legal Advisors</li>"
+                            "<li>Auditors</li>"
+                            "</ul>"
                         ),
                         (
-                            "You can ask us for more information about these organisations by contacting us using "
-                            "the details in section 3."
+                            "Magic Sands DMC never sells your personal information to third parties."
                         ),
                     ],
                 },
                 {
                     "id": "platform-storage",
-                    "title": "8. Where Do We Store Your Information?",
+                    "title": "9. Where Do We Store Your Information?",
                     "paragraphs": [
                         (
-                            "We may transfer or store personal data outside your home country, including with "
-                            "selected third parties instructed to help us provide the services. Where we do so, "
-                            "we will take appropriate measures to protect your personal data to standards required "
-                            "by applicable law. You can ask us for more information about transfers by using the "
-                            "contact details in section 3."
+                            "Your information is stored on secure servers using modern cloud "
+                            "infrastructure protected by industry-standard security measures."
+                        ),
+                        (
+                            "Where international data transfers are necessary, Magic Sands DMC ensures "
+                            "appropriate contractual and technical safeguards are implemented."
                         ),
                     ],
                 },
                 {
                     "id": "platform-security",
-                    "title": "9. How Do We Keep Your Personal Data Secure?",
+                    "title": "10. How Do We Keep Your Personal Data Secure?",
                     "paragraphs": [
+                        ("We use appropriate technical and organizational measures including:"),
                         (
-                            "We put security measures in place to protect personal data from being destroyed, "
-                            "lost or accessed by someone who should not see it. However, we cannot guarantee that "
-                            "personal data will be free from every security risk that may arise when information "
-                            "is sent to and from the Website. Where you have a password, you are responsible for "
-                            "keeping it confidential."
+                            "<ul>"
+                            "<li>SSL Encryption</li>"
+                            "<li>Secure Hosting</li>"
+                            "<li>Firewall Protection</li>"
+                            "<li>Password Encryption</li>"
+                            "<li>User Authentication</li>"
+                            "<li>Role-Based Access</li>"
+                            "<li>Continuous Monitoring</li>"
+                            "<li>Regular Security Updates</li>"
+                            "<li>Backup Systems</li>"
+                            "</ul>"
                         ),
                         (
-                            "The Website may include links to third-party websites which may collect your personal "
-                            "data. We have no control over those websites; please check their policies."
+                            "Although we employ strong security controls, no electronic system can be "
+                            "guaranteed to be completely secure."
                         ),
                     ],
                 },
                 {
                     "id": "platform-cookies",
-                    "title": "10. How Do We Use Cookies?",
+                    "title": "11. How Do We Use Cookies?",
                     "paragraphs": [
+                        ("Magic Sands DMC uses cookies to:"),
                         (
-                            "We use cookies or other similar technologies to capture certain data when you "
-                            "interact with the Website. For further information, please see the Cookie Policy "
-                            "section under the Privacy Policy tab."
+                            "<ul>"
+                            "<li>Maintain secure login sessions</li>"
+                            "<li>Remember user preferences</li>"
+                            "<li>Improve website performance</li>"
+                            "<li>Analyse visitor traffic</li>"
+                            "<li>Enhance platform security</li>"
+                            "<li>Improve overall user experience</li>"
+                            "</ul>"
+                        ),
+                        (
+                            "Users may disable cookies through their browser settings; however, certain "
+                            "website functions may become unavailable."
                         ),
                     ],
                 },
                 {
                     "id": "platform-retention",
-                    "title": "11. How Long Do We Keep Your Information?",
+                    "title": "12. How Long Do We Keep Your Information For?",
                     "paragraphs": [
+                        ("We retain personal information only for as long as necessary to:"),
                         (
-                            "We will only keep your personal data for as long as is necessary for the reasons we "
-                            "collected it, as set out in this Privacy Policy, or as otherwise required by "
-                            "applicable laws. We store personal data in line with legal, regulatory, financial "
-                            "and good-practice requirements. Contact us if you want further information on "
-                            "retention periods."
+                            "<ul>"
+                            "<li>Complete bookings</li>"
+                            "<li>Provide customer support</li>"
+                            "<li>Meet contractual obligations</li>"
+                            "<li>Comply with accounting requirements</li>"
+                            "<li>Satisfy legal obligations</li>"
+                            "<li>Resolve disputes</li>"
+                            "<li>Prevent fraud</li>"
+                            "</ul>"
+                        ),
+                        (
+                            "Information that is no longer required will be securely deleted or anonymized."
                         ),
                     ],
                 },
                 {
                     "id": "platform-rights",
-                    "title": "12. What Are Your Rights?",
+                    "title": "13. What Are Your Rights in Relation to Your Personal Data?",
                     "paragraphs": [
+                        ("Subject to applicable laws, you may request to:"),
                         (
-                            "Depending on applicable law, you may have rights to: access a copy of the personal "
-                            "data we hold about you; ask us to correct inaccurate or incomplete data; ask us to "
-                            "delete data where we do not have a compelling reason to continue processing; ask us "
-                            "to stop or restrict certain processing; and ask us to stop using your personal data "
-                            "for marketing emails."
+                            "<ul>"
+                            "<li>Access your personal information</li>"
+                            "<li>Correct inaccurate information</li>"
+                            "<li>Update your details</li>"
+                            "<li>Restrict processing</li>"
+                            "<li>Withdraw consent where applicable</li>"
+                            "<li>Request deletion where legally permitted</li>"
+                            "<li>Obtain a copy of your personal information</li>"
+                            "<li>Opt out of marketing communications</li>"
+                            "</ul>"
                         ),
                         (
-                            "To exercise these rights at any time, contact us using the details in section 3. We "
-                            "may ask for proof of identity before responding. In some cases we may reject requests "
-                            "where they are unlawful or an exemption applies."
+                            "Privacy requests may be submitted to:<br>"
+                            '<a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>'
                         ),
                     ],
                 },
                 {
                     "id": "platform-complaints",
-                    "title": "13. How Can You Make a Complaint?",
+                    "title": "14. How Can You Make a Complaint?",
                     "paragraphs": [
                         (
-                            "You have the right to make a complaint about how we have used your personal data by "
-                            "contacting us first using the details in section 3. If you are still not satisfied, "
-                            "you may contact a data protection regulator or seek a remedy before the competent "
-                            "courts where available under applicable law."
+                            "If you have concerns regarding how Magic Sands DMC handles your personal "
+                            "information, we encourage you to contact us first so we can investigate and "
+                            "resolve the matter promptly."
+                        ),
+                        (
+                            'Email: <a href="mailto:info@magicsandsdmc.com">info@magicsandsdmc.com</a>'
+                        ),
+                        (
+                            "Where applicable, you may also have the right to submit a complaint to your "
+                            "local data protection authority."
                         ),
                     ],
                 },
                 {
                     "id": "platform-updates",
-                    "title": "14. Changes to This Privacy Policy",
+                    "title": "15. Changes to This Privacy Policy",
                     "paragraphs": [
                         (
-                            "We may need to change this Privacy Policy as our Service develops or if the law "
-                            "changes. We will let you know if any important changes are made; otherwise we will "
-                            "always display the latest version of our policy on our Website."
+                            "Magic Sands DMC reserves the right to amend or update this Privacy Policy at "
+                            "any time to reflect changes in our services, legal obligations, or operational "
+                            "practices."
+                        ),
+                        (
+                            "The latest version will always be available on our website and B2B booking "
+                            "platform. Continued use of our services following any updates constitutes "
+                            "acceptance of the revised Privacy Policy."
                         ),
                     ],
                 },
