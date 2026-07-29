@@ -630,7 +630,7 @@ let ofsetHeight = document.querySelector(".project-style-one-items");
 		loop: true,
 		autoplay: {
 			enabled: true,
-			delay: 6000,
+			delay: 3500,
 		},
 		// Navigation arrows
 		navigation: {
@@ -647,7 +647,7 @@ let ofsetHeight = document.querySelector(".project-style-one-items");
         return '<span class="' + className + '">' + formattedIndex + "</span>";
     },
 		},
-		speed: 500,
+		speed: 600,
 		breakpoints: {
 			'1600': {
 				slidesPerView: 1,
