@@ -1,6 +1,6 @@
 # Magic Sands Marketing Site — local dev server (port 8001)
 # Enterprise admin: voucher-system on 8000
-# Booking platform: magic-sands-booking on 8002
+# Booking platform: magic-sands-booking-platform on 8002
 
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
