@@ -1,5 +1,6 @@
-# Magic Sands Booking — local dev server (port 8001)
-# DMC enterprise admin runs separately on port 8000 (voucher-system).
+# Magic Sands Marketing Site — local dev server (port 8001)
+# Enterprise admin: voucher-system on 8000
+# Booking platform: magic-sands-booking on 8002
 
 $ErrorActionPreference = "Stop"
 $ProjectRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
@@ -11,31 +12,30 @@ if (-not (Test-Path $Python)) {
     Write-Error ".venv not found. Create it first: python -m venv .venv"
 }
 
-Write-Host "=== Magic Sands Booking ==="
-Write-Host "Website:       http://127.0.0.1:$Port/"
-Write-Host "Hotels:        http://127.0.0.1:$Port/hotels/"
-Write-Host "Partner admin: http://127.0.0.1:$Port/admin/login/"
-Write-Host "Django admin:  http://127.0.0.1:$Port/django-admin/"
-Write-Host "DMC platform (separate project): http://127.0.0.1:8000/admin/"
+Write-Host "=== Magic Sands Marketing Site ==="
+Write-Host "Website:          http://127.0.0.1:$Port/"
+Write-Host "Admin CMS:        http://127.0.0.1:$Port/admin/login/"
+Write-Host "Enterprise (8000): http://127.0.0.1:8000/admin/"
+Write-Host "Booking (8002):    http://127.0.0.1:8002/"
 Write-Host ""
 
-try {
-    $health = Invoke-WebRequest -Uri "http://127.0.0.1:8000/health/" -UseBasicParsing -TimeoutSec 2
-    if ($health.Content.Trim() -eq "ok") {
-        Write-Host "DMC platform detected on port 8000."
-    }
-} catch {
-    $status = $null
-    if ($_.Exception.Response) { $status = [int]$_.Exception.Response.StatusCode }
-    if ($status -ne 404) {
-        # Port free or not voucher-system — fine for booking-only dev.
+function Test-PortOwner($port, $label) {
+    try {
+        $probe = Invoke-WebRequest -Uri "http://127.0.0.1:$port/" -UseBasicParsing -TimeoutSec 2
+        Write-Host "$label detected on port $port."
+        return $true
+    } catch {
+        return $false
     }
 }
+
+[void](Test-PortOwner 8000 "Enterprise admin")
+[void](Test-PortOwner 8002 "Booking platform")
 
 try {
     $probe = Invoke-WebRequest -Uri "http://127.0.0.1:$Port/admin/login/" -UseBasicParsing -TimeoutSec 2
     if ($probe.Content -match "Magic Sands DMC Enterprise Platform") {
-        Write-Warning "Port $Port is in use by voucher-system (DMC admin). Run that project on port 8000 instead."
+        Write-Warning "Port $Port is in use by voucher-system (enterprise). Run that project on port 8000 instead."
         exit 1
     }
     Write-Warning "Port $Port is already in use. Stop the existing server or set DEV_SERVER_PORT to another value."
