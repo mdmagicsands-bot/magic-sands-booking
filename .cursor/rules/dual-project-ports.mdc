@@ -1,21 +1,20 @@
 ---
-description: Keep magic-sands-booking and voucher-system running side by side
+description: Three Magic Sands projects — ports and boundaries for marketing
 alwaysApply: true
 ---
 
-# Dual local projects (do not block each other)
-
-Two separate Django apps may run at the same time:
+# Three local projects (do not block each other)
 
 | Project | Folder | Port | Role |
 |---------|--------|------|------|
-| **magic-sands-booking** | `C:\Users\Win11\Projects\magic-sands-booking` | **8001** | Marketing site (Railway); booking stack local / separate Railway later |
-| **voucher-system** | `C:\Users\Win11\Projects\voucher-system` | **8000** | DMC enterprise admin / vouchers |
+| Enterprise | `C:\Users\Win11\Projects\voucher-system` | **8000** | DMC admin / vouchers (`portal.magicsandsdmc.com`) |
+| **Marketing (this)** | `C:\Users\Win11\Projects\magic-sands-marketingsite` | **8001** | Public marketing (`www.magicsandsdmc.com`) |
+| Booking | `C:\Users\Win11\Projects\magic-sands-booking-platform` | **8002** | Hotel booking + partner portal (domain TBD) |
 
 ## Rules
 
-- Work only in the project folder that matches the task.
-- Start booking with `.\bin\dev.ps1` or `runserver 127.0.0.1:8001` — never steal port 8000.
-- Never kill, stop, or rebind processes on the other project's port.
-- When restarting this app, only free **8001** (this project). Leave **8000** alone.
-- Do not run booking on 8000 or voucher-system on 8001.
+- Work only in this folder for marketing tasks.
+- Start with `.\bin\dev.ps1` or `runserver 127.0.0.1:8001`.
+- Never steal ports **8000** or **8002**.
+- Never kill, stop, or rebind processes on the other projects' ports.
+- Do not run marketing on 8000/8002.

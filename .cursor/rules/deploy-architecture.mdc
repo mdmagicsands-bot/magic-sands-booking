@@ -1,0 +1,14 @@
+---
+description: Three separate Railway deployments — marketing boundaries
+alwaysApply: true
+---
+
+# Deployment architecture (marketing)
+
+| Service | Repo | Domain | Push target |
+|---------|------|--------|-------------|
+| Enterprise admin | `magic-sands-enterprise-platform` | `portal.magicsandsdmc.com` | EPS Railway |
+| **Marketing (this)** | **magic-sands-marketingsite** | `www.magicsandsdmc.com` | Marketing Railway |
+| Booking | `magic-sands-booking-platform` | TBD (`book.magicsandsdmc.com`) | Booking Railway |
+
+Local folder: `C:\Users\Win11\Projects\magic-sands-marketingsite` · port **8001**.
