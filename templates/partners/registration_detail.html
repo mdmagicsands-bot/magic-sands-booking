@@ -64,7 +64,7 @@
       <div><dt>Main destinations</dt><dd>{{ reg.main_destinations_sold|linebreaksbr|default:"—" }}</dd></div>
       <div><dt>FIT / Groups / MICE</dt><dd>{{ reg.business_types|default:"—" }}</dd></div>
       <div><dt>Annual passengers</dt><dd>{{ reg.annual_passenger_volume|default:"—" }}</dd></div>
-      <div><dt>Preferred currency</dt><dd>{{ reg.preferred_currency|default:"—" }}</dd></div>
+      <div><dt>Currency</dt><dd>USD</dd></div>
       <div><dt>Notes</dt><dd>{{ reg.message|linebreaksbr|default:"—" }}</dd></div>
       <div><dt>Terms accepted</dt><dd>{% if reg.accepted_terms %}Yes{% else %}No{% endif %}</dd></div>
     </dl>

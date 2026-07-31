@@ -144,14 +144,6 @@
             <label class="pl-label">Annual Passenger Volume
               <input type="text" name="annual_passenger_volume" maxlength="120" placeholder="e.g. 500–1000">
             </label>
-            <label class="pl-label">Preferred Currency
-              <select name="preferred_currency">
-                <option value="">Select currency</option>
-                {% for c in currencies %}
-                <option value="{{ c }}">{{ c }}</option>
-                {% endfor %}
-              </select>
-            </label>
           </div>
         </section>
 

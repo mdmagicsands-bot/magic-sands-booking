@@ -227,7 +227,7 @@ def _save_partner_registration(request, *, redirect_error, redirect_ok):
         main_destinations_sold=(request.POST.get("main_destinations_sold") or "").strip(),
         business_types=", ".join(business_types),
         annual_passenger_volume=(request.POST.get("annual_passenger_volume") or "").strip(),
-        preferred_currency=(request.POST.get("preferred_currency") or "").strip(),
+        preferred_currency="USD",
         accepted_terms=True,
         message=(request.POST.get("message") or "").strip(),
     )
