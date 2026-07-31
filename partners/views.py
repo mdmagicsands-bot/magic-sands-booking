@@ -260,6 +260,11 @@ def gateway_partner_register(request):
     - POST saves the full application (also used by Hostinger gateway)
     """
     if request.method == "GET":
+        from django.conf import settings
+
+        from .countries import COUNTRY_CHOICES
+
+        booking_base = (getattr(settings, "PUBLIC_BOOKING_URL", "") or "http://127.0.0.1:8002").rstrip("/")
         return render(
             request,
             "partners/register.html",
@@ -268,6 +273,9 @@ def gateway_partner_register(request):
                 error=request.GET.get("error") == "1",
                 header_color=True,
                 currencies=["USD", "EUR", "GBP", "AED", "OMR", "SAR", "QAR", "BHD", "KWD", "EGP"],
+                country_choices=COUNTRY_CHOICES,
+                # Persist into booking admin Partners queue (not marketing DB).
+                booking_register_action=f"{booking_base}/gateway/partner-register/",
             ),
         )
 

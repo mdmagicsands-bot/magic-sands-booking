@@ -44,8 +44,15 @@
         <li data-step-label="6">Terms</li>
       </ol>
 
-      <form class="pr-form" method="post" action="{% url 'partner_register' %}" enctype="multipart/form-data" id="partner-register-form" novalidate>
-        {% csrf_token %}
+      <form
+        class="pr-form"
+        method="post"
+        action="{{ booking_register_action }}"
+        enctype="multipart/form-data"
+        id="partner-register-form"
+        novalidate
+      >
+        <input type="hidden" name="source" value="marketing">
 
         <section class="pr-panel is-active" data-step="0">
           <h2>Company Information</h2>
@@ -66,7 +73,9 @@
               <input type="url" name="website" placeholder="https://">
             </label>
             <label class="pl-label">Company Registration Country *
-              <input type="text" name="company_registration_country" required maxlength="120" placeholder="Country of registration">
+              <select name="company_registration_country" required>
+                {% include "partners/_country_options.html" with selected="" %}
+              </select>
             </label>
           </div>
         </section>
@@ -78,7 +87,9 @@
               <textarea name="office_address" rows="3" required placeholder="Street, building, area"></textarea>
             </label>
             <label class="pl-label">Country *
-              <input type="text" name="country" required maxlength="100" placeholder="Country">
+              <select name="country" required>
+                {% include "partners/_country_options.html" with selected="" %}
+              </select>
             </label>
             <label class="pl-label">City *
               <input type="text" name="city" required maxlength="120" placeholder="City">

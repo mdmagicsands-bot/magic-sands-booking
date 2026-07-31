@@ -206,9 +206,9 @@ LOGOUT_REDIRECT_URL = "admin_login"
 
 MARKETING_SITE_URL = os.getenv("MARKETING_SITE_URL", "https://www.magicsandsdmc.com").rstrip("/")
 _default_booking_url = (
-    "http://127.0.0.1:8001"
+    "http://127.0.0.1:8002"
     if DEBUG
-    else os.getenv("BOOKING_SITE_URL", "https://book.magicsandsdmc.com")
+    else os.getenv("BOOKING_SITE_URL", "https://b2b.magicsandsdmc.com")
 )
 PUBLIC_BOOKING_URL = os.getenv("PUBLIC_BOOKING_URL", _default_booking_url).rstrip("/")
 
@@ -231,7 +231,11 @@ EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "30"))
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "noreply@magicsandsdmc.com")
 PARTNER_REGISTRATION_NOTIFY_EMAIL = os.getenv(
     "PARTNER_REGISTRATION_NOTIFY_EMAIL",
-    "oman@magicsandsdmc.com",
+    "support@magicsandsdmc.com",
+)
+PARTNER_REGISTRATION_NOTIFY_CC = os.getenv(
+    "PARTNER_REGISTRATION_NOTIFY_CC",
+    "asif@magicsandsdmc.com,admin@magicsandsdmc.com",
 )
 NEWSLETTER_NOTIFY_EMAIL = os.getenv(
     "NEWSLETTER_NOTIFY_EMAIL",

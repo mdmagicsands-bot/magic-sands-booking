@@ -1,0 +1,4 @@
+<option value="" disabled {% if not selected %}selected{% endif %}>Select country</option>
+{% for name in country_choices %}
+<option value="{{ name }}" {% if selected == name %}selected{% endif %}>{{ name }}</option>
+{% endfor %}
