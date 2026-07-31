@@ -57,26 +57,50 @@ def send_partner_registration_emails(registration) -> dict:
     except NoReverseMatch:
         detail_url = f"{_public_booking_base()}/admin/partners/{registration.pk}/"
 
-    applicant_subject = "Thank you — Magic Sands partner application received"
+    partner_name = contact or "Partner"
+    applicant_subject = "Welcome to Magic Sands DMC – Registration Received"
     applicant_text = (
-        f"Dear {contact},\n\n"
+        f"Dear {partner_name},\n\n"
         f"Thank you for registering with Magic Sands DMC.\n\n"
-        f"We have received your partner application for {company}.\n"
-        f"Status: Pending Verification\n\n"
-        f"Our partnerships team will review your documents and contact you shortly.\n\n"
-        f"Kind regards,\n"
+        f"We have successfully received your partner registration and our team is "
+        f"currently reviewing your application. Once the verification process is "
+        f"complete, you will receive another email confirming your account activation "
+        f"and access to our B2B Booking Portal.\n\n"
+        f"We appreciate your interest in partnering with us and look forward to "
+        f"building a successful business relationship.\n\n"
+        f"If you have any questions, please feel free to contact us at "
+        f"support@magicsandsdmc.com.\n\n"
+        f"Warm regards,\n\n"
+        f"Partner Relations Team\n"
         f"Magic Sands DMC\n"
+        f"Your Guide to Arabia\n"
+        f"www.magicsandsdmc.com\n"
     )
     applicant_html = f"""
-    <div style="font-family:Arial,sans-serif;line-height:1.55;color:#0f172a;max-width:560px">
-      <h2 style="margin:0 0 12px">Thank you for your application</h2>
-      <p style="margin:0 0 10px">Dear {contact},</p>
-      <p style="margin:0 0 10px">
-        Thank you for registering with Magic Sands DMC. We have received your partner
-        application for <strong>{company}</strong>.
+    <div style="font-family:Arial,sans-serif;line-height:1.6;color:#0f172a;max-width:560px">
+      <p style="margin:0 0 14px">Dear {partner_name},</p>
+      <p style="margin:0 0 14px">Thank you for registering with Magic Sands DMC.</p>
+      <p style="margin:0 0 14px">
+        We have successfully received your partner registration and our team is
+        currently reviewing your application. Once the verification process is
+        complete, you will receive another email confirming your account activation
+        and access to our B2B Booking Portal.
       </p>
-      <p style="margin:0 0 14px;color:#b45309"><strong>Status: Pending Verification</strong></p>
-      <p style="margin:0">Our partnerships team will review your documents and contact you shortly.</p>
+      <p style="margin:0 0 14px">
+        We appreciate your interest in partnering with us and look forward to
+        building a successful business relationship.
+      </p>
+      <p style="margin:0 0 18px">
+        If you have any questions, please feel free to contact us at
+        <a href="mailto:support@magicsandsdmc.com" style="color:#00667f">support@magicsandsdmc.com</a>.
+      </p>
+      <p style="margin:0 0 2px">Warm regards,</p>
+      <p style="margin:12px 0 0">
+        <strong>Partner Relations Team</strong><br>
+        Magic Sands DMC<br>
+        <em>Your Guide to Arabia</em><br>
+        <a href="https://www.magicsandsdmc.com" style="color:#00667f">www.magicsandsdmc.com</a>
+      </p>
     </div>
     """
     try:
