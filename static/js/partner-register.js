@@ -10,6 +10,47 @@
   const progress = document.getElementById("pr-progress");
   let index = 0;
 
+  const SKIP_UPPER_TYPES = new Set([
+    "checkbox",
+    "radio",
+    "file",
+    "hidden",
+    "submit",
+    "button",
+    "number",
+    "password",
+  ]);
+
+  const shouldForceUpper = (el) => {
+    if (!el || (el.tagName !== "INPUT" && el.tagName !== "TEXTAREA")) return false;
+    return !SKIP_UPPER_TYPES.has(el.type || "");
+  };
+
+  const forceUpper = (el) => {
+    if (!shouldForceUpper(el)) return;
+    const upper = el.value.toLocaleUpperCase("en-US");
+    if (el.value === upper) return;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    el.value = upper;
+    if (typeof start === "number" && typeof end === "number") {
+      try {
+        el.setSelectionRange(start, end);
+      } catch (_) {
+        /* some input types reject selection */
+      }
+    }
+  };
+
+  const upperAllTextFields = () => {
+    form.querySelectorAll("input, textarea").forEach(forceUpper);
+  };
+
+  form.addEventListener("input", (event) => forceUpper(event.target));
+  form.addEventListener("blur", (event) => forceUpper(event.target), true);
+  form.addEventListener("change", (event) => forceUpper(event.target));
+  upperAllTextFields();
+
   const show = (i) => {
     index = Math.max(0, Math.min(i, panels.length - 1));
     panels.forEach((panel, n) => {
@@ -61,6 +102,7 @@
   });
 
   form.addEventListener("submit", (event) => {
+    upperAllTextFields();
     if (!validatePanel(panels[index])) {
       event.preventDefault();
       return;

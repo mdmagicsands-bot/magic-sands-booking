@@ -185,11 +185,17 @@ def _parse_year(value: str):
     return None
 
 
+def _caps(value: str | None) -> str:
+    """Normalize partner registration text fields to uppercase."""
+    return (value or "").strip().upper()
+
+
 def _save_partner_registration(request, *, redirect_error, redirect_ok):
     """Shared create logic for on-app and Hostinger gateway posts."""
-    company = (request.POST.get("company_name") or "").strip()
-    contact = (request.POST.get("contact_name") or "").strip()
-    email = (request.POST.get("email") or "").strip()
+    company = _caps(request.POST.get("company_name"))
+    contact = _caps(request.POST.get("contact_name"))
+    # Keep email lower for login matching; UI still forces visual CAPS.
+    email = (request.POST.get("email") or "").strip().lower()
     accepted = request.POST.get("accepted_terms") in ("on", "1", "true", "True")
 
     if not company or not contact or not email or not accepted:
@@ -199,37 +205,38 @@ def _save_partner_registration(request, *, redirect_error, redirect_ok):
     if not business_types:
         raw = (request.POST.get("business_types") or "").strip()
         business_types = [p.strip() for p in raw.split(",") if p.strip()]
+    business_types = [_caps(p) for p in business_types if p]
 
-    telephone = (request.POST.get("telephone") or request.POST.get("phone") or "").strip()
-    mobile = (request.POST.get("mobile") or "").strip()
+    telephone = _caps(request.POST.get("telephone") or request.POST.get("phone"))
+    mobile = _caps(request.POST.get("mobile"))
 
     reg = PartnerRegistration(
         company_name=company,
-        trade_license_number=(request.POST.get("trade_license_number") or "").strip(),
-        vat_tax_number=(request.POST.get("vat_tax_number") or "").strip(),
+        trade_license_number=_caps(request.POST.get("trade_license_number")),
+        vat_tax_number=_caps(request.POST.get("vat_tax_number")),
         year_established=_parse_year(request.POST.get("year_established")),
-        website=(request.POST.get("website") or "").strip(),
-        company_registration_country=(
-            request.POST.get("company_registration_country") or ""
-        ).strip(),
-        office_address=(request.POST.get("office_address") or "").strip(),
-        country=(request.POST.get("country") or "").strip(),
-        city=(request.POST.get("city") or "").strip(),
-        postal_code=(request.POST.get("postal_code") or "").strip(),
+        website=_caps(request.POST.get("website")),
+        company_registration_country=_caps(
+            request.POST.get("company_registration_country")
+        ),
+        office_address=_caps(request.POST.get("office_address")),
+        country=_caps(request.POST.get("country")),
+        city=_caps(request.POST.get("city")),
+        postal_code=_caps(request.POST.get("postal_code")),
         telephone=telephone,
-        whatsapp=(request.POST.get("whatsapp") or "").strip(),
+        whatsapp=_caps(request.POST.get("whatsapp")),
         contact_name=contact,
-        designation=(request.POST.get("designation") or "").strip(),
+        designation=_caps(request.POST.get("designation")),
         email=email,
         mobile=mobile,
         phone=telephone or mobile,
-        markets_served=(request.POST.get("markets_served") or "").strip(),
-        main_destinations_sold=(request.POST.get("main_destinations_sold") or "").strip(),
+        markets_served=_caps(request.POST.get("markets_served")),
+        main_destinations_sold=_caps(request.POST.get("main_destinations_sold")),
         business_types=", ".join(business_types),
-        annual_passenger_volume=(request.POST.get("annual_passenger_volume") or "").strip(),
+        annual_passenger_volume=_caps(request.POST.get("annual_passenger_volume")),
         preferred_currency="USD",
         accepted_terms=True,
-        message=(request.POST.get("message") or "").strip(),
+        message=_caps(request.POST.get("message")),
     )
 
     file_map = {
