@@ -19,20 +19,19 @@
     "button",
     "number",
     "password",
+    "email",
   ]);
 
-  const shouldForceUpper = (el) => {
-    if (!el || (el.tagName !== "INPUT" && el.tagName !== "TEXTAREA")) return false;
-    return !SKIP_UPPER_TYPES.has(el.type || "");
-  };
+  const isEmailField = (el) =>
+    !!el &&
+    el.tagName === "INPUT" &&
+    (el.type === "email" || el.name === "email");
 
-  const forceUpper = (el) => {
-    if (!shouldForceUpper(el)) return;
-    const upper = el.value.toLocaleUpperCase("en-US");
-    if (el.value === upper) return;
+  const setCasedValue = (el, next) => {
+    if (el.value === next) return;
     const start = el.selectionStart;
     const end = el.selectionEnd;
-    el.value = upper;
+    el.value = next;
     if (typeof start === "number" && typeof end === "number") {
       try {
         el.setSelectionRange(start, end);
@@ -42,14 +41,35 @@
     }
   };
 
-  const upperAllTextFields = () => {
-    form.querySelectorAll("input, textarea").forEach(forceUpper);
+  const shouldForceUpper = (el) => {
+    if (!el || (el.tagName !== "INPUT" && el.tagName !== "TEXTAREA")) return false;
+    if (isEmailField(el)) return false;
+    return !SKIP_UPPER_TYPES.has(el.type || "");
   };
 
-  form.addEventListener("input", (event) => forceUpper(event.target));
-  form.addEventListener("blur", (event) => forceUpper(event.target), true);
-  form.addEventListener("change", (event) => forceUpper(event.target));
-  upperAllTextFields();
+  const forceUpper = (el) => {
+    if (!shouldForceUpper(el)) return;
+    setCasedValue(el, el.value.toLocaleUpperCase("en-US"));
+  };
+
+  const forceEmailLower = (el) => {
+    if (!isEmailField(el)) return;
+    setCasedValue(el, el.value.toLocaleLowerCase("en-US"));
+  };
+
+  const normalizeFieldCase = (el) => {
+    forceEmailLower(el);
+    forceUpper(el);
+  };
+
+  const normalizeAllTextFields = () => {
+    form.querySelectorAll("input, textarea").forEach(normalizeFieldCase);
+  };
+
+  form.addEventListener("input", (event) => normalizeFieldCase(event.target));
+  form.addEventListener("blur", (event) => normalizeFieldCase(event.target), true);
+  form.addEventListener("change", (event) => normalizeFieldCase(event.target));
+  normalizeAllTextFields();
 
   const show = (i) => {
     index = Math.max(0, Math.min(i, panels.length - 1));
@@ -102,7 +122,7 @@
   });
 
   form.addEventListener("submit", (event) => {
-    upperAllTextFields();
+    normalizeAllTextFields();
     if (!validatePanel(panels[index])) {
       event.preventDefault();
       return;
