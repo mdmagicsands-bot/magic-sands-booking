@@ -135,14 +135,15 @@
 }
 
 /* Caps-on for typed partner registration fields (values also forced in JS / booking server). */
-.pr-marketing-page .pr-form .pl-label > input:not([type="file"]):not([type="number"]):not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="email"]):not([name="email"]),
+.pr-marketing-page .pr-form .pl-label > input:not([type="file"]):not([type="number"]):not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="email"]):not([name="email"]):not([name="website"]),
 .pr-marketing-page .pr-form .pl-label > textarea,
 .pr-marketing-page .pr-form select {
   text-transform: uppercase;
 }
 
 .pr-marketing-page .pr-form .pl-label > input[type="email"],
-.pr-marketing-page .pr-form .pl-label > input[name="email"] {
+.pr-marketing-page .pr-form .pl-label > input[name="email"],
+.pr-marketing-page .pr-form .pl-label > input[name="website"] {
   text-transform: lowercase;
 }
 

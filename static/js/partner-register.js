@@ -27,6 +27,9 @@
     el.tagName === "INPUT" &&
     (el.type === "email" || el.name === "email");
 
+  const isWebsiteField = (el) =>
+    !!el && el.tagName === "INPUT" && el.name === "website";
+
   const setCasedValue = (el, next) => {
     if (el.value === next) return;
     const start = el.selectionStart;
@@ -43,7 +46,7 @@
 
   const shouldForceUpper = (el) => {
     if (!el || (el.tagName !== "INPUT" && el.tagName !== "TEXTAREA")) return false;
-    if (isEmailField(el)) return false;
+    if (isEmailField(el) || isWebsiteField(el)) return false;
     return !SKIP_UPPER_TYPES.has(el.type || "");
   };
 
@@ -57,8 +60,16 @@
     setCasedValue(el, el.value.toLocaleLowerCase("en-US"));
   };
 
+  const forceWebsiteLower = (el) => {
+    if (!isWebsiteField(el)) return;
+    let next = (el.value || "").toLocaleLowerCase("en-US");
+    next = next.replace(/^https?:\/\//i, "").replace(/^\/+/, "");
+    setCasedValue(el, next);
+  };
+
   const normalizeFieldCase = (el) => {
     forceEmailLower(el);
+    forceWebsiteLower(el);
     forceUpper(el);
   };
 

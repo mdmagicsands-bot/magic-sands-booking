@@ -190,6 +190,18 @@ def _caps(value: str | None) -> str:
     return (value or "").strip().upper()
 
 
+def _normalize_website(value: str | None) -> str:
+    """Website as lowercase www.host (no http/https scheme)."""
+    raw = (value or "").strip().lower()
+    if not raw:
+        return ""
+    for prefix in ("https://", "http://"):
+        if raw.startswith(prefix):
+            raw = raw[len(prefix) :]
+            break
+    return raw.lstrip("/")
+
+
 def _save_partner_registration(request, *, redirect_error, redirect_ok):
     """Shared create logic for on-app and Hostinger gateway posts."""
     company = _caps(request.POST.get("company_name"))
@@ -215,7 +227,7 @@ def _save_partner_registration(request, *, redirect_error, redirect_ok):
         trade_license_number=_caps(request.POST.get("trade_license_number")),
         vat_tax_number=_caps(request.POST.get("vat_tax_number")),
         year_established=_parse_year(request.POST.get("year_established")),
-        website=_caps(request.POST.get("website")),
+        website=_normalize_website(request.POST.get("website")),
         company_registration_country=_caps(
             request.POST.get("company_registration_country")
         ),

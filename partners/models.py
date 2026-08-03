@@ -17,7 +17,7 @@ class PartnerRegistration(models.Model):
     trade_license_number = models.CharField(max_length=120, blank=True)
     vat_tax_number = models.CharField(max_length=120, blank=True)
     year_established = models.PositiveIntegerField(null=True, blank=True)
-    website = models.URLField(blank=True)
+    website = models.CharField(max_length=200, blank=True)
     company_registration_country = models.CharField(max_length=120, blank=True)
 
     # Office Details

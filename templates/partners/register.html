@@ -6,7 +6,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/partner.css' %}">
-<link rel="stylesheet" href="{% static 'css/partner-register-marketing.css' %}?v=6">
+<link rel="stylesheet" href="{% static 'css/partner-register-marketing.css' %}?v=7">
 {% endblock %}
 
 {% block content %}
@@ -70,7 +70,7 @@
               <input type="number" name="year_established" min="1800" max="2100" placeholder="e.g. 2015">
             </label>
             <label class="pl-label">Website
-              <input type="url" name="website" placeholder="https://">
+              <input type="text" name="website" inputmode="url" autocomplete="url" autocapitalize="none" spellcheck="false" placeholder="www.">
             </label>
             <label class="pl-label">Company Registration Country *
               <select name="company_registration_country" required>
@@ -204,6 +204,6 @@
 
 {% block extra_js %}
 {% if not success %}
-<script src="{% static 'js/partner-register.js' %}?v=6" defer></script>
+<script src="{% static 'js/partner-register.js' %}?v=7" defer></script>
 {% endif %}
 {% endblock %}
